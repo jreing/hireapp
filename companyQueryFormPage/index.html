@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+  <body>
+
+    <div id="form-main">
+    <div align="right">
+      <p class="titletext">:סינון מועמדים</p>
+    </div>
+    <div id="form-div">
+
+      <div align="right">
+        <p class="text1">:ציון מינימלי בקורס</p>
+      </div>
+      <form class="form" id="form1" action="advanced.py" method="post">
+
+        <div class="inputline">
+          <input type="button" id="buttonadd" value="הוסף קורס" />
+        </div>
+        <div id="cloneme0" class="cloneme">
+          <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" />
+
+
+
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
+          <input type="button" id="buttondel0" class="buttondel" value="X" />
+        </div>
+        <div align="right" id="bysubject">
+          <p class="text1">:ממוצע מינימלי באשכול</p>
+        </div>
+        <div class="inputline">
+          <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
+        </div>
+        <div id="clonemetwo0" class="clonemetwo">
+          <select name="name" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="name">
+            <option value="volvo">מדמ"ח כללי</option>
+            <option value="saab">אבטחת מידע</option>
+            <option value="mercedes">תכנות</option>
+            <option value="audi">מדעי המידע</option>
+          </select>
+
+
+
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ממוצע" />
+          <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
+        </div>
+        <div align="right" id=avgentry>
+          <p class="text1">:ממוצע תואר מינימלי</p>
+          <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ממוצע" id="name" />
+        </div>
+        <div class="submit">
+          <input type="submit" value="חפש" id="button-blue" />
+          <div class="ease"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <body>
+
+<html>
