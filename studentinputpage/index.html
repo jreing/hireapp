@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 <html>
-	<link rel="stylesheet" type="text/css" href="mystyle.css">
-  <body>
 
+  <body>
+   <charset="unicode">
   <div id="form-main">
     <div align="right">
-      <p class="titletext">:Χ”Χ¨Χ©ΧΧ”</p>
+      <p class="titletext">:δψωξδ</p>
     </div>
     <div id="form-div">
       <div align="right">
-        <p class="text1">:Χ”Χ–Χ ΧΆΧ™Χ¨ ΧΧ’Χ•Χ¨Χ™Χ</p>
+        <p class="text1">:δζο ςιψ ξβεψιν</p>
       </div>
-      <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ΧΆΧ™Χ¨" id="name" />
+      <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ςιψ" id="name" />
       <div align="right">
-        <p class="text1">:Χ”Χ–Χ Χ§Χ•Χ¨Χ΅Χ™Χ Χ•Χ¦Χ™Χ•Χ Χ™Χ</p>
+        <p class="text1">:δζο χεψριν εφιεπιν</p>
       </div>
-      <form class="form" id="form1" action="advanced.py" method="post">
+      <form class="form" id="form1" action="dbHandler" method="post"
+      accept-charset="unicode">
 
         <div class="inputline">
-          <input type="button" id="buttonadd" value="Χ”Χ•Χ΅Χ£ Χ§Χ•Χ¨Χ΅" />
+          <input type="button" id="buttonadd" value="δερσ χεψρ" />
         </div>
         <div id="cloneme0" class="cloneme">
-          <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="Χ©Χ Χ§Χ•Χ¨Χ΅" id="name" />
-
-
-
-          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="Χ¦Χ™Χ•Χ" />
+          <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="ων χεψρ" id="name" />
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="φιεο" />
           <input type="button" id="buttondel0" class="buttondel" value="X" />
         </div>
         <div align="right">
-          <p class="text1" id=cventry>:ΧΧ•Χ¤Χ¦Χ™Χ•Χ ΧΧ™-Χ”Χ–Χ Χ§Χ•Χ¨Χ•Χª Χ—Χ™Χ™Χ</p>
+          <p class="text1" id=cventry>:ΰετφιεπμι-δζο χεψεϊ ηιιν</p>
         </div>
-        <input name="name" type="file" placeholder="Χ§Χ•Χ¨Χ•Χª Χ—Χ™Χ™Χ" id="name" />
+        <input name="cv" type="file" placeholder="χεψεϊ ηιιν" id="cv" />
         <div class="submit">
-          <input type="submit" value="Χ©ΧΧ—" id="button-blue" />
+          <input type="submit" value="ωμη" id="button-blue" />
           <div class="ease"></div>
         </div>
       </form>
