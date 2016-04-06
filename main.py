@@ -21,10 +21,23 @@ class Student_Course(ndb.Model):
 	student_id= ndb.IntegerProperty	(indexed=True, required=True)
 	hashed_id = ndb.IntegerProperty(indexed=False)
 
+class dbBuild(webapp2.RequestHandler):
+	inputfile=open("courses.csv")
+	text = inputfile.readlines()
+	for i in range(0,len(text)):
+		c=Course(course_id=text[i], course_name=text[i+1], course_type="class")
+		c.put()
+		i+=1
+	inputfile.close()
+	self.response.write('Database built')
+	
+		
 class dbHandler(webapp2.RequestHandler):
     def post(self):	 
-        
-	c=Course(course_id='1', course_name=self.request.get('name'), course_type="class")
+    
+	
+	course_name=self.request.get('name')
+	c=Course(course_id='1', course_name=course_name, course_type="class")
 	
 	c.put()
 	self.response.write('<html><body>')
@@ -33,12 +46,13 @@ class dbHandler(webapp2.RequestHandler):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        f = open("index.html") 
-	self.response.charset="unicode"
+        f = open("studentinputpage\index.html") 
+	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/dbHandler', dbHandler)
+	('/dbBuild', dbHandler)
 ], debug=True)
