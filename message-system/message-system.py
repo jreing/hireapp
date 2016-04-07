@@ -22,27 +22,31 @@ MAIN_PAGE_HTML = """\
 </html>
 """
 
-
+class threadNum(ndb.Model):
+	num = ndb.IntegerProperty(indexed = False)
 
 class Author(ndb.Model):
 	identity = ndb.StringProperty(indexed=False)
 
-
-
 class Message(ndb.Model):
-	thread = ndb.IntegerProperty(indexed = False)
+	#thread = ndb.IntegerProperty(indexed = False)
 	sender = ndb.StructuredProperty(Author)
 	#receiver = ndb.StructuredProperty(Author)
 	receiver = ndb.StringProperty(indexed=False)
 	cont = ndb.StringProperty(indexed=False)
 	date = ndb.DateTimeProperty(auto_now_add=True)
 
-class Thread(ndb.Model):
-	owner = ndb.
+class Conversation(ndb.Model):
+	id = ndb.IntegerProperty(indexed = False)
+	message = ndb.StructuredProperty(Message, repeated=True)
 
-class appUser(ndb.Model):
-	usr = ndb.UserProperty(required=True)
-	identity = ndb.StringProperty(indexed=False)
+
+#class Thread(ndb.Model):
+#	owner = ndb.
+
+#class appUser(ndb.Model):
+	#usr = ndb.UserProperty(required=True)
+	#identity = ndb.StringProperty(indexed=False)
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -52,20 +56,24 @@ class MainPage(webapp2.RequestHandler):
 			self.response.write('Hello, ' + user.nickname())
 		else:
 			self.redirect(users.create_login_url(self.request.uri))
-			
-		mess_query = Message.query()
+		conv_query = Conversation.query()	
+		#mess_query = Message.query()
 		self.response.write(MAIN_PAGE_HTML)
-		for message in mess_query:
-			if(message.receiver == users.get_current_user().nickname()):
-				send = users.User(_user_id = message.sender.identity)
-				self.response.write('<p>recieved: %s</p>' %message.date)
-				self.response.write('<p>from: %s</p>' %send.nickname())
-				self.response.write('<p>%s</p><br>' %message.cont)
-				self.response.write('<div><a href="/replay">replay</a></div>')
+		for conver in conv_query:
+			for message in conver.message:
+				if(message.receiver == users.get_current_user().nickname()):
+					send = users.User(_user_id = message.sender.identity)
+					self.response.write('<p>recieved: %s</p>' %message.date)
+					self.response.write('<p>from: %s</p>' %send.nickname())
+					self.response.write('<p>%s</p><br>' %message.cont)
+					self.response.write('<div><a href="/replay?%s">replay</a></div>' %conver.id)
 		
 	
 class Guestbook(webapp2.RequestHandler):
 	def post(self):
+		#self.conNum = threadNum(num=0)
+		#self.conNum.put()
+		self.conversation = Conversation()
 	
 		self.message = Message(cont = self.request.get('mess'))
 		
@@ -82,7 +90,13 @@ class Guestbook(webapp2.RequestHandler):
 		if users.get_current_user():
 			self.message.sender = Author(identity=users.get_current_user().user_id())
 		
+		self.conversation.message = [self.message]
 		
+		conNum = threadNum.query().get()
+		self.conversation.id = conNum.num
+		conNum.num +=1
+		conNum.put()
+		self.conversation.put()
 		self.message.put()
 		self.response.write('<html><body>message entered<pre>')
 		self.response.write('</pre></body></html>')
