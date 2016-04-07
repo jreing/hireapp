@@ -1,5 +1,6 @@
 import cgi
 import urllib
+import datetime
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
@@ -14,6 +15,9 @@ MAIN_PAGE_HTML = """\
       <div><textarea name="mess" rows="3" cols="60"></textarea></div>
       <div><input type="submit" value="send message"></div>
     </form>
+	<br><br>
+	</div><p>messages:</p><div>
+	
   </body>
 </html>
 """
@@ -26,10 +30,15 @@ class Author(ndb.Model):
 
 
 class Message(ndb.Model):
+	thread = ndb.IntegerProperty(indexed = False)
 	sender = ndb.StructuredProperty(Author)
 	#receiver = ndb.StructuredProperty(Author)
 	receiver = ndb.StringProperty(indexed=False)
 	cont = ndb.StringProperty(indexed=False)
+	date = ndb.DateTimeProperty(auto_now_add=True)
+
+class Thread(ndb.Model):
+	owner = ndb.
 
 class appUser(ndb.Model):
 	usr = ndb.UserProperty(required=True)
@@ -45,11 +54,15 @@ class MainPage(webapp2.RequestHandler):
 			self.redirect(users.create_login_url(self.request.uri))
 			
 		mess_query = Message.query()
-		
+		self.response.write(MAIN_PAGE_HTML)
 		for message in mess_query:
 			if(message.receiver == users.get_current_user().nickname()):
-				self.response.write('<p>%s</p>' %message.cont)
-		self.response.write(MAIN_PAGE_HTML)
+				send = users.User(_user_id = message.sender.identity)
+				self.response.write('<p>recieved: %s</p>' %message.date)
+				self.response.write('<p>from: %s</p>' %send.nickname())
+				self.response.write('<p>%s</p><br>' %message.cont)
+				self.response.write('<div><a href="/replay">replay</a></div>')
+		
 	
 class Guestbook(webapp2.RequestHandler):
 	def post(self):
@@ -65,14 +78,25 @@ class Guestbook(webapp2.RequestHandler):
 		#self.rec = self.key.get()
 		
 		self.message.receiver = destAdd
+		self.message.date = datetime.datetime.now()
 		if users.get_current_user():
 			self.message.sender = Author(identity=users.get_current_user().user_id())
+		
 		
 		self.message.put()
 		self.response.write('<html><body>message entered<pre>')
 		self.response.write('</pre></body></html>')
+
+class Replay(webapp2.RequestHandler):
+	def get(self):
+		self.response.write(MAIN_PAGE_HTML)
+		
+	def post(self):
+		self.message = Message(cont = self.request.get('mess'))
+		
 		
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
+	('/', MainPage),
 	('/sign', Guestbook),
+	('/replay', Replay),
 	], debug=True)
