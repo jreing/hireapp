@@ -68,8 +68,9 @@ class dbHandler(webapp2.RequestHandler):
     def post(self):	 
 		course_name=self.request.get('name')
 		grade= int(self.request.get('grade'))
+		st=Student(id="demo", name="demo", city="demo")
 		c=Course(course_id='1', course_name=course_name, course_type="class")
-		s=Student_Course(grade=grade, course=c) 
+		s=Student_Course(student= st, grade=grade, course=c) 
 		s.put()
 		## TODO: write the response in a nicer way
 		self.response.write('<html><body>Test Entry added</body></html>')
@@ -84,7 +85,7 @@ class CompanyHandler(webapp2.RequestHandler):
 		
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        f = open("studentinputpage\index.html") 
+        f = open("studentinputpage/index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        
