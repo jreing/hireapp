@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	script src="script.js"></script>
+ <body>
+	<script src="script.js"></script>
+  <div align="right">
+    <p class="titletext">:שליחת משרה</p>
+  </div>
+
+  <div id="form-div">
+    <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
+    <form class="form" id="form1" action="advanced.py" method="post">
+      <div align="right">
+        <p class="text1">:שם החברה</p>
+        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם" id="name" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:מייל החברה</p>
+        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" id="name" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:שם המשרה</p>
+        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="name" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:תיאור המשרה</p>
+        <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
+        
+           
+      </div>
+ <div align="right" > <p class="medtitletextpadded">:בחר מועמדים</p> </div>
+
+      <div id="scroll" style="overflow-y: scroll; height:300px;">
+
+        <div class="form-element" ; align="right">
+
+          <label for="studentselect1" class="textsmallpad">בחר</label>
+          <input type="checkbox" id="studentselect1" class="textbigpad" value="select">
+          <p class="text">לא צורף</p>
+          <p class="textbigpad">:קורות חיים</p>
+          <p class="text">אור יהודה</p>
+          <p class="text">:עיר</p>
+
+        </div>
+
+
+        <div class="form-element" ; align="right">
+
+          <label for="studentselect2" class="textsmallpad">בחר</label>
+          <input type="checkbox" id="studentselect2" class="textbigpad" value="select">
+          <p class="text">לא צורף</p>
+          <p class="textbigpad">:קורות חיים</p>
+          <p class="text">אור יהודה</p>
+          <p class="text">:עיר</p>
+
+        </div>
+      </div>
+
+      <label for="select-all" class="textsmallpad">בחר הכל</label>
+      <input type="checkbox" name="select-all" id="select-all" />
+      <div class="submit">
+        <input type="submit" value="שלח משרה" id="button-blue" />
+
+      </div>
+    </form>
+  </div>
+
+
+  <body>
+
+
+
+
+<html>
