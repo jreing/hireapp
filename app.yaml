@@ -11,6 +11,9 @@ handlers:
   
 - url: /studentinputpage
   static_dir: studentinputpage
+
+- url: /companyQueryFormPage
+  static_dir: companyQueryFormPage
   
 - url: .*
   script: main.app
