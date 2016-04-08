@@ -12,7 +12,7 @@
       <div align="right">
         <p class="text1">:ציון מינימלי בקורס</p>
       </div>
-      <form class="form" id="form1" action="/minGradeQuery" method="post">
+      <form class="form" id="form1" action="minGradeQuery" method="post">
 
         <div class="inputline">
           <input type="button" id="buttonadd" value="הוסף קורס" />
