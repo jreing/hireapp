@@ -75,20 +75,19 @@ class minGradeQuery(webapp2.RequestHandler):
 		grade= int(self.request.get('grade'))
 		self.response.write('<html><body>')
 		self.response.write(grade)
-		#Student_Course.grade>=grade
-		query=Student_Course.query()
-		self.response.write(query)
+		q=Student_Course.query(Student_Course.grade>=grade)
+		self.response.write(q)
 		## TODO: write the response in a nicer way
-		query.fetch(100)
-		for student in query:
+		q.fetch(100)
+		for student in q:
 			self.response.write("Student %s\n" %student)
 		self.response.write('End of Results</html></body>')
 		
 
 
-	
+#adds all courses to DB from the parsed courses files
 class dbBuild(webapp2.RequestHandler):
-	#adds all courses to DB from the parsed courses files
+	
 	def get(self):
 		inputfile=open("courses.csv")
 		text = inputfile.readlines()
@@ -98,19 +97,18 @@ class dbBuild(webapp2.RequestHandler):
 			
 		inputfile.close()
 		self.response.write('Database built')
-	
+
+#deletes all courses from DB	
 class dbDelete(webapp2.RequestHandler):
-	#deletes all courses from DB	
+	
 	def get(self):
 		ndb.delete_multi(
 			Course.query().fetch(keys_only=True)
 		)
 		self.response.write('Database deleted')
-	
-		
-		
+
+#adds Student_Course to DB
 class dbHandler(webapp2.RequestHandler):
-	#adds Student_Course to DB
     def post(self):	 
 		course_name=self.request.get('name')
 		grade= int(self.request.get('grade'))
@@ -132,7 +130,7 @@ class CompanyHandler(webapp2.RequestHandler):
 		
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        f = open("studentinputpage/index.html") 
+        f = open("studentinputpage\index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        
@@ -200,15 +198,15 @@ class MessageReplay(webapp2.RequestHandler):
 	
 #list of urls the user enters and functions that handle them
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/dbHandler', dbHandler),
+	('/', MainHandler),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentinputpage/index.html', MainHandler),
+	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
-	('/companyQueryFormPage/minGradeQuery' , minGradeQuery),
+	('/minGradeQuery' , minGradeQuery),
 	('/message', Message),
 	('/messageSend', MessageSend),
-	('/messageReplay', MessageReplay),
+	('/messageReplay', MessageReplay)
 	
 ], debug=True)
