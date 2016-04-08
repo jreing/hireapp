@@ -15,3 +15,8 @@ indexes:
   properties:
   - name: date
     direction: desc
+
+- kind: Student_Course
+  properties:
+  - name: course.course_name
+  - name: grade

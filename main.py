@@ -28,7 +28,7 @@ MESSAGE_PAGE_HTML = """\
 class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
-	course_name = ndb.StringProperty(indexed=False, required=True)
+	course_name = ndb.StringProperty(indexed=True, required=True)
 	course_type = ndb.StringProperty(indexed=False, required=True)
 	
 class Student(ndb.Model):
@@ -73,14 +73,15 @@ class minGradeQuery(webapp2.RequestHandler):
 	def post(self):	 
 		course_name=self.request.get('name')
 		grade= int(self.request.get('grade'))
+		c=Course(course_name=course_name, course_id="1", course_type="class")		
 		self.response.write('<html><body>')
 		self.response.write(grade)
-		q=Student_Course.query(Student_Course.grade>=grade)
+		q=Student_Course.query(Student_Course.grade>=grade, Student_Course.course.course_name==course_name)
 		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
 		for student in q:
-			self.response.write("Student %s\n" %student)
+			self.response.write("Student %s <br>" %student)
 		self.response.write('End of Results</html></body>')
 		
 
@@ -112,7 +113,7 @@ class dbHandler(webapp2.RequestHandler):
     def post(self):	 
 		course_name=self.request.get('name')
 		grade= int(self.request.get('grade'))
-		st=Student(id="demo", name="demo", city="demo")
+		st=Student(id="demo", name="demo", city=self.request.get('city'))
 		c=Course(course_id='1', course_name=course_name, course_type="class")
 		s=Student_Course(student= st, grade=grade, course=c) 
 		s.put()

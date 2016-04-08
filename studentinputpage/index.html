@@ -11,11 +11,12 @@
       <div align="right">
         <p class="text1">:הזן עיר מגורים</p>
       </div>
-      <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="עיר" id="name" />
+	<form class="form" id="form1" action="/dbHandler" method="post"  >
+      <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="עיר" id="city" />
       <div align="right">
         <p class="text1">:הזן קורסים וציונים</p>
       </div>
-      <form class="form" id="form1" action="/dbHandler" method="post"  >
+      
 
         <div class="inputline">
           <input type="button" id="buttonadd" value="הוסף קורס" />
