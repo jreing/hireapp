@@ -11,7 +11,7 @@ import webapp2
 MESSAGE_PAGE_HTML = """\
 <html>
   <body>
-    <form action="/sign" method="post">
+    <form action="/messageSend" method="post">
 	  send to:
 	  <input type="text" name="recv" ><br>
       <div><textarea name="mess" rows="3" cols="60"></textarea></div>
@@ -135,7 +135,7 @@ class MainHandler(webapp2.RequestHandler):
 	self.response.write(f.read())
 	f.close()        
 
-class Message(webapp2.RequestHandler):
+class MessageHandler(webapp2.RequestHandler):
     def get(self):
 		user = users.get_current_user()
 		if user:
@@ -154,12 +154,13 @@ class Message(webapp2.RequestHandler):
 					self.response.write('<p>from: %s</p>' %send.nickname())
 					self.response.write('<p>%s</p><br>' %message.cont)
 					self.response.write('<div><a href="/replay?%s">replay</a></div>' %conver.id)
+					
 		
 	
 class MessageSend(webapp2.RequestHandler):
 	def post(self):
-		#self.conNum = threadNum(num=0)
-		#self.conNum.put()
+		self.conNum = threadNum(num=0)
+		self.conNum.put()
 		self.conversation = Conversation()
 	
 		self.message = Message(cont = self.request.get('mess'))
@@ -194,7 +195,13 @@ class MessageReplay(webapp2.RequestHandler):
 		
 	def post(self):
 		self.message = Message(cont = self.request.get('mess'))
-			
+		
+		
+class ResultsPage(webapp2.RequestHandler):
+	def get(self):
+		f = open("companyQueryResultsPage/index.html")		
+		self.response.write(f.read())
+		f.close()	
 	
 #list of urls the user enters and functions that handle them
 app = webapp2.WSGIApplication([
@@ -205,7 +212,7 @@ app = webapp2.WSGIApplication([
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/minGradeQuery' , minGradeQuery),
-	('/message', Message),
+	('/message', MessageHandler),
 	('/messageSend', MessageSend),
 	('/messageReplay', MessageReplay)
 	

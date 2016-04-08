@@ -15,7 +15,7 @@
       <div align="right">
         <p class="text1">:הזן קורסים וציונים</p>
       </div>
-      <form class="form" id="form1" method="post" action="/dbHandler" >
+      <form class="form" id="form1" action="/dbHandler" method="post"  >
 
         <div class="inputline">
           <input type="button" id="buttonadd" value="הוסף קורס" />

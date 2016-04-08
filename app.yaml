@@ -14,6 +14,9 @@ handlers:
 
 - url: /companyQueryFormPage
   static_dir: companyQueryFormPage
+ 
+- url: /companyQueryResultsPage
+  static_dir: companyQueryResultsPage
   
 - url: .*
   script: main.app
