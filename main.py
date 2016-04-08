@@ -155,14 +155,14 @@ class MessageHandler(webapp2.RequestHandler):
 					self.response.write('<p>recieved: %s</p>' %message.date)
 					self.response.write('<p>from: %s</p>' %send.nickname())
 					self.response.write('<p>%s</p><br>' %message.cont)
-					self.response.write('<div><a href="/replay?%s">replay</a></div>' %conver.id)
+					self.response.write('<div><a href="/messageReply?%s">reply</a></div>' %conver.id)
 					
 		
 	
 class MessageSend(webapp2.RequestHandler):
 	def post(self):
-		self.conNum = threadNum(num=0)
-		self.conNum.put()
+		#self.conNum = threadNum(num=0)
+		#self.conNum.put()
 		self.conversation = Conversation()
 	
 		self.message = Message(cont = self.request.get('mess'))
@@ -191,7 +191,7 @@ class MessageSend(webapp2.RequestHandler):
 		self.response.write('<html><body>message entered<pre>')
 		self.response.write('</pre></body></html>')
 
-class MessageReplay(webapp2.RequestHandler):
+class MessageReply(webapp2.RequestHandler):
 	def get(self):
 		self.response.write(MESSAGE_PAGE_HTML)
 		
@@ -217,6 +217,6 @@ app = webapp2.WSGIApplication([
 	('/companyQueryResultsPage/index.html', ResultsPage),
 	('/message', MessageHandler),
 	('/messageSend', MessageSend),
-	('/messageReplay', MessageReplay),
+	('/messageReply', MessageReply)
 	
 ], debug=True)
