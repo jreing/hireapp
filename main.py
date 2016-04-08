@@ -127,7 +127,20 @@ class CompanyHandler(webapp2.RequestHandler):
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        
-		
+
+class MainPage(webapp2.RequestHandler):
+	def get(self):
+		user = users.get_current_user()
+		if user:
+			self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
+			self.response.write('Hello, ' + user.nickname())
+			self.response.write('<br><br><div><a href="/studentinputpage/index.html">input page</a></div>')	
+			self.response.write('<div><a href="/message">messages</a></div>')
+			self.response.write('<div><a href="/companyQueryFormPage/index.html">search students</a></div>')				
+		else:
+			self.redirect(users.create_login_url(self.request.uri))
+			
+	
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         f = open("studentinputpage\index.html") 
@@ -205,7 +218,7 @@ class ResultsPage(webapp2.RequestHandler):
 	
 #list of urls the user enters and functions that handle them
 app = webapp2.WSGIApplication([
-	('/', MainHandler),
+	('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentinputpage/index.html', MainHandler),

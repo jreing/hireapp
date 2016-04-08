@@ -1,5 +1,3 @@
-alert("HELLO WORLD");
-
 
 // Listen for click on toggle checkbox
 $('#select-all').click(function(event) {
