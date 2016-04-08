@@ -28,7 +28,7 @@ MESSAGE_PAGE_HTML = """\
 class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
-	course_name = ndb.StringProperty(indexed=False, required=True)
+	course_name = ndb.StringProperty(indexed=True, required=True)
 	course_type = ndb.StringProperty(indexed=False, required=True)
 	
 class Student(ndb.Model):
@@ -69,18 +69,18 @@ class Conversation(ndb.Model):
 #classes for actions:
 
 class minGradeQuery(webapp2.RequestHandler):
-	#STILL DOESNT WORK - returns results of students that satisfy some requirement	
 	def post(self):	 
 		course_name=self.request.get('name')
 		grade= int(self.request.get('grade'))
+		c=Course(course_name=course_name, course_id="1", course_type="class")		
 		self.response.write('<html><body>')
 		self.response.write(grade)
-		q=Student_Course.query(Student_Course.grade>=grade)
+		q=Student_Course.query(Student_Course.grade>=grade, Student_Course.course.course_name==course_name)
 		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
 		for student in q:
-			self.response.write("Student %s\n" %student)
+			self.response.write("Student %s <br>" %student)
 		self.response.write('End of Results</html></body>')
 		
 
