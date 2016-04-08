@@ -24,7 +24,7 @@ MESSAGE_PAGE_HTML = """\
 </html>
 """
 #DB class definitions:
-
+# comment
 class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
