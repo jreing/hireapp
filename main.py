@@ -28,7 +28,7 @@ MESSAGE_PAGE_HTML = """\
 class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
-	course_name = ndb.StringProperty(indexed=True, required=True)
+	course_name = ndb.StringProperty(indexed=False, required=True)
 	course_type = ndb.StringProperty(indexed=False, required=True)
 	
 class Student(ndb.Model):
@@ -73,15 +73,14 @@ class minGradeQuery(webapp2.RequestHandler):
 	def post(self):	 
 		course_name=self.request.get('name')
 		grade= int(self.request.get('grade'))
-		c=Course(course_name=course_name, course_id="1", course_type="class")		
 		self.response.write('<html><body>')
 		self.response.write(grade)
-		q=Student_Course.query(Student_Course.grade>=grade, Student_Course.course.course_name==course_name)
+		q=Student_Course.query(Student_Course.grade>=grade)
 		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
 		for student in q:
-			self.response.write("Student %s <br>" %student)
+			self.response.write("Student %s\n" %student)
 		self.response.write('End of Results</html></body>')
 		
 
@@ -113,7 +112,7 @@ class dbHandler(webapp2.RequestHandler):
     def post(self):	 
 		course_name=self.request.get('name')
 		grade= int(self.request.get('grade'))
-		st=Student(id="demo", name="demo", city=self.request.get('city'))
+		st=Student(id="demo", name="demo", city="demo")
 		c=Course(course_id='1', course_name=course_name, course_type="class")
 		s=Student_Course(student= st, grade=grade, course=c) 
 		s.put()
@@ -128,7 +127,20 @@ class CompanyHandler(webapp2.RequestHandler):
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        
-		
+
+class MainPage(webapp2.RequestHandler):
+	def get(self):
+		user = users.get_current_user()
+		if user:
+			self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
+			self.response.write('Hello, ' + user.nickname())
+			self.response.write('<br><br><div><a href="/studentinputpage/index.html">input page</a></div>')	
+			self.response.write('<div><a href="/message">messages</a></div>')
+			self.response.write('<div><a href="/companyQueryFormPage/index.html">search students</a></div>')				
+		else:
+			self.redirect(users.create_login_url(self.request.uri))
+			
+	
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         f = open("studentinputpage\index.html") 
@@ -154,14 +166,14 @@ class MessageHandler(webapp2.RequestHandler):
 					self.response.write('<p>recieved: %s</p>' %message.date)
 					self.response.write('<p>from: %s</p>' %send.nickname())
 					self.response.write('<p>%s</p><br>' %message.cont)
-					self.response.write('<div><a href="/replay?%s">replay</a></div>' %conver.id)
+					self.response.write('<div><a href="/messageReply?%s">reply</a></div>' %conver.id)
 					
 		
 	
 class MessageSend(webapp2.RequestHandler):
 	def post(self):
-		self.conNum = threadNum(num=0)
-		self.conNum.put()
+		#self.conNum = threadNum(num=0)
+		#self.conNum.put()
 		self.conversation = Conversation()
 	
 		self.message = Message(cont = self.request.get('mess'))
@@ -190,7 +202,7 @@ class MessageSend(webapp2.RequestHandler):
 		self.response.write('<html><body>message entered<pre>')
 		self.response.write('</pre></body></html>')
 
-class MessageReplay(webapp2.RequestHandler):
+class MessageReply(webapp2.RequestHandler):
 	def get(self):
 		self.response.write(MESSAGE_PAGE_HTML)
 		
@@ -206,7 +218,7 @@ class ResultsPage(webapp2.RequestHandler):
 	
 #list of urls the user enters and functions that handle them
 app = webapp2.WSGIApplication([
-	('/', MainHandler),
+	('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentinputpage/index.html', MainHandler),
@@ -215,6 +227,7 @@ app = webapp2.WSGIApplication([
 	('/minGradeQuery' , minGradeQuery),
 	('/message', MessageHandler),
 	('/messageSend', MessageSend),
-	('/messageReplay', MessageReplay)
+	('/messageReply', MessageReply)
+
 	
 ], debug=True)

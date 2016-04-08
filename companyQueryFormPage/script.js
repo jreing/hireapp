@@ -2,6 +2,7 @@ var newNum = 0;
 var elems = 1;
 var newNumtwo = 0;
 var elemstwo = 1;
+alert("Hello! I am an alert box!!");
 $('#buttonadd').click(function() {
   elems++;
   newNum = new Number(newNum + 1); // the numeric ID of the new input field being added
