@@ -9,7 +9,7 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
   
-- url: /studentinputpage
+- url: /studentInputPage
   static_dir: studentinputpage
 
 - url: /companyQueryFormPage

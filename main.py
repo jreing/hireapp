@@ -48,7 +48,7 @@ class LoginHandler(webapp2.RequestHandler):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        f = open("studentInputPage\index.html") 
+        f = open('studentInputPage/index.html') 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        
@@ -117,7 +117,11 @@ def buildQueryResultsPage():
       <div id="scroll" style="overflow-y: scroll; height:450px;">"""
 	  
 	htmlbody=''
-	for obj in database:
+	q=Student_Course.query(Student_Course.grade>=grade, Student_Course.course.course_name==course_name)
+	self.response.write(q)
+	## TODO: write the response in a nicer way
+	q.fetch(100)
+	for student in q:
 		i=i+1
 		htmlbody+="""
 
