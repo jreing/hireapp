@@ -1,3 +1,4 @@
+
 $(".button").click(function() { 
 	var num = this.id.substring(6);
     $(('#extra'+num)).toggle('display');
@@ -18,5 +19,4 @@ if (count == 0) {
 	$('#empty').show();
 
 }
-
 

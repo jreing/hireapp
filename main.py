@@ -112,11 +112,14 @@ class dbDelete(webapp2.RequestHandler):
 class dbHandler(webapp2.RequestHandler):
     def post(self):	 
 		self.response.write('<html><body>Test Entry ')
+<<<<<<< HEAD
 		self.response.write(self.request)
+
 		course_names=self.request.get('name', allow_multiple=True)
 		
 		self.response.write("<br><br>")
 		
+<<<<<<< HEAD
 		
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
@@ -325,8 +328,7 @@ def buildQueryResultsPage():
 
 	html=htmlstart+htmlbody+htmlend
 	return html
-	
-	
+		
 def buildStudentOffersPage():
 	i=0
 	htmlstart= """<!DOCTYPE html>
@@ -387,7 +389,3 @@ def buildStudentOffersPage():
 	html=htmlstart+htmlbody+htmlend
 	return html
 	
-	
-
-
-
