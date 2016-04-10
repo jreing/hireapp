@@ -48,7 +48,7 @@ class LoginHandler(webapp2.RequestHandler):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        f = open('studentInputPage/index.html') 
+        f = open("studentInputPage/index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        

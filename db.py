@@ -6,7 +6,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 
 import webapp2
-
+import logging
 
 #DB class definitions:
 
@@ -15,40 +15,46 @@ class Course(ndb.Model):
 	course_id = ndb.StringProperty(indexed=True, required=True)
 	course_name = ndb.StringProperty(indexed=True, required=True)
 	course_type = ndb.StringProperty(indexed=False, required=True)
-	
-class Student(ndb.Model):
-	id = ndb.StringProperty(indexed=True, required=True)
-	name= ndb.StringProperty(indexed=True, required=True)
-	city =ndb.StringProperty(indexed=True, required=True)
-	
+
 class Student_Course(ndb.Model):
 	grade = ndb.IntegerProperty(indexed=True, required=True)
 	#weight = ndb.IntegerProperty(indexed=False, required=True)
 	#semester = ndb.StringProperty(indexed=False, required=True)
 	course= ndb.StructuredProperty (Course, required=True)
-	student= ndb.StructuredProperty (Student, required=True)
 	#hashed_id = ndb.IntegerProperty(indexed=False)
 	
 	
+class Student(ndb.Model):
+	id = ndb.StringProperty(indexed=True, required=True)
+	name= ndb.StringProperty(indexed=True, required=True)
+	city =ndb.StringProperty(indexed=True, required=True)
+	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)	
+
+
+	
 class minGradeQuery(webapp2.RequestHandler):
 	def post(self):	 
-		course_name=self.request.get('name' )
-		grade= int(self.request.get('grade'))
-		c=Course(course_name=course_name, course_id="1", course_type="class")		
+		course_names=self.request.get_all('name')
+		grades= self.request.get_all('grade')
+			
+		#c=Course(course_name=course_name[0], course_id="1", course_type="class")		
 		self.response.write('<html><body>')
 		#debug prints
-		self.response.write(c)
-		self.response.write(grade )
+		self.response.write(int(grades[0]))
+		#self.response.write(int(grades[1]))
 		self.response.write("<br>End of Debug prints<br><br>")
-		q=Student_Course.query(Student_Course.grade>=grade, Student_Course.course.course_name==course_name)
+		q=Student.query()
+		for i in range (0,len(grades)-1):	
+			logging.info(i)
+			grade=int(grades[i])
+			q=q.filter (Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
 		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
 		for student in q:
-			self.response.write("Student %s <br>" %student)
+			self.response.write("""<br> <h1 style="color:red">Student %s <br>""" %student)
 		self.response.write('End of Results</html></body>')
 		
-
 
 #adds all courses to DB from the parsed courses files
 class dbBuild(webapp2.RequestHandler):
@@ -81,11 +87,12 @@ class dbHandler(webapp2.RequestHandler):
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
 			self.response.write ("Error")
+		s=[]
 		for i in range(0,len(course_names)):
-			st=Student(id="demo", name="demo", city="demo")
 			c=Course(course_id='1', course_name=course_names[i], course_type="class")
-			s=Student_Course(student= st, grade=int(grade[i]), course=c) 
-			s.put()
+			s.append(Student_Course(grade=int(grade[i]), course=c))
+		st= Student(student_courses=s,id="2", name="demo", city="demo")
+		st.put()
 		## TODO: write the response in a nicer way
 		self.response.write('<html><body>Test Entry added</body></html>')
 
