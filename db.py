@@ -1,6 +1,7 @@
 import cgi
 import urllib
 import datetime
+from methods import *
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -51,10 +52,11 @@ class minGradeQuery(webapp2.RequestHandler):
 		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
-		for student in q:
-			self.response.write("""<br> <h1 style="color:red">Student %s <br>""" %student)
-		self.response.write('End of Results</html></body>')
-		
+		#for student in q:
+		#	self.response.write("""<br> <h1 style="color:red">Student %s <br>""" %student)
+		#self.response.write('End of Results</html></body>')
+		page = buildQueryResultsPage(q)
+		self.response.write(page)
 
 #adds all courses to DB from the parsed courses files
 class dbBuild(webapp2.RequestHandler):
