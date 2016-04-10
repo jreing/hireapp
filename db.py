@@ -1,6 +1,7 @@
 import cgi
 import urllib
 import datetime
+from methods import *
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -31,22 +32,29 @@ class Student_Course(ndb.Model):
 	
 	
 class minGradeQuery(webapp2.RequestHandler):
-	def post(self):	 
+	def post(self):
+		
+			
 		course_name=self.request.get('name' )
 		grade= int(self.request.get('grade'))
 		c=Course(course_name=course_name, course_id="1", course_type="class")		
-		self.response.write('<html><body>')
-		#debug prints
-		self.response.write(c)
-		self.response.write(grade )
-		self.response.write("<br>End of Debug prints<br><br>")
+		#self.response.write('<html><body>')
+		##debug prints
+		#self.response.write(c)
+		#self.response.write(grade )
+		#self.response.write("<br>End of Debug prints<br><br>")
 		q=Student_Course.query(Student_Course.grade>=grade, Student_Course.course.course_name==course_name)
-		self.response.write(q)
+		#self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
-		for student in q:
-			self.response.write("Student %s <br>" %student)
-		self.response.write('End of Results</html></body>')
+		#for student in q:
+		#	self.response.write("Student %s <br>" %student)
+		#self.response.write('End of Results</html></body>')
+		page = buildQueryResultsPage(q)
+		self.response.write(page)
+		
+		
+		
 		
 
 
