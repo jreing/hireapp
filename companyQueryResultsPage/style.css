@@ -21,12 +21,12 @@ html {
   padding-right: 35px;
   padding-top: 35px;
   padding-bottom: 50px;
-  width: 575px;
+  width: 875px;
   float: left;
   left: 50%;
   position: absolute;
   margin-top: 100px;
-  margin-left: -260px;
+  margin-left: -320px;
   -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
 }
@@ -180,11 +180,12 @@ textarea {
 
 .form-element {
   border: 2px solid #fbfbfb;
-  padding: 20px;
+  padding: 10px;
+  padding-bottom: 10px;
   margin: 1px;
   width: 90%;
   float: right;
-  height: 25px;
+
   background-color: #3498db;
   color: #fbfbfb;
 }
@@ -201,6 +202,11 @@ textarea {
 
 .textbigpad {
   margin-right: 70px;
+  display: inline-block
+}
+
+.texthugepad {
+  margin-right: 250px;
   display: inline-block
 }
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+﻿#!/usr/bin/env python
 import cgi
 import urllib
 import datetime
@@ -24,7 +24,7 @@ MESSAGE_PAGE_HTML = """\
 </html>
 """
 #DB class definitions:
-# comment
+
 class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
@@ -70,7 +70,7 @@ class Conversation(ndb.Model):
 
 class minGradeQuery(webapp2.RequestHandler):
 	def post(self):	 
-		course_name=self.request.get('name')
+		course_name=self.request.get('name' )
 		grade= int(self.request.get('grade'))
 		c=Course(course_name=course_name, course_id="1", course_type="class")		
 		self.response.write('<html><body>')
@@ -79,7 +79,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		self.response.write(grade )
 		self.response.write("<br>End of Debug prints<br><br>")
 		q=Student_Course.query(Student_Course.grade>=grade, Student_Course.course.course_name==course_name)
-		#self.response.write(q)
+		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
 		for student in q:
@@ -103,22 +103,29 @@ class dbBuild(webapp2.RequestHandler):
 
 #deletes all courses from DB	
 class dbDelete(webapp2.RequestHandler):
-	
+
 	def get(self):
-		ndb.delete_multi(
-			Course.query().fetch(keys_only=True)
-		)
+		ndb.delete_multi(Course.query().fetch(keys_only=True))
 		self.response.write('Database deleted')
 
 #adds Student_Course to DB
 class dbHandler(webapp2.RequestHandler):
     def post(self):	 
-		course_name=self.request.get('name')
-		grade= int(self.request.get('grade'))
-		st=Student(id="demo", name="demo", city="demo")
-		c=Course(course_id='1', course_name=course_name, course_type="class")
-		s=Student_Course(student= st, grade=grade, course=c) 
-		s.put()
+		self.response.write('<html><body>Test Entry ')
+		self.response.write(self.request)
+		course_names=self.request.get('name', allow_multiple=True)
+		
+		self.response.write("<br><br>")
+		
+		
+		grade= self.request.get('grade', allow_multiple=True)
+		if (len(course_names)!=len(grade)):
+			self.response.write ("Error")
+		for i in range(0,len(course_names)):
+			st=Student(id="demo", name="demo", city="demo")
+			c=Course(course_id='1', course_name=course_names[i], course_type="class")
+			s=Student_Course(student= st, grade=int(grade[i]), course=c) 
+			s.put()
 		## TODO: write the response in a nicer way
 		self.response.write('<html><body>Test Entry added</body></html>')
 
@@ -137,13 +144,21 @@ class MainPage(webapp2.RequestHandler):
 		if user:
 			self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
 			self.response.write('Hello, ' + user.nickname())
+			self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')
 			self.response.write('<br><br><div><a href="/studentinputpage/index.html">input page</a></div>')	
 			self.response.write('<div><a href="/message">messages</a></div>')
 			self.response.write('<div><a href="/companyQueryFormPage/index.html">search students</a></div>')				
 		else:
 			self.redirect(users.create_login_url(self.request.uri))
-			
-	
+
+
+class LoginHandler(webapp2.RequestHandler):
+    def get(self):
+        f = open("chooseEmployOrStudentPage/index.html") 
+	#self.response.charset="unicode"
+	self.response.write(f.read())
+	f.close() 
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         f = open("studentinputpage\index.html") 
@@ -170,9 +185,9 @@ class MessageHandler(webapp2.RequestHandler):
 					self.response.write('<p>from: %s</p>' %send.nickname())
 					self.response.write('<p>%s</p><br>' %message.cont)
 					self.response.write('<div><a href="/messageReply?%s">reply</a></div>' %conver.id)
-					
-		
-	
+
+
+
 class MessageSend(webapp2.RequestHandler):
 	def post(self):
 		#self.conNum = threadNum(num=0)
@@ -211,26 +226,168 @@ class MessageReply(webapp2.RequestHandler):
 		
 	def post(self):
 		self.message = Message(cont = self.request.get('mess'))
-		
-		
+
+
 class ResultsPage(webapp2.RequestHandler):
 	def get(self):
 		f = open("companyQueryResultsPage/index.html")		
 		self.response.write(f.read())
-		f.close()	
-	
+		f.close()
+
 #list of urls the user enters and functions that handle them
 app = webapp2.WSGIApplication([
 	('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentinputpage/index.html', MainHandler),
+	('/chooseEmployOrStudentPage/index.html', LoginHandler),
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/minGradeQuery' , minGradeQuery),
 	('/message', MessageHandler),
 	('/messageSend', MessageSend),
-	('/messageReply', MessageReply)
+	('/messageReply', MessageReply)	
+	], debug=True)
 
+#Methods to build the companyQueryResultsPage and StudentOffersPage
+
+def buildQueryResultsPage():
+	i=0
+	htmlstart= """<!DOCTYPE html>
+	<html>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<body>
 	
-], debug=True)
+  <div align="right">
+    <p class="titletext">:שליחת משרה</p>
+  </div>
+
+  <div id="form-div">
+    <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
+    <form class="form" id="form1" action="advanced.py" method="post">
+      <div align="right">
+        <p class="text1">:שם החברה</p>
+        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם" id="name" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:מייל החברה</p>
+        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" id="name" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:שם המשרה</p>
+        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="name" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:תיאור המשרה</p>
+        <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
+        
+           
+      </div>
+	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים</p> </div>
+
+      <div id="scroll" style="overflow-y: scroll; height:450px;">"""
+	  
+	htmlbody=''
+	for obj in database:
+		i=i+1
+		htmlbody+="""
+
+        <div class="form-element" ; align="right">
+
+          <label for="studentselect"""+i+""" class="textsmallpad">בחר</label>
+          <input type="checkbox" id="studentselect"""+i+""" class="texthugepad" value="select">
+          <p class="text">לא צורף</p>
+          <p class="textbigpad">:קורות חיים</p>
+          <p class="text">"""+obj.city+"""</p>
+          <p class="text">:עיר</p>
+
+        </div>"""
+	
+	htmlend="""
+      </div>
+
+      <label for="select-all" class="textsmallpad">בחר הכל</label>
+      <input type="checkbox" name="select-all" id="select-all" />
+      <div class="submit">
+        <input type="submit" value="שלח משרה" id="button-blue" />
+
+      </div>
+    </form>
+	
+	<script type="text/javascript" src="jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+  </div>
+  <body>
+	<html>"""
+
+	html=htmlstart+htmlbody+htmlend
+	return html
+	
+	
+def buildStudentOffersPage():
+	i=0
+	htmlstart= """<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" type="text/css" href="style.css">
+<body>
+
+  <div >
+    <p class="titletext"  >:הפרופיל שלי</p>
+  </div>
+
+  <div id="form-div">
+    <div align="right"> <p class="medtitletext">:הצעות שקיבלת</p>  </div>
+  
+
+
+      <div id="scroll">"""
+	  
+	htmlbody=''
+	for obj in database:
+		i=i+1
+		htmlbody+="""
+
+                <div class="form-element" ; align="right">
+		
+				<div align="right">
+					<button type="button" id="button"""+i+"""" class="button">הצג פרטים</button>
+					<p class="text">"""+obj.mail+"""</p>
+					<p class="text">:מייל</p>
+					<p class="text">"""+obj.companyName+"""</p>
+					<p class="text">:שם חברה</p>
+					<p class="text">"""+obj.jobName+"""</p>
+					<p class="text">:שם משרה</p>
+				</div>
+				
+				<div class="form-extra" id="extra"""+i+"""""; align="right">
+
+				<p class="text" id="extra1" >"""+obj.description+"""</p>
+
+
+				</div>
+        </div>"""
+	
+	htmlend="""
+            </div>
+
+    <div align="right"> <p class="medtitletext" id="empty">...טרם קיבלת הצעות</p>  </div>
+
+  </div>
+
+
+  <body>
+			<script type="text/javascript" src="jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+
+<html>"""
+
+	html=htmlstart+htmlbody+htmlend
+	return html
+	
+	
+
+
+
