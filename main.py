@@ -70,7 +70,7 @@ class Conversation(ndb.Model):
 
 class minGradeQuery(webapp2.RequestHandler):
 	def post(self):	 
-		course_name=self.request.get('name')
+		course_name=self.request.get('name' )
 		grade= int(self.request.get('grade'))
 		c=Course(course_name=course_name, course_id="1", course_type="class")		
 		self.response.write('<html><body>')
@@ -113,12 +113,23 @@ class dbDelete(webapp2.RequestHandler):
 #adds Student_Course to DB
 class dbHandler(webapp2.RequestHandler):
     def post(self):	 
-		course_name=self.request.get('name')
-		grade= int(self.request.get('grade'))
-		st=Student(id="demo", name="demo", city="demo")
-		c=Course(course_id='1', course_name=course_name, course_type="class")
-		s=Student_Course(student= st, grade=grade, course=c) 
-		s.put()
+		self.response.write('<html><body>Test Entry ')
+		self.response.write(self.request)		
+
+		course_names=self.request.get('name', allow_multiple=True)
+		
+		self.response.write("<br><br>")
+		
+			
+		grade= self.request.get('grade', allow_multiple=True)
+		if (len(course_names)!=len(grade)):
+			self.response.write ("Error")		
+
+		for i in range(0,len(course_names)):
+			st=Student(id="demo", name="demo", city="demo")
+			c=Course(course_id='1', course_name=course_names[i], course_type="class")
+			s=Student_Course(student= st, grade=int(grade[i]), course=c) 
+			s.put()
 		## TODO: write the response in a nicer way
 		self.response.write('<html><body>Test Entry added</body></html>')
 
