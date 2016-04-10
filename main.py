@@ -32,7 +32,7 @@ class MainPage(webapp2.RequestHandler):
 			self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
 			self.response.write('Hello, ' + user.nickname())
 			self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')
-			self.response.write('<br><br><div><a href="/studentinputpage/index.html">input page</a></div>')	
+			self.response.write('<br><br><div><a href="/studentInputPage/index.html">input page</a></div>')	
 			self.response.write('<div><a href="/message">messages</a></div>')
 			self.response.write('<div><a href="/companyQueryFormPage/index.html">search students</a></div>')				
 		else:
@@ -48,7 +48,7 @@ class LoginHandler(webapp2.RequestHandler):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        f = open("studentinputpage\index.html") 
+        f = open("studentInputPage\index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close()        
@@ -65,7 +65,7 @@ app = webapp2.WSGIApplication([
 	('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
-	('/studentinputpage/index.html', MainHandler),
+	('/studentInputPage/index.html', MainHandler),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
