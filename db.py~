@@ -28,6 +28,7 @@ class Student_Course(ndb.Model):
 class Student(ndb.Model):
 	id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
+	#email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=True)
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)	
 	avg= ndb.IntegerProperty(indexed=True, required=True)
@@ -102,7 +103,15 @@ class dbHandler(webapp2.RequestHandler):
 		for i in range(0,len(course_names)):
 			c=Course(course_id='1', course_name=course_names[i], course_type="class")
 			s.append(Student_Course(grade=int(grade[i]), course=c))
-		st= Student(student_courses=s,id="2", name="demo", city="demo",avg=40)
+
+		people_resource = service.people()
+		people_document = people_resource.get(userId='me').execute(
+		#st = Student.query(Student.id==userid).get()
+		st.student_courses=s
+		st.name = "demo"
+		st.city = "demo"
+		st.avg = 40
+		#st= Student(student_courses=s,id="2", name="demo", city="demo",avg=40)
 		st.put()
 		## TODO: write the response in a nicer way
 		self.response.write('<html><body>Test Entry added</body></html>')

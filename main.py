@@ -52,9 +52,7 @@ class MainPage(webapp2.RequestHandler):
 				console.log('Signed in as: ' + xhr.responseText);
 				window.location="chooseEmployOrStudentPage/index.html";
 				};
-				//xhr.send('idtoken=' + id_token) ;
-				xhr.send('<br><br>email=' + profile.getEmail())}
-
+				xhr.send('idtoken=' + id_token) ;}
 				</script>""")
 			self.response.write('<a href="#" onclick="signOut();">Sign out</a>')
 			self.response.write("""<script> function signOut() {
@@ -71,7 +69,6 @@ class MainPage(webapp2.RequestHandler):
 
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
-		logging.info(self.request)
 		#self.response.write("<html>")
 		#self.response.write(self.request)
 		token=self.request.get('idtoken')
@@ -87,7 +84,7 @@ class tokenSignIn(webapp2.RequestHandler):
 			# if idinfo['hd'] != APPS_DOMAIN_NAME:
 			# 	raise crypt.AppIdentityError("Wrong hosted domain.")
 		except crypt.AppIdentityError:
-			# Invalid token
+			logging.info("error")
 			pass
 		
 		#st= Student(id=users.get_current_user().user_id())
@@ -98,7 +95,7 @@ class tokenSignIn(webapp2.RequestHandler):
 		if (user_query == None):
 			s = []
 		
-			st= Student(student_courses=s,id=userid, name="demo", email = self.request.get('email'), city="demo",avg=40)
+			st= Student(student_courses=s,id=userid, name="", city="",avg=0)
 			st.put()
 			logging.info('token info')
 			self.response.write('<html><br><br>userId: ' + userid)
