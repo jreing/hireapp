@@ -2,6 +2,7 @@
 import cgi
 import urllib
 import datetime
+import logging
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -51,7 +52,9 @@ class MainPage(webapp2.RequestHandler):
 				console.log('Signed in as: ' + xhr.responseText);
 				window.location="chooseEmployOrStudentPage/index.html";
 				};
-				xhr.send('idtoken=' + id_token) ;}
+				//xhr.send('idtoken=' + id_token) ;
+				xhr.send('<br><br>email=' + profile.getEmail())}
+
 				</script>""")
 			self.response.write('<a href="#" onclick="signOut();">Sign out</a>')
 			self.response.write("""<script> function signOut() {
@@ -68,10 +71,12 @@ class MainPage(webapp2.RequestHandler):
 
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
+		logging.info(self.request)
 		#self.response.write("<html>")
 		#self.response.write(self.request)
 		token=self.request.get('idtoken')
 		# (Receive token by HTTPS POST)
+		
 		try:
 			idinfo = client.verify_id_token(token, "412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com")
 			# If multiple clients access the backend server:
@@ -84,8 +89,19 @@ class tokenSignIn(webapp2.RequestHandler):
 		except crypt.AppIdentityError:
 			# Invalid token
 			pass
+		
+		#st= Student(id=users.get_current_user().user_id())
 		userid = idinfo['sub']
-		self.response.write('<html><br><br>userId: ' + userid)
+		user_query = Student.query(Student.id==userid).get()
+		#entity = Student.get_by_id(int(userid))
+		logging.info(user_query)
+		if (user_query == None):
+			s = []
+		
+			st= Student(student_courses=s,id=userid, name="demo", email = self.request.get('email'), city="demo",avg=40)
+			st.put()
+			logging.info('token info')
+			self.response.write('<html><br><br>userId: ' + userid)
 
 
 class LoginHandler(webapp2.RequestHandler):
@@ -121,13 +137,14 @@ class FirstPage(webapp2.RequestHandler):
 			</script></html>""")
 
 app = webapp2.WSGIApplication([
-	('/MainPage', MainPage),
+	#('/MainPage', MainPage),
+	('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentInputPage/index.html', MainHandler),
 	('/tokenSignIn', tokenSignIn),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
-	('/', FirstPage),
+	#('/', FirstPage),
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),

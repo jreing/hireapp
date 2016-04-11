@@ -56,7 +56,7 @@ class MessageHandler(webapp2.RequestHandler):
 		#mess_query = Message.query()
 		#self.response.write(MESSAGE_PAGE_HTML)
 		page = buildStudentOffersPage(conv_query)
-		
+		"""
 		for conver in conv_query:
 			for message in conver.message:
 				if(message.receiver == users.get_current_user().nickname()):
@@ -65,7 +65,7 @@ class MessageHandler(webapp2.RequestHandler):
 					self.response.write('<p>from: %s</p>' %send.nickname())
 					self.response.write('<p>%s</p><br>' %message.cont)
 					#self.response.write('<div><a href="/messageReply?%s">reply</a></div>' %conver.id)
-	
+	"""
 		self.response.write(page)
 
 

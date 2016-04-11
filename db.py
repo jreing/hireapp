@@ -28,6 +28,7 @@ class Student_Course(ndb.Model):
 class Student(ndb.Model):
 	id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
+	email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=True)
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)	
 	avg= ndb.IntegerProperty(indexed=True, required=True)
@@ -43,7 +44,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		
 		#self.response.write(int(grades[0]))
 		#self.response.write(int(grades[1]))
-		#self.response.write("<br>End of Debug prints<br><br>")
+		self.response.write("<br>End of Debug prints<br><br>")
 		q=Student.query()
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)-1):	
@@ -58,7 +59,7 @@ class minGradeQuery(webapp2.RequestHandler):
 			average=int(average);
 			q=q.filter (Student.avg>=average)	
 
-		#self.response.write(q)
+		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
 		#for student in q:
