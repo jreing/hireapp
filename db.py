@@ -30,25 +30,34 @@ class Student(ndb.Model):
 	name= ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=True)
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)	
-
-
+	avg= ndb.IntegerProperty(indexed=True, required=True)
 	
 class minGradeQuery(webapp2.RequestHandler):
 	def post(self):	 
 		course_names=self.request.get_all('name')
 		grades= self.request.get_all('grade')
-			
-		#c=Course(course_name=course_name[0], course_id="1", course_type="class")		
+		average=self.request.get('avg')	
+				
 		self.response.write('<html><body>')
 		#debug prints
-		self.response.write(int(grades[0]))
+		
+		#self.response.write(int(grades[0]))
 		#self.response.write(int(grades[1]))
 		self.response.write("<br>End of Debug prints<br><br>")
 		q=Student.query()
+		#filter out student by grades in specific courses
 		for i in range (0,len(grades)-1):	
+			if grades[i]=="" :
+				break
 			logging.info(i)
+			logging.info (len(grades)-1)
 			grade=int(grades[i])
 			q=q.filter (Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
+		#filter out by average
+		if average!="":
+			average=int(average);
+			q=q.filter (Student.avg>=average)	
+
 		self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
@@ -93,7 +102,7 @@ class dbHandler(webapp2.RequestHandler):
 		for i in range(0,len(course_names)):
 			c=Course(course_id='1', course_name=course_names[i], course_type="class")
 			s.append(Student_Course(grade=int(grade[i]), course=c))
-		st= Student(student_courses=s,id="2", name="demo", city="demo")
+		st= Student(student_courses=s,id="2", name="demo", city="demo",avg=40)
 		st.put()
 		## TODO: write the response in a nicer way
 		self.response.write('<html><body>Test Entry added</body></html>')
