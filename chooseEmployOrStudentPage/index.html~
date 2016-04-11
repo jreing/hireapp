@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+ <body>
+  <div id="form-main">
+    <div id="form-div">
+      <div align="right">
+        <p class="text1"> :בחר דרך כניסה לאתר </p>
+      </div>
+        <form class="form" id="form1" method="post">
+          <div align="right" class="employ_or_student">
+                <input type="button" id="employ_button"  value="מעסיק" />
+
+                <input type="button" id="student_button" onclick="location.href='enteringTheSiteAsStudentPage/index.html';" value="סטודנט" />
+          </div>
+        </form>
+    </div>
+	</div>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script type="text/javascript" src="platform.js"></script>
+	
+	<meta name="google-signin-client_id" content="412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com">
+	<script type="text/javascript" src="jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+<body>
+
+<html>

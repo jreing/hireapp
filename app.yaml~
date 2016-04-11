@@ -1,0 +1,28 @@
+application: engineapp2
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  
+- url: /studentInputPage
+  static_dir: studentInputPage
+
+- url: /companyQueryFormPage
+  static_dir: companyQueryFormPage
+ 
+- url: /companyQueryResultsPage
+  static_dir: companyQueryResultsPage
+  
+- url: .*
+  script: main.app
+
+
+  
+libraries:
+- name: webapp2
+  version: "2.5.2"
