@@ -17,6 +17,9 @@ handlers:
  
 - url: /companyQueryResultsPage
   static_dir: companyQueryResultsPage
+
+- url: /chooseEmployOrStudentPage
+  static_dir: chooseEmployOrStudentPage
   
 - url: /StudentOffersPage
   static_dir: StudentOffersPage
