@@ -43,7 +43,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		
 		#self.response.write(int(grades[0]))
 		#self.response.write(int(grades[1]))
-		#self.response.write("<br>End of Debug prints<br><br>")
+		self.response.write("<br>End of Debug prints<br><br>")
 		q=Student.query()
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)-1):	

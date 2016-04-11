@@ -6,14 +6,8 @@ import datetime
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-#from oauth2client.client import flow_from_clientsecrets
-from google.appengine.api import oauth
-import logging
-import traceback
-
 import webapp2
 
-from login import *
 from db import *
 from messages import *
 
@@ -44,14 +38,14 @@ class MainPage(webapp2.RequestHandler):
 		else:
 			self.redirect(users.create_login_url(self.request.uri))
 
-"""
+
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
         f = open("chooseEmployOrStudentPage/index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close() 
-"""
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         f = open("studentInputPage/index.html") 

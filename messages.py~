@@ -77,7 +77,7 @@ class MessageSend(webapp2.RequestHandler):
 		self.conversation = Conversation()
 	
 		self.message = Message(cont = self.request.get('note'))
-		recList = self.request.get_all('selc') 
+		recList = self.request.get_all('studentselect') 
 		destAdd = self.request.get('recv') + "@example.com"
 		#destId = users.User(destAdd)
 		

@@ -55,8 +55,7 @@ def buildQueryResultsPage(q):
         <div class="form-element" ; align="right">
 
           <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
-          <input type="checkbox" name="selc" id="studentselect"""+str(i)+""" class="texthugepad" 
-          value="select">
+          <input type="checkbox" name="selc" id="studentselect"""+str(i)+""" class="texthugepad" value="select">
           <p class="text">לא צורף</p>
           <p class="textbigpad">:קורות חיים</p>
           <p class="text">"""+str(student.city)+"""</p>
