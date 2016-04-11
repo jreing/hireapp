@@ -21,6 +21,9 @@ handlers:
 - url: /chooseEmployOrStudentPage
   static_dir: chooseEmployOrStudentPage
   
+- url: /StudentOffersPage
+  static_dir: StudentOffersPage
+
 - url: .*
   script: main.app
 

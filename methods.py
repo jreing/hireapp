@@ -55,8 +55,8 @@ def buildQueryResultsPage(q):
         <div class="form-element" ; align="right">
 
           <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
-          <input type="checkbox" name="selc" id="studentselect"""+str(i)+""" class="texthugepad" 
-          value="select">
+          <input type="checkbox" name="studentselect" id="studentselect"""+str(i)+""" class="texthugepad" 
+          value="""+str(student.id)+""">
           <p class="text">לא צורף</p>
           <p class="textbigpad">:קורות חיים</p>
           <p class="text">"""+str(student.city)+"""</p>
@@ -75,8 +75,8 @@ def buildQueryResultsPage(q):
       </div>
     </form>
 	
-	<script type="text/javascript" src="jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="script.js"></script>
+	<script type="text/javascript" src="companyQueryResultsPage/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
   </div>
   <body>
 	<html>"""
@@ -84,11 +84,11 @@ def buildQueryResultsPage(q):
 	html=htmlstart+htmlbody+htmlend
 	return html
 		
-def buildStudentOffersPage():
+def buildStudentOffersPage(conv_query):
 	i=0
 	htmlstart= """<!DOCTYPE html>
 	<html>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="StudentOffersPage/style.css">
 	<body>
 
   <div >
@@ -103,29 +103,32 @@ def buildStudentOffersPage():
       <div id="scroll">"""
 	  
 	htmlbody=''
-	for obj in database:
-		i=i+1
-		htmlbody+="""
+	for conver in conv_query:
+		for message in conver.message:
+		#if(message.receiver == users.get_current_user().user_id()):
+			send = users.User(_user_id = message.sender.identity)
+			i=i+1
+			htmlbody+="""
 
-                <div class="form-element" ; align="right">
+		            <div class="form-element" ; align="right">
 		
-				<div align="right">
-					<button type="button" id="button"""+i+"""" class="button">הצג פרטים</button>
-					<p class="text">"""+obj.mail+"""</p>
-					<p class="text">:מייל</p>
-					<p class="text">"""+obj.companyName+"""</p>
-					<p class="text">:שם חברה</p>
-					<p class="text">"""+obj.jobName+"""</p>
-					<p class="text">:שם משרה</p>
-				</div>
+					<div align="right">
+						<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
+						<p class="text">"""+str(send.nickname())+"""</p>
+						<p class="text">:מייל</p>
+						<p class="text">"""+str(message.compName)+"""</p>
+						<p class="text">:שם חברה</p>
+						<p class="text">"""+str(message.jobName)+"""</p>
+						<p class="text">:שם משרה</p>
+					</div>
 				
-				<div class="form-extra" id="extra"""+i+"""""; align="right">
+					<div class="form-extra" id="extra"""+str(i)+"""""; align="right">
 
-				<p class="text" id="extra1" >"""+obj.description+"""</p>
+					<p class="text" id="extra1" >""" +str(message.cont)+ """</p>
 
 
-				</div>
-        </div>"""
+					</div>
+		    </div>"""
 	
 	htmlend="""
             </div>
@@ -136,8 +139,8 @@ def buildStudentOffersPage():
 
 
   <body>
-			<script type="text/javascript" src="jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="script.js"></script>
+			<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
 	<html>"""
 
 	html=htmlstart+htmlbody+htmlend

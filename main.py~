@@ -25,7 +25,7 @@ class CompanyHandler(webapp2.RequestHandler):
         f = open("companyQueryFormPage\index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
-	f.close()        
+	f.close()               
 
 class MainPage(webapp2.RequestHandler):
 	def get(self):
@@ -33,6 +33,16 @@ class MainPage(webapp2.RequestHandler):
 		if user:
 			self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
 			self.response.write('Hello, ' + user.nickname())
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+			self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')
+			self.response.write('<br><br><div><a href="/studentInputPage/index.html">input page</a></div>')	
+			self.response.write('<div><a href="/StudentOffersPage">messages</a></div>')
+			self.response.write('<div><a href="/companyQueryFormPage/index.html">search students</a></div>')				
+		else:
+=======
+>>>>>>> 3afe63f68a1c082973fba80aa073f09ddee459be
 			# self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')				
 			self.response.write('<html> <script src="https://apis.google.com/js/platform.js" async defer></script>')
 			self.response.write('<meta name="google-signin-client_id" content="412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com">')
@@ -64,6 +74,10 @@ class MainPage(webapp2.RequestHandler):
 
 			#self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')	
 		else: 
+<<<<<<< HEAD
+=======
+>>>>>>> f0faadd69fb2a0a78f26d96ca2963c2c808a0352
+>>>>>>> 3afe63f68a1c082973fba80aa073f09ddee459be
 			self.redirect(users.create_login_url(self.request.uri))
 
 class tokenSignIn(webapp2.RequestHandler):
@@ -131,7 +145,7 @@ app = webapp2.WSGIApplication([
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),
-	('/message', MessageHandler),
+	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
 	('/messageReply', MessageReply)	
 	], debug=True)
