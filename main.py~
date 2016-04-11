@@ -44,14 +44,14 @@ class MainPage(webapp2.RequestHandler):
 		else:
 			self.redirect(users.create_login_url(self.request.uri))
 
-"""
+
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
         f = open("chooseEmployOrStudentPage/index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
 	f.close() 
-"""
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         f = open("studentInputPage/index.html") 
