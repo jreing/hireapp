@@ -23,7 +23,7 @@ class CompanyHandler(webapp2.RequestHandler):
         f = open("companyQueryFormPage\index.html") 
 	#self.response.charset="unicode"
 	self.response.write(f.read())
-	f.close()        
+	f.close()               
 
 class MainPage(webapp2.RequestHandler):
 	def get(self):
@@ -70,7 +70,7 @@ app = webapp2.WSGIApplication([
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),
-	('/message', MessageHandler),
+	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
 	('/messageReply', MessageReply)	
 	], debug=True)

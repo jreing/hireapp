@@ -18,8 +18,8 @@ handlers:
 - url: /companyQueryResultsPage
   static_dir: companyQueryResultsPage
   
-- url: /StudentOffersPage
-  static_dir: StudentOffersPage
+- url: /message
+  static_dir: companyQueryResultsPage
 
 - url: .*
   script: main.app

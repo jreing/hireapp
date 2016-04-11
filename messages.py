@@ -8,6 +8,7 @@ from google.appengine.ext import ndb
 import webapp2
 import logging
 
+from methods import *
 
 
 MESSAGE_PAGE_HTML = """\
@@ -50,15 +51,12 @@ class Conversation(ndb.Model):
 	
 class MessageHandler(webapp2.RequestHandler):
     def get(self):
-		user = users.get_current_user()
-		if user:
-			self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
-			self.response.write('Hello, ' + user.nickname())
-		else:
-			self.redirect(users.create_login_url(self.request.uri))
+
 		conv_query = Conversation.query()	
 		#mess_query = Message.query()
-		self.response.write(MESSAGE_PAGE_HTML)
+		#self.response.write(MESSAGE_PAGE_HTML)
+		page = buildStudentOffersPage(conv_query)
+		"""
 		for conver in conv_query:
 			for message in conver.message:
 				if(message.receiver == users.get_current_user().nickname()):
@@ -67,6 +65,8 @@ class MessageHandler(webapp2.RequestHandler):
 					self.response.write('<p>from: %s</p>' %send.nickname())
 					self.response.write('<p>%s</p><br>' %message.cont)
 					#self.response.write('<div><a href="/messageReply?%s">reply</a></div>' %conver.id)
+	"""
+		self.response.write(page)
 
 
 
@@ -74,35 +74,38 @@ class MessageSend(webapp2.RequestHandler):
 	def post(self):
 		#self.conNum = threadNum(num=0)
 		#self.conNum.put()
-		self.conversation = Conversation()
+		
 	
-		self.message = Message(cont = self.request.get('note'))
-		recList = self.request.get_all('selc') 
+		
+		recList = self.request.get_all('studentselect') 
 		destAdd = self.request.get('recv') + "@example.com"
 		#destId = users.User(destAdd)
-		
+		logging.info(len(recList))
 		#destIdKey = destId.put()
 		#destIdVal = destIdKey.get()
 		#self.key = appUser(usr=destId).put()
 		#self.rec = self.key.get()
 		
-		self.message.receiver = destAdd
-		self.message.compName = self.request.get('companyName')
-		self.message.jobName = self.request.get('jobId')
-		self.message.date = datetime.datetime.now()
-		if users.get_current_user():
-			self.message.sender = Author(identity=users.get_current_user().user_id())
+		for rec in recList:
+			self.conversation = Conversation()
+			self.message = Message(cont = self.request.get('note'))
+			self.message.receiver = rec
+			self.message.compName = self.request.get('companyName')
+			self.message.jobName = self.request.get('jobId')
+			self.message.date = datetime.datetime.now()
+			if users.get_current_user():
+				self.message.sender = Author(identity=users.get_current_user().user_id())
 		
-		self.conversation.message = [self.message]
+			self.conversation.message = [self.message]
 		
-		#conNum = threadNum.query().get()
-		#self.conversation.id = conNum.num
-		#conNum.num +=1
-		#conNum.put()
-		self.conversation.put()
-		self.message.put()
+			#conNum = threadNum.query().get()
+			#self.conversation.id = conNum.num
+			#conNum.num +=1
+			#conNum.put()
+			self.conversation.put()
+			self.message.put()
 
-		logging.info(len(recList))
+		
 
 		self.response.write('<html><body>message entered<pre>')
 		self.response.write('</pre></body></html>')
