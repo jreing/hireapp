@@ -51,7 +51,7 @@ class MainPage(webapp2.RequestHandler):
 				
 				console.log('Signed in as: ' + xhr.responseText);
 				if (email.endsWith('tau.ac.il')){
-					window.location="studentInputPage";
+					window.location="/studenthandler";
 				}
 				else{
 					window.location="companyQueryFormPage/index.html";
@@ -105,7 +105,7 @@ class tokenSignIn(webapp2.RequestHandler):
 		if (user_query == None):
 			s = []
 		
-			st= Student(student_courses=s,id=userid, name="", city="",avg=0)
+			st= Student(student_courses=s,id=userid, name="", city="",avg=-1)
 			st.put()
 			logging.info('token info')
 			self.response.write('<html><br><br>userId: ' + userid)
@@ -152,6 +152,19 @@ class WelcomeHandler(webapp2.RequestHandler):
 	self.response.write(f.read())
 	f.close()
 
+class StudentHandler(webapp2.RequestHandler):
+	def get(self):
+		userid = self.request.cookies.get('id')
+		st = Student.query(Student.id==userid).get()
+		if (st.avg == -1):
+			self.response.write ("""<html><script>
+				window.location="/studentInputPage";
+				</script></html>""")
+		else:
+			self.response.write ("""<html><script>
+				window.location="/StudentOffersPage";
+				</script></html>""")
+
 app = webapp2.WSGIApplication([
 	#('/MainPage', MainPage),
 	('/', MainPage),
@@ -159,6 +172,7 @@ app = webapp2.WSGIApplication([
 	('/dbBuild', dbBuild),
 	('/studentInputPage', MainHandler),
 	('/StudentWelcomePage/index.html', WelcomeHandler),	
+	('/studenthandler', StudentHandler),
 	('/tokenSignIn', tokenSignIn),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
 	#('/', FirstPage),
