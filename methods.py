@@ -1,6 +1,13 @@
-﻿import cgi
+#!/usr/local/bin/python
+
+import cgi
 import urllib
 import datetime
+
+#important to support utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -59,7 +66,7 @@ def buildQueryResultsPage(q):
           value="""+str(student.id)+""">
           <p class="text">לא צורף</p>
           <p class="textbigpad">:קורות חיים</p>
-          <p class="text">"""+str(student.city)+"""</p>
+          <p class="text">"""+student.city.decode('utf-8', 'ignore')+"""</p>
           <p class="text">:עיר</p>
 
         </div>"""
