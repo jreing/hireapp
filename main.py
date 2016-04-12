@@ -28,42 +28,42 @@ class CompanyHandler(webapp2.RequestHandler):
 	self.response.write(f.read())
 	f.close()               
 
-class MainPage(webapp2.RequestHandler):
-	def get(self):
+# class MainPage(webapp2.RequestHandler):
+	# def get(self):
 
-		self.response.headers['Content-Type'] = 'text/html; charset=utf-8'			
-		self.response.write('<html> <script src="https://apis.google.com/js/platform.js" async defer></script>')
-		self.response.write('<meta name="google-signin-client_id" content="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com">')
-		self.response.write('<div class="g-signin2" data-onsuccess="onSignIn"></div>')
-		self.response.write("""<script> function onSignIn(googleUser){
-			var id_token = googleUser.getAuthResponse().id_token;
-			var profile = googleUser.getBasicProfile();
-			console.log('idToken: ' + id_token);
-			console.log('Name: ' + profile.getName());
-			console.log('Image URL: ' + profile.getImageUrl());
-			console.log('Email: ' + profile.getEmail()); 
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/tokenSignIn');
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			xhr.onload = function() {
-				console.log('Signed in as: ' + xhr.responseText);
-				if (email.endsWith('tau.ac.il')){
-					window.location="studentInputPage/index.html";
-				}
-				else{
-					window.location="companyQueryFormPage/index.html";
-				}
-			};
-			xhr.send('idtoken=' + id_token + 'email='+profile.getEmail()) ;}
-			</script>""")
-		self.response.write("""<a href="" onclick="signOut();">Sign out</a>""")
-		self.response.write("""<script> function signOut() {
-			var auth2 = gapi.auth2.getAuthInstance();
-			auth2.signOut().then(function () {
-				console.log('User signed out.');
-					});
-				}
-			</script>""")
+		# self.response.headers['Content-Type'] = 'text/html; charset=utf-8'			
+		# self.response.write('<html> <script src="https://apis.google.com/js/platform.js" async defer></script>')
+		# self.response.write('<meta name="google-signin-client_id" content="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com">')
+		# self.response.write('<div class="g-signin2" data-onsuccess="onSignIn"></div>')
+		# self.response.write("""<script> function onSignIn(googleUser){
+			# var id_token = googleUser.getAuthResponse().id_token;
+			# var profile = googleUser.getBasicProfile();
+			# console.log('idToken: ' + id_token);
+			# console.log('Name: ' + profile.getName());
+			# console.log('Image URL: ' + profile.getImageUrl());
+			# console.log('Email: ' + profile.getEmail()); 
+			# var xhr = new XMLHttpRequest();
+			# xhr.open('POST', '/tokenSignIn');
+			# xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			# xhr.onload = function() {
+				# console.log('Signed in as: ' + xhr.responseText);
+				# if (email.endsWith('tau.ac.il')){
+					# window.location="studentInputPage/index.html";
+				# }
+				# else{
+					# window.location="companyQueryFormPage/index.html";
+				# }
+			# };
+			# xhr.send('idtoken=' + id_token + 'email='+profile.getEmail()) ;}
+			# </script>""")
+		# self.response.write("""<a href="" onclick="signOut();">Sign out</a>""")
+		# self.response.write("""<script> function signOut() {
+			# var auth2 = gapi.auth2.getAuthInstance();
+			# auth2.signOut().then(function () {
+				# console.log('User signed out.');
+					# });
+				# }
+			# </script>""")
 		
 
 class tokenSignIn(webapp2.RequestHandler):
@@ -169,7 +169,7 @@ class StudentHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
 	#('/MainPage', MainPage),
-	('/', MainPage),
+	#('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentInputPage', MainHandler),
@@ -177,14 +177,14 @@ app = webapp2.WSGIApplication([
 	('/studenthandler', StudentHandler),
 	('/tokenSignIn', tokenSignIn),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
-	#('/', FirstPage),
+	('/', LogInForBarak),
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),
 	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
 	('/messageReply', MessageReply),
-	('/LogInForBarak/index.html', LogInForBarak)
+	#('/LogInForBarak/index.html', LogInForBarak)
 	], debug=True)
 
 
