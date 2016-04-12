@@ -27,6 +27,8 @@ handlers:
 - url: /FirstPageOfHireApp
   static_dir: FirstPageOfHireApp
   
+- url: /LogInForBarak
+  static_dir: LogInForBarak  
 
 - url: .*
   script: main.app

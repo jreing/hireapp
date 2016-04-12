@@ -100,7 +100,7 @@ html {
 
 #employ_button {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  float: left;
+  float: center;
   width: 100%;
   border: #fbfbfb solid 4px;
   cursor: pointer;
@@ -112,26 +112,13 @@ html {
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
-  margin-top: -4px;
+  margin-top: 10px;
   font-weight: 700;
 }
 
-#student_button {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  float: left;
-  width: 100%;
-  border: #fbfbfb solid 4px;
-  cursor: pointer;
-  background-color: #3498db;
-  color: white;
-  font-size: 24px;
-  padding-top: 22px;
-  padding-bottom: 22px;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
-  margin-top: 13px;
-  font-weight: 700;
+#employ_button:disabled
+{
+    background:#CCC;
 }
 
 

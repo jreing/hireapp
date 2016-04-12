@@ -35,8 +35,7 @@ class MainPage(webapp2.RequestHandler):
 			self.response.write('Hello, ' + user.nickname())
 			# self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')				
 			self.response.write('<html> <script src="https://apis.google.com/js/platform.js" async defer></script>')
-			self.response.write('<meta name="google-signin-client_id" 
-			content="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com">')
+			self.response.write('<meta name="google-signin-client_id" content="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com">')
 			self.response.write('<div class="g-signin2" data-onsuccess="onSignIn"></div>')
 			self.response.write("""<script> function onSignIn(googleUser){
 				var id_token = googleUser.getAuthResponse().id_token;
@@ -136,6 +135,12 @@ class ResultsPage(webapp2.RequestHandler):
 		f = open("companyQueryResultsPage/index.html")		
 		self.response.write(f.read())
 		f.close()
+		
+class LogInForBarak(webapp2.RequestHandler):
+	def get(self):
+		f = open("LogInForBarak/index.html")		
+		self.response.write(f.read())
+		f.close()
 
 class FirstPage(webapp2.RequestHandler):
 	def get(self):
@@ -157,7 +162,8 @@ app = webapp2.WSGIApplication([
 	('/companyQueryResultsPage' , minGradeQuery),
 	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
-	('/messageReply', MessageReply)	
+	('/messageReply', MessageReply),
+	('/LogInForBarak', LogInForBarak)
 	], debug=True)
 
 
