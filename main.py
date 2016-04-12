@@ -111,7 +111,8 @@ class LoginHandler(webapp2.RequestHandler):
      #                           redirect_uri='www.google.co.il')
     	# auth_uri = flow.step1_get_authorize_url()
     	# # Redirect the user to auth_uri on your platform.
-    	# self.response.write('<a href="' + auth_uri + '">Login With Google</a>')
+    	# self.response.write('<a 
+="' + auth_uri + '">Login With Google</a>')
 		f = open("chooseEmployOrStudentPage/index.html") 
 		self.response.write(f.read())
 		f.close() 

@@ -63,7 +63,7 @@ class MainPage(webapp2.RequestHandler):
 					}
 				</script>""")
 
-			self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')	
+			#self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')	
 		else: 
 			self.redirect(users.create_login_url(self.request.uri))
 
@@ -123,13 +123,6 @@ class MainHandler(webapp2.RequestHandler):
 	self.response.write(f.read())
 	f.close()        
 
-class WelcomeHandler(webapp2.RequestHandler):
-    def get(self):
-        f = open("StudentWelcomePage/index.html") 
-	#self.response.charset="unicode"
-	self.response.write(f.read())
-	f.close()
-
 
 class ResultsPage(webapp2.RequestHandler):
 	def get(self):
@@ -149,7 +142,6 @@ app = webapp2.WSGIApplication([
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentInputPage/index.html', MainHandler),
-	('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/tokenSignIn', tokenSignIn),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
 	#('/', FirstPage),
