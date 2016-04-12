@@ -1,13 +1,14 @@
-#!/usr/local/bin/python
-
-import cgi
-import urllib
-import datetime
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 #important to support utf-8
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
+
+import cgi
+import urllib
+import datetime
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
