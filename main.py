@@ -36,7 +36,7 @@ class MainPage(webapp2.RequestHandler):
 			self.response.write('Hello, ' + user.nickname())
 			# self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')				
 			self.response.write('<html> <script src="https://apis.google.com/js/platform.js" async defer></script>')
-			self.response.write('<meta name="google-signin-client_id" content="412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com">')
+			self.response.write('<meta name="google-signin-client_id" content="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com">')
 			self.response.write('<div class="g-signin2" data-onsuccess="onSignIn"></div>')
 			self.response.write("""<script> function onSignIn(googleUser){
 				var id_token = googleUser.getAuthResponse().id_token;
@@ -49,12 +49,12 @@ class MainPage(webapp2.RequestHandler):
 				xhr.open('POST', '/tokenSignIn');
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				xhr.onload = function() {
-				console.log('Signed in as: ' + xhr.responseText);
-				window.location="chooseEmployOrStudentPage/index.html";
+					console.log('Signed in as: ' + xhr.responseText);
+					window.location="chooseEmployOrStudentPage/index.html";
 				};
-				xhr.send('idtoken=' + id_token) ;}
+				xhr.send('idtoken=' + id_token + 'email='+profile.getEmail()) ;}
 				</script>""")
-			self.response.write('<a href="#" onclick="signOut();">Sign out</a>')
+			self.response.write("""<a href="" onclick="signOut();">Sign out</a>""")
 			self.response.write("""<script> function signOut() {
 				var auth2 = gapi.auth2.getAuthInstance();
 				auth2.signOut().then(function () {
@@ -70,19 +70,20 @@ class MainPage(webapp2.RequestHandler):
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
 		#self.response.write("<html>")
-		#self.response.write(self.request)
+		email=self.request.get('email')
+		logging.info (email)
 		token=self.request.get('idtoken')
 		# (Receive token by HTTPS POST)
 		
 		try:
-			idinfo = client.verify_id_token(token, "412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com")
+			idinfo = client.verify_id_token(token, "587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com")
 			# If multiple clients access the backend server:
 			# if idinfo['aud'] not in [ANDROID_CLIENT_ID, IOS_CLIENT_ID, WEB_CLIENT_ID]:
 			# 	raise crypt.AppIdentityError("Unrecognized client.")
 			if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
 				raise crypt.AppIdentityError("Wrong issuer.")
-			# if idinfo['hd'] != APPS_DOMAIN_NAME:
-			# 	raise crypt.AppIdentityError("Wrong hosted domain.")
+			if idinfo['hd'] != 'http://hireapp-1279.appspot.com/':
+			 	raise crypt.AppIdentityError("Wrong hosted domain.")
 		except crypt.AppIdentityError:
 			logging.info("error")
 			pass
