@@ -36,7 +36,7 @@ def buildQueryResultsPage(q):
 
       <div align="right">
         <p class="text1">:מייל החברה</p>
-        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" id="name" />
+        <input name="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" id="name" />
       </div>
 
       <div align="right">
@@ -115,7 +115,8 @@ def buildStudentOffersPage(conv_query, userid):
 	for conver in conv_query:
 		for message in conver.message:
 			if(message.receiver.identity == userid):
-				send = users.User(_user_id = message.sender.identity)
+				#send = Student.query(Student.id==message.sender.identity).get()
+				#send = users.User(_user_id = message.sender.identity)
 				i=i+1
 				htmlbody+="""
 
@@ -123,7 +124,7 @@ def buildStudentOffersPage(conv_query, userid):
 		
 						<div align="right">
 							<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
-							<p class="text">"""+str(send.nickname())+"""</p>
+							<p class="text">"""+str(message.compMail)+"""</p>
 							<p class="text">:מייל</p>
 							<p class="text">"""+str(message.compName)+"""</p>
 							<p class="text">:שם חברה</p>
