@@ -50,7 +50,12 @@ class MainPage(webapp2.RequestHandler):
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				xhr.onload = function() {
 					console.log('Signed in as: ' + xhr.responseText);
-					window.location="chooseEmployOrStudentPage/index.html";
+					if (email.endsWith('tau.ac.il')){
+						window.location="studentInputPage/index.html";
+					}
+					else{
+						window.location="companyQueryFormPage/index.html";
+					}
 				};
 				xhr.send('idtoken=' + id_token + 'email='+profile.getEmail()) ;}
 				</script>""")
@@ -135,18 +140,18 @@ class ResultsPage(webapp2.RequestHandler):
 class FirstPage(webapp2.RequestHandler):
 	def get(self):
 		self.response.write ("""<html><script>
-			window.location="chooseEmployOrStudentPage/index.html";
+			window.location="FirstPageOfHireApp/index.html";
 			</script></html>""")
 
 app = webapp2.WSGIApplication([
-	#('/MainPage', MainPage),
-	('/', MainPage),
+	('/MainPage', MainPage),
+	#('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
 	('/studentInputPage/index.html', MainHandler),
 	('/tokenSignIn', tokenSignIn),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
-	#('/', FirstPage),
+	('/', FirstPage),
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),
