@@ -16,7 +16,8 @@ from messages import *
 
 
 #end of DB class definitions
-
+#
+#
 #classes for actions:
 
 
@@ -35,8 +36,7 @@ class MainPage(webapp2.RequestHandler):
 			self.response.write('Hello, ' + user.nickname())
 			# self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')				
 			self.response.write('<html> <script src="https://apis.google.com/js/platform.js" async defer></script>')
-			self.response.write('<meta name="google-signin-client_id" 
-			content="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com">')
+			self.response.write('<meta name="google-signin-client_id" content="412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com">')
 			self.response.write('<div class="g-signin2" data-onsuccess="onSignIn"></div>')
 			self.response.write("""<script> function onSignIn(googleUser){
 				var id_token = googleUser.getAuthResponse().id_token;
@@ -49,17 +49,12 @@ class MainPage(webapp2.RequestHandler):
 				xhr.open('POST', '/tokenSignIn');
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 				xhr.onload = function() {
-					console.log('Signed in as: ' + xhr.responseText);
-					if (email.endsWith('tau.ac.il')){
-						window.location="studentInputPage/index.html";
-					}
-					else{
-						window.location="companyQueryFormPage/index.html";
-					}
+				console.log('Signed in as: ' + xhr.responseText);
+				window.location="chooseEmployOrStudentPage/index.html";
 				};
-				xhr.send('idtoken=' + id_token + 'email='+profile.getEmail()) ;}
+				xhr.send('idtoken=' + id_token) ;}
 				</script>""")
-			self.response.write("""<a href="" onclick="signOut();">Sign out</a>""")
+			self.response.write('<a href="#" onclick="signOut();">Sign out</a>')
 			self.response.write("""<script> function signOut() {
 				var auth2 = gapi.auth2.getAuthInstance();
 				auth2.signOut().then(function () {
@@ -68,29 +63,26 @@ class MainPage(webapp2.RequestHandler):
 					}
 				</script>""")
 
-			self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')	
+			#self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')	
 		else: 
 			self.redirect(users.create_login_url(self.request.uri))
 
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
 		#self.response.write("<html>")
-		email=self.request.get('email')
-		logging.info (email)
+		#self.response.write(self.request)
 		token=self.request.get('idtoken')
 		# (Receive token by HTTPS POST)
 		
 		try:
-			idinfo = client.verify_id_token(token,
-			"587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com")
+			idinfo = client.verify_id_token(token, "412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com")
 			# If multiple clients access the backend server:
 			# if idinfo['aud'] not in [ANDROID_CLIENT_ID, IOS_CLIENT_ID, WEB_CLIENT_ID]:
 			# 	raise crypt.AppIdentityError("Unrecognized client.")
 			if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
 				raise crypt.AppIdentityError("Wrong issuer.")
-			#comment the next few lines out if working locally
-			if idinfo['hd'] != 'http://hireapp-1279.appspot.com/':
-			 	raise crypt.AppIdentityError("Wrong hosted domain.")
+			# if idinfo['hd'] != APPS_DOMAIN_NAME:
+			# 	raise crypt.AppIdentityError("Wrong hosted domain.")
 		except crypt.AppIdentityError:
 			logging.info("error")
 			pass
@@ -108,7 +100,8 @@ class tokenSignIn(webapp2.RequestHandler):
 			logging.info('token info')
 			self.response.write('<html><br><br>userId: ' + userid)
 		self.response.set_cookie("id", userid)
-		
+		#cookieValue = self.request.cookies.get('id')
+		#logging.info('cookie:' + cookieValue)
 
 
 class LoginHandler(webapp2.RequestHandler):
@@ -118,25 +111,20 @@ class LoginHandler(webapp2.RequestHandler):
      #                           redirect_uri='www.google.co.il')
     	# auth_uri = flow.step1_get_authorize_url()
     	# # Redirect the user to auth_uri on your platform.
-    	# self.response.write('<a 
-="' + auth_uri + '">Login With Google</a>')
+    	# self.response.write('<a href="' + auth_uri + '">Login With Google</a>')
 		f = open("chooseEmployOrStudentPage/index.html") 
 		self.response.write(f.read())
 		f.close() 
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        f = open("studentInputPage/index.html") 
+		cours_query = Course.query()
+		page = buildStudentInputPage(cours_query)
+		self.response.write(page)
+        #f = open("studentInputPage/index.html") 
 	#self.response.charset="unicode"
-	self.response.write(f.read())
-	f.close()        
-
-class WelcomeHandler(webapp2.RequestHandler):
-    def get(self):
-        f = open("StudentWelcomePage/index.html") 
-	#self.response.charset="unicode"
-	self.response.write(f.read())
-	f.close()
+	#self.response.write(f.read())
+	#f.close()        
 
 
 class ResultsPage(webapp2.RequestHandler):
@@ -148,19 +136,26 @@ class ResultsPage(webapp2.RequestHandler):
 class FirstPage(webapp2.RequestHandler):
 	def get(self):
 		self.response.write ("""<html><script>
-			window.location="FirstPageOfHireApp/index.html";
+			window.location="chooseEmployOrStudentPage/index.html";
 			</script></html>""")
 
+class WelcomeHandler(webapp2.RequestHandler):
+    def get(self):
+        f = open("StudentWelcomePage/index.html") 
+	#self.response.charset="unicode"
+	self.response.write(f.read())
+	f.close()
+
 app = webapp2.WSGIApplication([
-	('/MainPage', MainPage),
-	#('/', MainPage),
+	#('/MainPage', MainPage),
+	('/', MainPage),
 	('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
-	('/studentInputPage/index.html', MainHandler),
+	('/studentInputPage', MainHandler),
 	('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/tokenSignIn', tokenSignIn),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
-	('/', FirstPage),
+	#('/', FirstPage),
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage/index.html', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),
@@ -170,4 +165,3 @@ app = webapp2.WSGIApplication([
 	], debug=True)
 
 
-	
