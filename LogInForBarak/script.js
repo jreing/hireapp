@@ -1,30 +1,36 @@
 //document.getElementById("login").style.width = document.getElementById("employ_button").style.width;
-var isStudent;
+var isStudent=undefined;
 
 function ForceLogin() {
-			 if (isStudent){
-						window.location="studentInputPage/index.html";
-					}
-					else{
-						window.location="companyQueryFormPage/index.html";
-					}
-			} 
+	 if (isStudent){
+		window.location="/studenthandler";
+	}
+	else{
+		window.location="/companyQueryFormPage/index.html";
+	}
+} 
 
-
-          function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
+function onSignIn(googleUser){
+			var id_token = googleUser.getAuthResponse().id_token;
+			var profile = googleUser.getBasicProfile();
+			console.log('idToken: ' + id_token);
+			console.log('Name: ' + profile.getName());
+			console.log('Image URL: ' + profile.getImageUrl());
+			console.log('Email: ' + profile.getEmail()); 
 			var email = profile.getEmail();
-            console.log('Email: ' + email);
-            //window.location="chooseEmployOrStudentPage/index.html";
+			if (email.endsWith('tau.ac.il')){
+				isStudent=true;
+				}
+			else{
+				isStudent=false;
+			}
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/tokenSignIn');
+			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xhr.onload = function() {
+				console.log('Signed in as: ' + xhr.responseText);
+
+			};
+			xhr.send('idtoken=' + id_token ) ;
 			document.getElementById("employ_button").disabled=false;
-					 if (email.endsWith('tau.ac.il')){
-						isStudent=true;
-					}
-					else{
-						isStudent=false;
-					}
-			} 
-			
+			}
