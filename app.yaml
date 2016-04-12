@@ -24,6 +24,9 @@ handlers:
 - url: /StudentOffersPage
   static_dir: StudentOffersPage
 
+- url: /StudentWelcomePage
+  static_dir: StudentWelcomePage
+
 - url: .*
   script: main.app
 
