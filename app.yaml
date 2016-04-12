@@ -27,6 +27,9 @@ handlers:
 - url: /StudentWelcomePage
   static_dir: StudentWelcomePage
 
+- url: /FirstPageOfHireApp
+  static_dir: FirstPageOfHireApp
+
 - url: .*
   script: main.app
 
