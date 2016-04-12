@@ -95,10 +95,13 @@ class tokenSignIn(webapp2.RequestHandler):
 		if (user_query == None):
 			s = []
 		
-			st= Student(student_courses=s,id=userid, name="demo", city="demo",avg=40)
+			st= Student(student_courses=s,id=userid, name="", city="",avg=0)
 			st.put()
 			logging.info('token info')
 			self.response.write('<html><br><br>userId: ' + userid)
+		self.response.set_cookie("id", userid)
+		cookieValue = self.request.cookies.get('id')
+		logging.info('cookie:' + cookieValue)
 
 
 class LoginHandler(webapp2.RequestHandler):

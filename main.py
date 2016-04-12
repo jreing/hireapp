@@ -99,6 +99,8 @@ class tokenSignIn(webapp2.RequestHandler):
 			st.put()
 			logging.info('token info')
 			self.response.write('<html><br><br>userId: ' + userid)
+		self.response.set_cookie("id", userid)
+		
 
 
 class LoginHandler(webapp2.RequestHandler):

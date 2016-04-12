@@ -84,7 +84,7 @@ def buildQueryResultsPage(q):
 	html=htmlstart+htmlbody+htmlend
 	return html
 		
-def buildStudentOffersPage(conv_query):
+def buildStudentOffersPage(conv_query, userid):
 	i=0
 	htmlstart= """<!DOCTYPE html>
 	<html>
@@ -103,32 +103,33 @@ def buildStudentOffersPage(conv_query):
       <div id="scroll">"""
 	  
 	htmlbody=''
+	
 	for conver in conv_query:
 		for message in conver.message:
-		#if(message.receiver == users.get_current_user().user_id()):
-			send = users.User(_user_id = message.sender.identity)
-			i=i+1
-			htmlbody+="""
+			if(message.receiver.identity == userid):
+				send = users.User(_user_id = message.sender.identity)
+				i=i+1
+				htmlbody+="""
 
-		            <div class="form-element" ; align="right">
+				        <div class="form-element" ; align="right">
 		
-					<div align="right">
-						<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
-						<p class="text">"""+str(send.nickname())+"""</p>
-						<p class="text">:מייל</p>
-						<p class="text">"""+str(message.compName)+"""</p>
-						<p class="text">:שם חברה</p>
-						<p class="text">"""+str(message.jobName)+"""</p>
-						<p class="text">:שם משרה</p>
-					</div>
+						<div align="right">
+							<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
+							<p class="text">"""+str(send.nickname())+"""</p>
+							<p class="text">:מייל</p>
+							<p class="text">"""+str(message.compName)+"""</p>
+							<p class="text">:שם חברה</p>
+							<p class="text">"""+str(message.jobName)+"""</p>
+							<p class="text">:שם משרה</p>
+						</div>
 				
-					<div class="form-extra" id="extra"""+str(i)+"""""; align="right">
+						<div class="form-extra" id="extra"""+str(i)+"""""; align="right">
 
-					<p class="text" id="extra1" >""" +str(message.cont)+ """</p>
+						<p class="text" id="extra1" >""" +str(message.cont)+ """</p>
 
 
-					</div>
-		    </div>"""
+						</div>
+				</div>"""
 	
 	htmlend="""
             </div>

@@ -38,8 +38,8 @@ class Author(ndb.Model):
 class Message(ndb.Model):
 	#thread = ndb.IntegerProperty(indexed = False)
 	sender = ndb.StructuredProperty(Author)
-	#receiver = ndb.StructuredProperty(Author)
-	receiver = ndb.StringProperty(indexed=False)
+	receiver = ndb.StructuredProperty(Author)
+	#receiver = ndb.StringProperty(indexed=False)
 	cont = ndb.StringProperty(indexed=False)
 	compName = ndb.StringProperty(indexed=False)
 	jobName = ndb.StringProperty(indexed=False)
@@ -55,7 +55,8 @@ class MessageHandler(webapp2.RequestHandler):
 		conv_query = Conversation.query()	
 		#mess_query = Message.query()
 		#self.response.write(MESSAGE_PAGE_HTML)
-		page = buildStudentOffersPage(conv_query)
+		userid = self.request.cookies.get('id')
+		page = buildStudentOffersPage(conv_query,userid)
 		"""
 		for conver in conv_query:
 			for message in conver.message:
@@ -89,13 +90,15 @@ class MessageSend(webapp2.RequestHandler):
 		for rec in recList:
 			self.conversation = Conversation()
 			self.message = Message(cont = self.request.get('note'))
-			self.message.receiver = rec
+			self.message.receiver = Author(identity = rec)
 			self.message.compName = self.request.get('companyName')
 			self.message.jobName = self.request.get('jobId')
 			self.message.date = datetime.datetime.now()
-			if users.get_current_user():
-				self.message.sender = Author(identity=users.get_current_user().user_id())
-		
+			userid = self.request.cookies.get('id')
+			self.message.sender = Author(identity = userid)
+			#if users.get_current_user():
+				#self.message.sender = Author(identity=users.get_current_user().user_id())
+			
 			self.conversation.message = [self.message]
 		
 			#conNum = threadNum.query().get()
