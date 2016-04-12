@@ -107,12 +107,6 @@ class tokenSignIn(webapp2.RequestHandler):
 			logging.info('token info')
 			self.response.write('<html><br><br>userId: ' + userid)
 		self.response.set_cookie("id", userid)
-<<<<<<< HEAD
-		#cookieValue = self.request.cookies.get('id')
-		#logging.info('cookie:' + cookieValue)
-
-=======
->>>>>>> ec8d644ce1ce66affaec84c6d2c9241a7d0aa47e
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
@@ -128,7 +122,6 @@ class LoginHandler(webapp2.RequestHandler):
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-<<<<<<< HEAD
 		cours_query = Course.query()
 		page = buildStudentInputPage(cours_query)
 		self.response.write(page)
@@ -136,12 +129,6 @@ class MainHandler(webapp2.RequestHandler):
 	#self.response.charset="unicode"
 	#self.response.write(f.read())
 	#f.close()        
-=======
-        f = open("studentInputPage/index.html") 
-	self.response.write(f.read())
-	f.close()        
->>>>>>> ec8d644ce1ce66affaec84c6d2c9241a7d0aa47e
-
 
 class ResultsPage(webapp2.RequestHandler):
 	def get(self):

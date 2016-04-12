@@ -36,11 +36,7 @@ class MainPage(webapp2.RequestHandler):
 			self.response.write('Hello, ' + user.nickname())
 			# self.response.write('<div><a href="/chooseEmployOrStudentPage/index.html">login</a></div>')				
 			self.response.write('<html> <script src="https://apis.google.com/js/platform.js" async defer></script>')
-<<<<<<< HEAD
-			self.response.write('<meta name="google-signin-client_id" content="412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com">')
-=======
 			self.response.write('<meta name="google-signin-client_id" content="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com">')
->>>>>>> ec8d644ce1ce66affaec84c6d2c9241a7d0aa47e
 			self.response.write('<div class="g-signin2" data-onsuccess="onSignIn"></div>')
 			self.response.write("""<script> function onSignIn(googleUser){
 				var id_token = googleUser.getAuthResponse().id_token;
@@ -107,12 +103,6 @@ class tokenSignIn(webapp2.RequestHandler):
 			logging.info('token info')
 			self.response.write('<html><br><br>userId: ' + userid)
 		self.response.set_cookie("id", userid)
-<<<<<<< HEAD
-		#cookieValue = self.request.cookies.get('id')
-		#logging.info('cookie:' + cookieValue)
-
-=======
->>>>>>> ec8d644ce1ce66affaec84c6d2c9241a7d0aa47e
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
