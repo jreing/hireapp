@@ -46,18 +46,18 @@ class MainPage(webapp2.RequestHandler):
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', '/tokenSignIn');
 			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			location.reload();
+			//location.reload();
 			xhr.onload = function() {
 				
 				console.log('Signed in as: ' + xhr.responseText);
 				if (email.endsWith('tau.ac.il')){
-					window.location="studentInputPage/index.html";
+					window.location="/studentInputPage";
 				}
 				else{
 					window.location="companyQueryFormPage/index.html";
 				}
 			};
-			xhr.send('idtoken=' + id_token + 'email='+profile.getEmail()) ;}
+			xhr.send('idtoken=' + id_token); }
 			</script>""")
 		self.response.write("""<a href="" onclick="signOut();">Sign out</a>""")
 		self.response.write("""<script> function signOut() {
@@ -74,23 +74,28 @@ class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
 		#self.response.write("<html>")
 		#self.response.write(self.request)
+		
 		token=self.request.get('idtoken')
+		
 		# (Receive token by HTTPS POST)
 		
 		try:
-			idinfo = client.verify_id_token(token, "412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com")
+			
+			idinfo = client.verify_id_token(token, "587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5.apps.googleusercontent.com")
+			#logging.info("this is a mark")
+			#logging.info("id info: " + idinfo)
 			# If multiple clients access the backend server:
 			# if idinfo['aud'] not in [ANDROID_CLIENT_ID, IOS_CLIENT_ID, WEB_CLIENT_ID]:
 			# 	raise crypt.AppIdentityError("Unrecognized client.")
 			if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
 				raise crypt.AppIdentityError("Wrong issuer.")
 			#comment the next few lines out if working locally
-			if idinfo['hd'] != 'http://hireapp-1279.appspot.com/':
-				raise crypt.AppIdentityError("Wrong hosted domain.")
+			#if idinfo['hd'] != 'http://hireapp-1279.appspot.com/':
+				#raise crypt.AppIdentityError("Wrong hosted domain.")
 		except crypt.AppIdentityError:
 			logging.info("error")
-			self.responese.write ("Login Error")
-			return
+			self.response.write ("Login Error")
+			pass
 		
 		#st= Student(id=users.get_current_user().user_id())
 		userid = idinfo['sub']
