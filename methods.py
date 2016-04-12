@@ -209,7 +209,7 @@ def buildStudentInputPage(cours_query):
 	
 	for course in cours_query:
 		i=i+1
-		htmlbody+="""<option value=" """+ str(course.course_name)+"""" data-id="1">"""
+		htmlbody+="""<option value='"""+ str(course.course_name)+"""' data-id="1">"""
 		
 	htmlend="""</datalist>
 		  </form>
