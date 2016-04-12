@@ -13,8 +13,9 @@ import datetime
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-def buildStudentInputPage():
-	<!DOCTYPE html>
+def buildStudentInputPage(cours_query):
+	i=0
+	htmlstart="""<!DOCTYPE html>
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="style.css">
 	  <body>
@@ -60,13 +61,15 @@ def buildStudentInputPage():
 		      <input type="submit" value="שלח" id="button-blue" />
 		      <div class="ease"> </div>
 		    </div>
-			<datalist id="courses" hidden>
-		<option value="Red" data-id="1">
-		<option value="Blue" data-id="2">
-		<option value="Green" data-id="3">
-		<option value="Black" data-id="4">
-		<option value="White" data-id="5">
-	</datalist>
+			<datalist id="courses" hidden>"""
+	htmlbody=''
+	
+	for course in cours_query:
+		i=i+1
+		htmlbody+=
+		"""<option value="""+str(course.course_name)+""" data-id="1">"""
+		
+	htmlend="""</datalist>
 		  </form>
 		</div>
 		<div class="validation-result hidden"></div>
@@ -76,4 +79,7 @@ def buildStudentInputPage():
 
 	  </body>
 
-	</html>
+	</html>"""
+
+	html=htmlstart+htmlbody+htmlend
+	return html

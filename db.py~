@@ -104,7 +104,7 @@ class dbHandler(webapp2.RequestHandler):
 			c=Course(course_id='1', course_name=course_names[i], course_type="class")
 			s.append(Student_Course(grade=int(grade[i]), course=c))
 		userid = self.request.cookies.get('id')
-		logging.info('cookie:' + userid)
+		
 
 		#people_resource = service.people()
 		#people_document = people_resource.get(userId='me').execute(
@@ -117,5 +117,8 @@ class dbHandler(webapp2.RequestHandler):
 		st.put()
 		## TODO: write the response in a nicer way
 		self.response.write('<html><body>Test Entry added</body></html>')
+		self.response.write ("""<html><script>
+			window.location="StudentWelcomePage/index.html";
+			</script></html>""")
 
 #classes that send pages to user, should check if the duplicates can be reduced

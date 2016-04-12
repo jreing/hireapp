@@ -91,8 +91,8 @@ class dbDelete(webapp2.RequestHandler):
 #adds Student_Course to DB
 class dbHandler(webapp2.RequestHandler):
     def post(self):	 
-		self.response.write('<html><body>Test Entry ')
-		self.response.write(self.request)
+		#self.response.write('<html><body>Test Entry ')
+		#self.response.write(self.request)
 		course_names=self.request.get('name', allow_multiple=True)
 		self.response.write("<br><br>")
 		
@@ -116,6 +116,9 @@ class dbHandler(webapp2.RequestHandler):
 		#st= Student(student_courses=s,id="2", name="demo", city="demo",avg=40)
 		st.put()
 		## TODO: write the response in a nicer way
-		self.response.write('<html><body>Test Entry added</body></html>')
+		#self.response.write('<html><body>Test Entry added</body></html>')
+		self.response.write ("""<html><script>
+			window.location="StudentWelcomePage/index.html";
+			</script></html>""")
 
 #classes that send pages to user, should check if the duplicates can be reduced

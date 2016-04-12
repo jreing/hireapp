@@ -24,11 +24,17 @@ handlers:
 - url: /StudentOffersPage
   static_dir: StudentOffersPage
 
+- url: /StudentWelcomePage
+  static_dir: StudentWelcomePage
+
 - url: /FirstPageOfHireApp
   static_dir: FirstPageOfHireApp
+<<<<<<< HEAD
   
 - url: /LogInForBarak
   static_dir: LogInForBarak  
+=======
+>>>>>>> origin/master
 
 - url: .*
   script: main.app

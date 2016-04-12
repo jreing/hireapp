@@ -1,4 +1,4 @@
-application: engineapp2
+application: hireapp-1279
 version: 1
 runtime: python27
 api_version: 1
@@ -17,9 +17,6 @@ handlers:
  
 - url: /companyQueryResultsPage
   static_dir: companyQueryResultsPage
-<<<<<<< HEAD
-  
-=======
 
 - url: /chooseEmployOrStudentPage
   static_dir: chooseEmployOrStudentPage
@@ -27,7 +24,15 @@ handlers:
 - url: /StudentOffersPage
   static_dir: StudentOffersPage
 
->>>>>>> 3afe63f68a1c082973fba80aa073f09ddee459be
+<<<<<<< HEAD
+- url: /StudentWelcomePage
+  static_dir: StudentWelcomePage
+=======
+- url: /FirstPageOfHireApp
+  static_dir: FirstPageOfHireApp
+  
+>>>>>>> 598a0f367ba51b078ed5092feb62849d8090d97b
+
 - url: .*
   script: main.app
 
