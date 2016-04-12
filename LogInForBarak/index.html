@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="he">
+	<link rel="stylesheet" type="text/css" href="style.css">
+ <body>
+  <!-- <div id="form-main">
+    <div id="form-div">
+      <div align="left">
+        <p class="text1"> Welcome to TauHire!</p>
+      </div>
+      <div align="right">
+        <p class="text11"> במידה ואינך מחובר לחשבון הגוגל שלך, רענן את העמוד לאחר ההתחברות לחשבונך</p>
+      </div>
+      <div align="right">
+        <p class="text2"> אם ברצונך להכנס לאתר כסטודנט, הכנס באמצעות המייל האוניברסיטאי</p>
+      </div>
+      <div align="right">
+        <p class="text3"> אם ברצונך להיכנס לאתר כמעסיק, הכנס באמצעות חשבונך בגוגל</p>
+      </div>
+        <form class="form" id="form1" method="post">
+          <div align="right" class="employ_or_student">
+                <input type="button" id="employ_button" onclick="location.href='/MainPage';" value="כניסה לאתר" />
+          </div>
+        </form>
+    </div>
+	</div> -->
+ <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="412529039560-acrgsqrqqit5no5d8am0jajjtei5jqua.apps.googleusercontent.com">
+  <div id="form-main"> 
+    <!-- <div id="form-div"> -->
+      <div align="left" class="employ_or_student">
+          <div class="g-signin2" id="barak" data-onsuccess="onSignIn">
+          <script type="text/javascript">
+          function onSignIn(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+            window.location="chooseEmployOrStudentPage/index.html";
+          }
+        </script>
+        <!-- </div> -->
+        </div>
+      </div>
+  </div>
+
+</body>
+</html>
