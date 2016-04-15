@@ -32,6 +32,14 @@ class Student(ndb.Model):
 	city =ndb.StringProperty(indexed=True, required=True)
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)	
 	avg= ndb.IntegerProperty(indexed=True, required=True)
+
+class Company(ndb.Model):
+	id = ndb.StringProperty(indexed=True, required=True)
+	name= ndb.StringProperty(indexed=True, required=False)
+	#email = ndb.StringProperty(indexed=True, required=True)
+	city =ndb.StringProperty(indexed=True, required=False)
+	
+	
 	
 class minGradeQuery(webapp2.RequestHandler):
 	def post(self):	 

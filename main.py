@@ -108,7 +108,7 @@ app = webapp2.WSGIApplication([
 	('/tokenSignIn', tokenSignIn),
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
 	('/dbHandler', dbHandler),
-	('/companyQueryFormPage/index.html', CompanyHandler),
+	('/companyQueryFormPage', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),
 	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
