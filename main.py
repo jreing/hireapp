@@ -24,10 +24,13 @@ from messages import *
 
 class CompanyHandler(webapp2.RequestHandler):
 	def get(self):
-		f = open("companyQueryFormPage\index.html") 
+		cours_query = Course.query()
+		page = buildCompanyQuery(cours_query)
+		self.response.write(page)
+		#f = open("companyQueryFormPage\index.html") 
 		#self.response.charset="unicode"
-		self.response.write(f.read())
-		f.close()               
+		#self.response.write(f.read())
+		#f.close()               
 
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
