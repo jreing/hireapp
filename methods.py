@@ -140,14 +140,14 @@ def buildStudentOffersPage(conv_query, userid):
 						</div>
 				</div>"""
 	
-	htmlend="""
+	emptypage="""
             </div>
 
     <div align="right"> <p class="medtitletext" id="empty">...טרם קיבלת הצעות</p>  </div>
 
-  </div>
+  </div>"""
 
-
+	htmlend = """
   <body>
 			<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
@@ -210,7 +210,7 @@ def buildStudentInputPage(cours_query):
 	
 	for course in cours_query:
 		i=i+1
-		htmlbody+="""<option value='"""+ str(course.course_name)+"""' data-id="1">"""
+		htmlbody+="""<option> """+  str(course.course_name) + """</option> data-id="1" """
 		
 	htmlend="""</datalist>
 		  </form>
@@ -226,3 +226,78 @@ def buildStudentInputPage(cours_query):
 
 	html=htmlstart+htmlbody+htmlend
 	return html
+
+def buildCompanyQuery(cours_query):
+	i=0
+	htmlstart="""<!DOCTYPE html>
+	<html>
+		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
+	  <body>
+
+		<div id="form-main">
+		<div align="right">
+		  <p class="titletext">:סינון מועמדים</p>
+		</div>
+		<div id="form-div">
+
+		  <div align="right">
+			<p class="text1">:ציון מינימלי בקורס</p>
+		  </div>
+		  <form class="form" id="form1" action="/companyQueryResultsPage" method="post">
+
+			<div class="inputline">
+			  <input type="button" id="buttonadd" value="הוסף קורס" />
+			</div>
+			<div id="cloneme0" class="cloneme">
+			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" />
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
+			  <input type="button" id="buttondel0" class="buttondel" value="X" />
+			</div>
+			<div align="right" id="bysubject">
+			  <p class="text1">:ממוצע מינימלי באשכול</p>
+			</div>
+			<div class="inputline">
+			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
+			</div>
+			<div id="clonemetwo0" class="clonemetwo">
+			  <select name="name" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="name">
+				<option value="volvo">מדמ"ח כללי</option>
+				<option value="saab">אבטחת מידע</option>
+				<option value="mercedes">תכנות</option>
+				<option value="audi">מדעי המידע</option>
+			  </select>
+
+
+
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ממוצע" />
+			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
+			</div>
+			<div align="right" id=avgentry>
+			  <p class="text1">:ממוצע תואר מינימלי</p>
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ממוצע" id="avg" />
+			</div>
+			<div class="submit">
+			  <input type="submit" value="חפש" id="button-blue" />
+			  <div class="ease"></div>
+			</div>
+			<datalist id="courses" hidden>"""
+	htmlbody=''
+	
+	for course in cours_query:
+		i=i+1
+		htmlbody+="""<option> """+  str(course.course_name) + """</option> data-id="1" """
+		
+	htmlend="""</datalist>
+		  </form>
+		</div>
+				<script type="text/javascript" src="companyQueryFormPage/jquery-2.2.3.js"></script>
+				<script type="text/javascript" src="companyQueryFormPage/script.js"></script>
+	  </div>
+	  
+	  <body>
+	  
+	  <html>"""
+
+	html=htmlstart+htmlbody+htmlend
+	return html
+

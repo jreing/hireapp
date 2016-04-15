@@ -6,7 +6,7 @@ function ForceLogin() {
 		window.location="/studenthandler";
 	}
 	else{
-		window.location="/companyQueryFormPage/index.html";
+		window.location="/companyQueryFormPage";
 	}
 } 
 
@@ -31,6 +31,7 @@ function onSignIn(googleUser){
 				console.log('Signed in as: ' + xhr.responseText);
 
 			};
-			xhr.send('idtoken=' + id_token ) ;
+			xhr.send('idtoken=' + id_token) ;
+			
 			document.getElementById("employ_button").disabled=false;
 			}

@@ -52,7 +52,7 @@ class Conversation(ndb.Model):
 	
 class MessageHandler(webapp2.RequestHandler):
     def get(self):
-
+		logging.info("message handler")
 		conv_query = Conversation.query()	
 		#mess_query = Message.query()
 		#self.response.write(MESSAGE_PAGE_HTML)

@@ -23,10 +23,13 @@ from messages import *
 
 class CompanyHandler(webapp2.RequestHandler):
     def get(self):
-        f = open("companyQueryFormPage\index.html") 
+		cours_query = Course.query()
+		page = buildCompanyQuery(cours_query)
+		self.response.write(page)
+        #f = open("companyQueryFormPage\index.html") 
 	#self.response.charset="unicode"
-	self.response.write(f.read())
-	f.close()               
+	#self.response.write(f.read())
+	#f.close()               
 
 # class MainPage(webapp2.RequestHandler):
 	# def get(self):
@@ -72,8 +75,8 @@ class tokenSignIn(webapp2.RequestHandler):
 		#self.response.write(self.request)
 		
 		token=self.request.get('idtoken')
-		
 		# (Receive token by HTTPS POST)
+		
 		
 		try:
 			
@@ -179,7 +182,7 @@ app = webapp2.WSGIApplication([
 	('/chooseEmployOrStudentPage/index.html', LoginHandler),
 	('/', LogInForBarak),
 	('/dbHandler', dbHandler),
-	('/companyQueryFormPage/index.html', CompanyHandler),
+	('/companyQueryFormPage', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),
 	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
