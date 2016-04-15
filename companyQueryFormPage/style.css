@@ -157,10 +157,18 @@ textarea {
     text-align: right;
 }
 
-/* webkit solution */
-::-webkit-input-placeholder { text-align:right; }
-/* mozilla solution */
-input:-moz-placeholder { text-align:right; }
+::-webkit-input-placeholder { /* WebKit browsers */
+    direction: rtl;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    direction: rtl;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ but I'm not sure about working */
+    direction: rtl;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    direction: rtl;
+}
 
 .titletext {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
