@@ -7,8 +7,8 @@ import logging
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client import client, crypt
+#from oauth2client.client import flow_from_clientsecrets
+#from oauth2client import client, crypt
 from google.appengine.api import oauth
 
 import webapp2
@@ -41,7 +41,6 @@ class tokenSignIn(webapp2.RequestHandler):
 		email=self.request.get('email')
 		isStudent = self.request.get('isStudent')
 		
-
 		if (isStudent == 'true'):
 			user_query = Student.query(Student.id==userid).get()
 			if (user_query == None):
