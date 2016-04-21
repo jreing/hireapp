@@ -8,6 +8,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client import client, crypt
+from google.appengine.api import oauth
 
 import webapp2
 logging.getLogger().setLevel(logging.INFO)
@@ -34,15 +35,28 @@ class CompanyHandler(webapp2.RequestHandler):
 
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
+		logging.info("enter token sign in")
 		userid=self.request.get('user_id')
 		email=self.request.get('email')
-		user_query = Student.query(Student.id==userid).get()
-		if (user_query == None):
-			s = []
-			st= Student(student_courses=s,id=userid, name="", city="",avg=-1)
-			st.put()
-			self.response.write('<html><br><br>userId: ' + userid)
+		isStudent = self.request.get('isStudent')
+		
+
+		if (isStudent == 'true'):
+			user_query = Student.query(Student.id==userid).get()
+			if (user_query == None):
+				s = []
+				st= Student(student_courses=s,id=userid, name="", city="",avg=-1)
+				st.put()
+				self.response.write('<html><br><br>userId: ' + userid)
+		elif(isStudent == 'false'):
+			user_query = Company.query(Company.id==userid).get()
+			logging.info(user_query)
+			if (user_query == None):
+				cmp= Company(id=userid, name="", city="")
+				cmp.put()
+		
 		self.response.set_cookie("id", userid)
+		
 
 	
 class LoginHandler(webapp2.RequestHandler):
@@ -84,13 +98,13 @@ class FirstPage(webapp2.RequestHandler):
 class WelcomeHandler(webapp2.RequestHandler):
 	def get(self):
 		f = open("StudentWelcomePage/index.html") 
-		#self.response.charset="unicode"
 		self.response.write(f.read())
 		f.close()
 
 class StudentHandler(webapp2.RequestHandler):
 	def get(self):
 		userid = self.request.cookies.get('id')
+		#logging.info(userid)
 		st = Student.query(Student.id==userid).get()
 		if (st.avg == -1):
 			self.response.write ("""<html><script>

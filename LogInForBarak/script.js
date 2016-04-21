@@ -2,6 +2,7 @@
 var isStudent=undefined;
 
 function ForceLogin() {
+	console.log('forced');
 	 if (isStudent==true){
 		window.location="/studenthandler";
 	}
@@ -11,6 +12,7 @@ function ForceLogin() {
 } 
 
 function onLogin(googleUser){
+	console.log('start');
 	//alert("Started onLogin")
 	console.log('Logging In');
 	//var id_token = googleUser.getAuthResponse().id_token;
@@ -31,16 +33,19 @@ function onLogin(googleUser){
 	}
 
 	var xhr = new XMLHttpRequest();
-	
+	//alert("Started on Login")
+	console.log('mark');
 	xhr.open('POST', '/tokenSignIn');
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-	xhr.send('user_id=' + profile.Ka + "&email=" + email);
+	
+	xhr.send('user_id=' + profile.Ka + "&email=" + email + "&isStudent=" + isStudent);
 	
 	document.getElementById("employ_button").disabled=false;
-	//alert("Ending onLogin");
+	
 	console.log(xhr.readyState);
-	ForceLogin();
+	//alert("Ending onLogin");
+	setTimeout(function() {ForceLogin()}, 1000);
+	//ForceLogin();
 }
 
 function onFailure(error) {
