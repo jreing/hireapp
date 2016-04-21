@@ -31,8 +31,14 @@ handlers:
   static_dir: FirstPageOfHireApp
 
 - url: /LogInForBarak
-  static_dir: LogInForBarak  
+  static_dir: LogInForBarak 
 
+- url: /toolbar
+  static_dir: toolbar  
+
+- url: /jquery
+  static_dir: jquery
+  
 - url: .*
   script: main.app
 
