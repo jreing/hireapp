@@ -15,6 +15,8 @@ my_default_retry_params = gcs.RetryParams(initial_delay=0.2,
 gcs.set_default_retry_params(my_default_retry_params)
 ###
 
+##to validate pdf files
+#import pyPdf
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -117,6 +119,9 @@ class dbHandler(webapp2.RequestHandler):
 		
 		#get student's cv file
 		cv=self.request.get('cv')
+		#doc = pyPdf.PdfFileReader(cv)
+		#self.response.write(doc)
+		#return 
 		
 		write_retry_params = gcs.RetryParams(backoff_factor=1.1)
 		bucket_name = os.environ.get('BUCKET_NAME',app_identity.get_default_gcs_bucket_name())
