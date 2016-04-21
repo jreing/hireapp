@@ -115,6 +115,9 @@ class StudentHandler(webapp2.RequestHandler):
 				window.location="/StudentOffersPage";
 				</script></html>""")
 
+class fileTest():
+	def post(self):
+				
 				
 app = webapp2.WSGIApplication([
 	('/dbDelete', dbDelete),
@@ -130,6 +133,7 @@ app = webapp2.WSGIApplication([
 	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
 	('/messageReply', MessageReply),
+	('/fileTest', fileTest),
 	('/', LogInForBarak)
 	], debug=True)
 
