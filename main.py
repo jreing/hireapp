@@ -4,16 +4,6 @@ import urllib
 import datetime
 import logging
 
-import os
-import cloudstorage as gcs
-from google.appengine.api import app_identity
-
-my_default_retry_params = gcs.RetryParams(initial_delay=0.2,
-                                          max_delay=5.0,
-                                          backoff_factor=2,
-                                          max_retry_period=15)
-gcs.set_default_retry_params(my_default_retry_params)
-
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -89,14 +79,14 @@ class MainHandler(webapp2.RequestHandler):
 
 class ResultsPage(webapp2.RequestHandler):
 	def get(self):
-		f = open("companyQueryResultsPage/index.html")		
+		f = open("companyQueryResultsPage/index.html")
 		self.response.write(f.read())
 		f.close()
 		
 class LogInForBarak(webapp2.RequestHandler):
 	def get(self):
 		logging.info('LogInForBarak START')
-		f = open("LogInForBarak/index.html")		
+		f = open("LogInForBarak/index.html")
 		self.response.write(f.read())
 		f.close()
 

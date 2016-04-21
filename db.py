@@ -3,6 +3,19 @@ import urllib
 import datetime
 from methods import *
 
+#required for Google Cloud Storage
+import os
+import cloudstorage as gcs
+from google.appengine.api import app_identity
+
+my_default_retry_params = gcs.RetryParams(initial_delay=0.2,
+                                          max_delay=5.0,
+                                          backoff_factor=2,
+                                          max_retry_period=15)
+gcs.set_default_retry_params(my_default_retry_params)
+###
+
+
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
@@ -98,11 +111,21 @@ class dbDelete(webapp2.RequestHandler):
 
 #adds Student_Course to DB
 class dbHandler(webapp2.RequestHandler):
-    def post(self):	 
-		#self.response.write('<html><body>Test Entry ')
-		#self.response.write(self.request)
+    def post(self):	
+		#get userid from cookie
+		userid = self.request.cookies.get('id')
+		
+		#get student's cv file
+		cv=self.request.get('cv')
+		
+		write_retry_params = gcs.RetryParams(backoff_factor=1.1)
+		bucket_name = os.environ.get('BUCKET_NAME',app_identity.get_default_gcs_bucket_name())
+		bucket = '/' + bucket_name
+		filename = bucket + '/'+userid + '.cv'
+		gcs_file = gcs.open(filename=filename,mode='w',retry_params=write_retry_params)
+		gcs_file.write(cv)
+		gcs_file.close()
 		course_names=self.request.get('name', allow_multiple=True)
-		self.response.write("<br><br>")
 		
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
@@ -111,7 +134,7 @@ class dbHandler(webapp2.RequestHandler):
 		for i in range(0,len(course_names)):
 			c=Course(course_id='1', course_name=course_names[i], course_type="class")
 			s.append(Student_Course(grade=int(grade[i]), course=c))
-		userid = self.request.cookies.get('id')
+		
 		
 
 		#people_resource = service.people()

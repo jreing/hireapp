@@ -171,7 +171,7 @@ def buildStudentInputPage(cours_query):
 		  <div align="right">
 		    <p class="text1">:הזן עיר מגורים</p>
 		  </div>
-		<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()">
+		<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 		  <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="עיר" id="city" />
 		  <div align="right">
 		    <p class="text1">:הזן קורסים וציונים</p>
@@ -200,7 +200,7 @@ def buildStudentInputPage(cours_query):
 		    <div align="right" id=cventry>
 		      <p class="text1" >:אופציונלי-הזן קורות חיים</p>
 		    </div>
-		    <input name="cv" type="file" id="cv" />
+		    <input name="cv" type="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 		    <div class="submit">
 		      <input type="submit" value="שלח" id="button-blue" />
 		      <div class="ease"> </div>
