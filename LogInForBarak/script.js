@@ -2,7 +2,6 @@
 var isStudent=undefined;
 
 function ForceLogin() {
-	console.log('forced');
 	 if (isStudent==true){
 		window.location="/studenthandler";
 	}
@@ -12,7 +11,6 @@ function ForceLogin() {
 } 
 
 function onLogin(googleUser){
-	console.log('start');
 	//alert("Started onLogin")
 	console.log('Logging In');
 	//var id_token = googleUser.getAuthResponse().id_token;
