@@ -71,7 +71,7 @@ def buildQueryResultsPage(q):
 			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.id)+""">
-			  <button type="button" onclick="location.href = ' """+"change me"+ """';" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+			  <button type="button" onclick="location.href = 'getCV&cv="""+str(student.cv_blob_key)+ """';" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
 			  <p class="textbigpad">:קורות חיים</p>
 			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
 			  <p class="text">:עיר</p>
