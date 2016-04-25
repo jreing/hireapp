@@ -128,15 +128,15 @@ class dbHandler(webapp2.RequestHandler):
 		
 		#get student's cv file
 		cv=self.request.get('cv')
-		
-		#validate the user's file is a REAL PDF.
-		if (self.checkPdfFile(cv)==False):
-			#TODO - more elegent error message
-			self.response.write("erroneos file")
-			return
-		
-		#write user's CV File into blobstore
-		cv_blob_key=self.CreateFile(userid,cv)
+		if (cv!=""):
+			#validate the user's file is a REAL PDF.
+			if (self.checkPdfFile(cv)==False):
+				#TODO - more elegent error message
+				self.response.write("erroneos file")
+				return
+			
+			#write user's CV File into blobstore
+			cv_blob_key=self.CreateFile(userid,cv)
 		
 		course_names=self.request.get('name', allow_multiple=True)
 		grade= self.request.get('grade', allow_multiple=True)
@@ -155,7 +155,10 @@ class dbHandler(webapp2.RequestHandler):
 		st.name = "demo"
 		st.city = self.request.get('city')
 		st.avg = 40
-		st.cv_blob_key=BlobKey(cv_blob_key)
+		if (cv!=""):
+			st.cv_blob_key=BlobKey(cv_blob_key)
+		else:
+			st.cv_blob_key=None;
 		#st= Student(student_courses=s,id="2", name="demo", city="demo",avg=40)
 		st.put()
 		## TODO: write the response in a nicer way
