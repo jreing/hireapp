@@ -17,6 +17,7 @@ from google.appengine.ext import ndb
 
 def buildQueryResultsPage(q):
 	i=0
+	
 	htmlstart= """<!DOCTYPE html>
 	<html>
 	<link rel="stylesheet" type="text/css" href="companyQueryResultsPage/style.css">
@@ -55,22 +56,41 @@ def buildQueryResultsPage(q):
       <div id="scroll" style="overflow-y: scroll; height:450px;">"""
 	  
 	htmlbody=''
-	
+	hasCv=False
 	for student in q:
 		i=i+1
-		htmlbody+="""
+		hasCv=False
+		if (student.cv_blob_key != None) :
+			hasCv=True
+		
+		if (hasCv) :
+			htmlbody+="""
 
-        <div class="form-element" ; align="right">
+			<div class="form-element" ; align="right">
 
-          <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
-          <input type="checkbox" name="studentselect" id="studentselect"""+str(i)+""" class="texthugepad" 
-          value="""+str(student.id)+""">
-          <p class="text">לא צורף</p>
-          <p class="textbigpad">:קורות חיים</p>
-          <p class="text">"""+student.city.decode('utf-8', 'ignore')+"""</p>
-          <p class="text">:עיר</p>
+			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
+			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
+			  value="""+str(student.id)+""">
+			  <button type="button" onclick="location.href = ' """+"change me"+ """';" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+			  <p class="textbigpad">:קורות חיים</p>
+			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
+			  <p class="text">:עיר</p>
 
-        </div>"""
+			</div>"""
+		else :
+			htmlbody+="""
+
+			<div class="form-element" ; align="right">
+
+			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
+			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
+			  value="""+str(student.id)+""">
+			  <p class="textbigasCvButton">לא צורף</p>
+			  <p class="textbigpad">:קורות חיים</p>
+			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
+			  <p class="text">:עיר</p>
+
+			</div>"""		
 	
 	htmlend="""
       </div>
