@@ -158,7 +158,7 @@ class dbHandler(webapp2.RequestHandler):
 		if (cv!=""):
 			st.cv_blob_key=BlobKey(cv_blob_key)
 		else:
-			st.cv_blob_key=None;
+			st.cv_blob_key=None
 		#st= Student(student_courses=s,id="2", name="demo", city="demo",avg=40)
 		st.put()
 		## TODO: write the response in a nicer way
@@ -196,13 +196,20 @@ class dbHandler(webapp2.RequestHandler):
 		# This blob_key works with blobstore APIs that do not expect a
 		# corresponding BlobInfo in datastore.
 		return blobstore.create_gs_key(blobstore_filename)
-			
-			
-			
+		
 
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 
 	def get(self):
+		userid = self.request.cookies.get('id')
+		st = Student.query(Student.id==userid).get()
+		self.send_blob(st.cv_blob_key)
+
+		class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
+
+class getCV(blobstore_handlers.BlobstoreDownloadHandler):
+	def get(self):
+		cv=self.request.get('cv')
 		userid = self.request.cookies.get('id')
 		st = Student.query(Student.id==userid).get()
 		self.send_blob(st.cv_blob_key)

@@ -253,6 +253,7 @@ app = webapp2.WSGIApplication([
 	('/messageReply', MessageReply),
 	('/fileTest', fileTest),
 	('/getMyCV', getMyCV),
+	('/getCV', getCV),
 	('/', LogInForBarak)
 	], debug=True)
 
