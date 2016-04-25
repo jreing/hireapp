@@ -60,8 +60,8 @@ def buildQueryResultsPage(q):
 	for student in q:
 		i=i+1
 		hasCv=False
-		if (student.cv_blob_key != None) :
-			hasCv=True
+		# if (student.cv_blob_key != None) :
+			# hasCv=True
 		
 		if (hasCv) :
 			htmlbody+="""
@@ -103,10 +103,13 @@ def buildQueryResultsPage(q):
       </div>
     </form>
 	
-	<script type="text/javascript" src="companyQueryResultsPage/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
+
+				
   </div>
   <body>
+  	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
+	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
 	<html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -253,7 +256,7 @@ def buildCompanyQuery(cours_query):
 	<html>
 		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
 	  <body>
-
+		
 		<div id="form-main">
 		<div align="right">
 		  <p class="titletext">:סינון מועמדים</p>
@@ -281,10 +284,10 @@ def buildCompanyQuery(cours_query):
 			</div>
 			<div id="clonemetwo0" class="clonemetwo">
 			  <select name="name" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="name">
-				<option value="volvo">מדמ"ח כללי</option>
-				<option value="saab">אבטחת מידע</option>
-				<option value="mercedes">תכנות</option>
-				<option value="audi">מדעי המידע</option>
+				<option value="CsGeneral">מדמ"ח כללי</option>
+				<option value="InformationSecurity">אבטחת מידע</option>
+				<option value="Programming">תכנות</option>
+				<option value="DataScience">מדעי המידע</option>
 			  </select>
 
 
@@ -305,18 +308,22 @@ def buildCompanyQuery(cours_query):
 	
 	for course in cours_query:
 		i=i+1
-		htmlbody+="""<option> """+  str(course.course_name) + """</option> data-id="1" """
+		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> """
 		
 	htmlend="""</datalist>
 		  </form>
 		</div>
-				<script type="text/javascript" src="companyQueryFormPage/jquery-2.2.3.js"></script>
-				<script type="text/javascript" src="companyQueryFormPage/script.js"></script>
+		
+				
+				
+				
 	  </div>
+				<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+				<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+				<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
+	  </body>
 	  
-	  <body>
-	  
-	  <html>"""
+	  </html>"""
 
 	html=htmlstart+htmlbody+htmlend
 	return html
