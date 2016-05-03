@@ -3,20 +3,18 @@ import cgi
 import urllib
 import datetime
 import logging
-
+import hashlib
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
-#from oauth2client.client import flow_from_clientsecrets
-#from oauth2client import client, crypt
-from google.appengine.api import oauth
+
+#from google.appengine.api import oauth
 
 import webapp2
 logging.getLogger().setLevel(logging.INFO)
-logging.warning("CHECK")
 from db import *
 from messages import *
-
+from time import time
 
 #end of DB class definitions
 #
@@ -37,35 +35,38 @@ class CompanyHandler(webapp2.RequestHandler):
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
 		logging.info("enter token sign in")
-		userid=self.request.get('user_id')
+		google_id=self.request.get('user_id')
 		email=self.request.get('email')
 		isStudent = self.request.get('isStudent')
 		
 		if (isStudent == 'true'):
-			user_query = Student.query(Student.id==userid).get()
+			user_query = Student.query(Student.google_id==google_id).get()
+			#if student is logging up for the first time
 			if (user_query == None):
 				s = []
-				st= Student(student_courses=s,id=userid, name="", city="",avg=-1)
+				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
+				logging.info("writing student")
+				logging.info(user_id)
+				st= Student(student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id)
 				st.put()
-				self.response.write('<html><br><br>userId: ' + userid)
+			else:
+				user_id=user_query.user_id
+
 		elif(isStudent == 'false'):
-			user_query = Company.query(Company.id==userid).get()
-			logging.info(user_query)
+			user_query = Company.query(Company.google_id==google_id).get()
+			#if company is logging up for the first time
 			if (user_query == None):
-				cmp= Company(id=userid, name="", city="")
+				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
+				logging.info("writing company")
+				logging.info(user_id)
+				cmp= Company(google_id=google_id, user_id=user_id, name="", city="")
 				cmp.put()
+			else:
+				user_id=user_query.user_id
+		logging.info("writing cookie")
+		logging.info(user_id)
+		self.response.set_cookie("id", user_id)
 		
-		self.response.set_cookie("id", userid)
-		
-
-	
-class LoginHandler(webapp2.RequestHandler):
-	def get(self):
-		f = open("chooseEmployOrStudentPage/index.html") 
-		logging.info("LOGIN HANDLER")
-		self.response.write(f.read())
-		f.close() 
-
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
 		cours_query = Course.query()
@@ -103,9 +104,10 @@ class WelcomeHandler(webapp2.RequestHandler):
 
 class StudentHandler(webapp2.RequestHandler):
 	def get(self):
-		userid = self.request.cookies.get('id')
-		#logging.info(userid)
-		st = Student.query(Student.id==userid).get()
+		user_id = self.request.cookies.get('id')
+		logging.info("reading cookie")
+		logging.info(user_id)
+		st = Student.query(Student.user_id==user_id).get()
 		if (st.avg == -1):
 			self.response.write ("""<html><script>
 				window.location="/studentInputPage";
@@ -117,9 +119,8 @@ class StudentHandler(webapp2.RequestHandler):
 
 class StudentEditHandler(webapp2.RequestHandler):
 	def get(self):
-		userid = self.request.cookies.get('id')
-		#logging.info(userid)
-		student_query = Student.query(Student.id==userid).get()
+		user_id = self.request.cookies.get('id')
+		student_query = Student.query(Student.user_id==user_id).get()
 		page = buildStudentEditPage(student_query)
 		self.response.write(page)
 
@@ -217,7 +218,6 @@ app = webapp2.WSGIApplication([
 	('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/studenthandler', StudentHandler),
 	('/tokenSignIn', tokenSignIn),
-	('/chooseEmployOrStudentPage/index.html', LoginHandler),
 	('/dbHandler', dbHandler),
 	('/companyQueryFormPage', CompanyHandler),
 	('/companyQueryResultsPage' , minGradeQuery),

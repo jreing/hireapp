@@ -47,18 +47,19 @@ class Student_Course(ndb.Model):
 	
 	
 class Student(ndb.Model):
-	id = ndb.StringProperty(indexed=True, required=True)
+	google_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
-	#email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=True)
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)	
 	avg= ndb.IntegerProperty(indexed=True, required=True)
 	cv_blob_key = ndb.BlobKeyProperty()
+	user_id= ndb.StringProperty(indexed=True, required=True)
 
 
 
 class Company(ndb.Model):
-	id = ndb.StringProperty(indexed=True, required=True)
+	google_id = ndb.StringProperty(indexed=True, required=True)
+	user_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=False)
 	#email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=False)
@@ -124,8 +125,9 @@ class dbDelete(webapp2.RequestHandler):
 class dbHandler(webapp2.RequestHandler):
 	def post(self):	
 		#get userid from cookie
-		userid = self.request.cookies.get('id')
+		user_id = self.request.cookies.get('id')
 		
+		st = Student.query(Student.user_id==user_id).get()
 		#get student's cv file
 		cv=self.request.get('cv')
 		if (cv!=""):
@@ -136,7 +138,7 @@ class dbHandler(webapp2.RequestHandler):
 				return
 			
 			#write user's CV File into blobstore
-			cv_blob_key=self.CreateFile(userid,cv)
+			cv_blob_key=self.CreateFile(st.google_id,cv)
 		
 		course_names=self.request.get('name', allow_multiple=True)
 		grade= self.request.get('grade', allow_multiple=True)
@@ -150,11 +152,11 @@ class dbHandler(webapp2.RequestHandler):
 		
 		#people_resource = service.people()
 		#people_document = people_resource.get(userId='me').execute(
-		st = Student.query(Student.id==userid).get()
+		
 		st.student_courses=s
 		st.name = "demo"
 		st.city = self.request.get('city')
-		st.avg = 40
+		st.avg = 1000
 		if (cv!=""):
 			st.cv_blob_key=BlobKey(cv_blob_key)
 		else:
@@ -175,44 +177,42 @@ class dbHandler(webapp2.RequestHandler):
 		except: 
 			return False
 	
-	def CreateFile(self,userid, cv):
+	def CreateFile(self,user_id, cv):
 		"""Create a GCS file with GCS client lib.
 		Args:
 			filename: GCS filename.
 		Returns:
 			The corresponding string blobkey for this GCS file.
 		"""
+		#saving the file in the blob store using the users google id
+		#then a blobstore key is generated from that (not visible to user)
 		# Create a GCS file with GCS client.
 		#write user's CV File into blobstore
 		write_retry_params = gcs.RetryParams(backoff_factor=1.1)
 		bucket_name = os.environ.get('BUCKET_NAME',app_identity.get_default_gcs_bucket_name())
 		bucket = '/' + bucket_name
-		filename = bucket + '/'+userid + '.cv'
+		filename = bucket + '/'+user_id + '.cv'
 		gcs_file = gcs.open(filename=filename,content_type="application/pdf", mode='w',retry_params=write_retry_params)
 		gcs_file.write(cv)
 		gcs_file.close()
-		# Blobstore API requires extra /gs to distinguish against blobstore files.
 		blobstore_filename = '/gs' + filename
-		# This blob_key works with blobstore APIs that do not expect a
-		# corresponding BlobInfo in datastore.
 		return blobstore.create_gs_key(blobstore_filename)
 		
 
+#use this function to get user's own CV
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
-
 	def get(self):
-		userid = self.request.cookies.get('id')
-		st = Student.query(Student.id==userid).get()
+		user_id = self.request.cookies.get('id')
+		st = Student.query(Student.user_id==user_id).get()
 		self.send_blob(st.cv_blob_key)
 
-
+#use this function for companies to see student CVs
+#get the user_id using the hashed version
 class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
+		user_id = self.request.get('user_id')
+		st = Student.query(Student.user_id==user_id).get()
 		
-		userid = self.request.get('user_id')
-		self.response.write("<html>"+ userid+ "</html>")
-		st = Student.query(Student.id==userid).get()
-		self.response.write (userid)
 		if (st!=None):
 			self.send_blob(st.cv_blob_key)
 

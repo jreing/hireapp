@@ -68,8 +68,8 @@ def buildQueryResultsPage(q):
 			<div class="form-element" ; align="right">
 			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
-			  value="""+str(student.id)+""">
-			  <button type="button" onclick="location.href='getCV?user_id="""+str(student.id)+ """'" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+			  value="""+str(student.user_id)+""">
+			  <button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
 			  <p class="textbigpad">:קורות חיים</p>
 			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
 			  <p class="text">:עיר</p>
@@ -81,7 +81,7 @@ def buildQueryResultsPage(q):
 
 			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
-			  value="""+str(student.id)+""">
+			  value="""+str(student.user_id)+""">
 			  <p class="textbigasCvButton">לא צורף</p>
 			  <p class="textbigpad">:קורות חיים</p>
 			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
@@ -99,20 +99,18 @@ def buildQueryResultsPage(q):
 
       </div>
     </form>
-	
 
-				
   </div>
-  <body>
+  </body>
   	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
-	<html>"""
+	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
 	return html
 		
-def buildStudentOffersPage(conv_query, userid):
+def buildStudentOffersPage(conv_query, user_id):
 	i=0
 	htmlstart= """<!DOCTYPE html>
 	<html>
@@ -133,7 +131,7 @@ def buildStudentOffersPage(conv_query, userid):
 	
 	for conver in conv_query:
 		for message in conver.message:
-			if(message.receiver.identity == userid):
+			if(message.receiver.identity == user_id):
 				#send = Student.query(Student.id==message.sender.identity).get()
 				#send = users.User(_user_id = message.sender.identity)
 				i=i+1
@@ -177,7 +175,7 @@ def buildStudentOffersPage(conv_query, userid):
 	return html
 
 
-def buildStudentInputPage(cours_query):
+def buildStudentInputPage(course_query):
 	i=0
 	htmlstart="""<!DOCTYPE html>
 	<html lang="he">
@@ -223,7 +221,7 @@ def buildStudentInputPage(cours_query):
 			<datalist id="courses" hidden>"""
 	htmlbody=''
 	
-	for course in cours_query:
+	for course in course_query:
 		i=i+1
 		htmlbody+="""<option> """+  str(course.course_name) + """</option> data-id="1" """
 		
@@ -246,7 +244,7 @@ def buildStudentInputPage(cours_query):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
-def buildCompanyQuery(cours_query):
+def buildCompanyQuery(course_query):
 	i=0
 	htmlstart="""<!DOCTYPE html>
 	<html>
@@ -302,7 +300,7 @@ def buildCompanyQuery(cours_query):
 			<datalist id="courses" hidden>"""
 	htmlbody=''
 	
-	for course in cours_query:
+	for course in course_query:
 		i=i+1
 		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> """
 		
@@ -324,7 +322,6 @@ def buildCompanyQuery(cours_query):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
-<<<<<<< HEAD
 def buildStudentEditPage(student):
 	htmlstart="""﻿<!DOCTYPE html>
 <html lang="he">
