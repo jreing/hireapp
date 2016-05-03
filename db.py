@@ -205,7 +205,7 @@ class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 		st = Student.query(Student.id==userid).get()
 		self.send_blob(st.cv_blob_key)
 
-		class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
+#class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 
 class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
