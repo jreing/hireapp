@@ -21,18 +21,27 @@ handlers:
 - url: /chooseEmployOrStudentPage
   static_dir: chooseEmployOrStudentPage
   
+- url: /StudentWelcomePage
+  static_dir: StudentWelcomePage
+  
 - url: /StudentOffersPage
   static_dir: StudentOffersPage
 
-<<<<<<< HEAD
-- url: /StudentWelcomePage
-  static_dir: StudentWelcomePage
-=======
 - url: /FirstPageOfHireApp
   static_dir: FirstPageOfHireApp
-  
->>>>>>> 598a0f367ba51b078ed5092feb62849d8090d97b
 
+- url: /LogInForBarak
+  static_dir: LogInForBarak 
+
+- url: /studentEdit
+  static_dir: studentEditPage
+
+- url: /toolbar
+  static_dir: toolbar  
+
+- url: /jquery
+  static_dir: jquery
+  
 - url: .*
   script: main.app
 

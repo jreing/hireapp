@@ -17,6 +17,7 @@ from google.appengine.ext import ndb
 
 def buildQueryResultsPage(q):
 	i=0
+	
 	htmlstart= """<!DOCTYPE html>
 	<html>
 	<link rel="stylesheet" type="text/css" href="companyQueryResultsPage/style.css">
@@ -36,7 +37,7 @@ def buildQueryResultsPage(q):
 
       <div align="right">
         <p class="text1">:מייל החברה</p>
-        <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" id="name" />
+        <input name="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" id="name" />
       </div>
 
       <div align="right">
@@ -55,22 +56,41 @@ def buildQueryResultsPage(q):
       <div id="scroll" style="overflow-y: scroll; height:450px;">"""
 	  
 	htmlbody=''
-	
+	hasCv=False
 	for student in q:
 		i=i+1
-		htmlbody+="""
+		hasCv=False
+		# if (student.cv_blob_key != None) :
+			# hasCv=True
+		
+		if (hasCv) :
+			htmlbody+="""
 
-        <div class="form-element" ; align="right">
+			<div class="form-element" ; align="right">
 
-          <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
-          <input type="checkbox" name="studentselect" id="studentselect"""+str(i)+""" class="texthugepad" 
-          value="""+str(student.id)+""">
-          <p class="text">לא צורף</p>
-          <p class="textbigpad">:קורות חיים</p>
-          <p class="text">"""+student.city.decode('utf-8', 'ignore')+"""</p>
-          <p class="text">:עיר</p>
+			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
+			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
+			  value="""+str(student.id)+""">
+			  <button type="button" onclick="location.href = 'getCV&cv="""+str(student.cv_blob_key)+ """';" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+			  <p class="textbigpad">:קורות חיים</p>
+			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
+			  <p class="text">:עיר</p>
 
-        </div>"""
+			</div>"""
+		else :
+			htmlbody+="""
+
+			<div class="form-element" ; align="right">
+
+			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
+			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
+			  value="""+str(student.id)+""">
+			  <p class="textbigasCvButton">לא צורף</p>
+			  <p class="textbigpad">:קורות חיים</p>
+			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
+			  <p class="text">:עיר</p>
+
+			</div>"""		
 	
 	htmlend="""
       </div>
@@ -83,10 +103,13 @@ def buildQueryResultsPage(q):
       </div>
     </form>
 	
-	<script type="text/javascript" src="companyQueryResultsPage/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
+
+				
   </div>
   <body>
+  	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
+	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
 	<html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -115,7 +138,8 @@ def buildStudentOffersPage(conv_query, userid):
 	for conver in conv_query:
 		for message in conver.message:
 			if(message.receiver.identity == userid):
-				send = users.User(_user_id = message.sender.identity)
+				#send = Student.query(Student.id==message.sender.identity).get()
+				#send = users.User(_user_id = message.sender.identity)
 				i=i+1
 				htmlbody+="""
 
@@ -123,7 +147,7 @@ def buildStudentOffersPage(conv_query, userid):
 		
 						<div align="right">
 							<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
-							<p class="text">"""+str(send.nickname())+"""</p>
+							<p class="text">"""+str(message.compMail)+"""</p>
 							<p class="text">:מייל</p>
 							<p class="text">"""+str(message.compName)+"""</p>
 							<p class="text">:שם חברה</p>
@@ -139,14 +163,14 @@ def buildStudentOffersPage(conv_query, userid):
 						</div>
 				</div>"""
 	
-	htmlend="""
+	emptypage="""
             </div>
 
     <div align="right"> <p class="medtitletext" id="empty">...טרם קיבלת הצעות</p>  </div>
 
-  </div>
+  </div>"""
 
-
+	htmlend = """
   <body>
 			<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
@@ -170,7 +194,7 @@ def buildStudentInputPage(cours_query):
 		  <div align="right">
 		    <p class="text1">:הזן עיר מגורים</p>
 		  </div>
-		<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()">
+		<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 		  <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="עיר" id="city" />
 		  <div align="right">
 		    <p class="text1">:הזן קורסים וציונים</p>
@@ -199,7 +223,7 @@ def buildStudentInputPage(cours_query):
 		    <div align="right" id=cventry>
 		      <p class="text1" >:אופציונלי-הזן קורות חיים</p>
 		    </div>
-		    <input name="cv" type="file" id="cv" />
+		    <input name="cv" type="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 		    <div class="submit">
 		      <input type="submit" value="שלח" id="button-blue" />
 		      <div class="ease"> </div>
@@ -209,7 +233,7 @@ def buildStudentInputPage(cours_query):
 	
 	for course in cours_query:
 		i=i+1
-		htmlbody+="""<option value=" """+ str(course.course_name)+""" " data-id="1">"""
+		htmlbody+="""<option> """+  str(course.course_name) + """</option> data-id="1" """
 		
 	htmlend="""</datalist>
 		  </form>
@@ -224,4 +248,147 @@ def buildStudentInputPage(cours_query):
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
+	return html
+
+def buildCompanyQuery(cours_query):
+	i=0
+	htmlstart="""<!DOCTYPE html>
+	<html>
+		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
+	  <body>
+		
+		<div id="form-main">
+		<div align="right">
+		  <p class="titletext">:סינון מועמדים</p>
+		</div>
+		<div id="form-div">
+
+		  <div align="right">
+			<p class="text1">:ציון מינימלי בקורס</p>
+		  </div>
+		  <form class="form" id="form1" action="/companyQueryResultsPage" method="post">
+
+			<div class="inputline">
+			  <input type="button" id="buttonadd" value="הוסף קורס" />
+			</div>
+			<div id="cloneme0" class="cloneme">
+			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" />
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
+			  <input type="button" id="buttondel0" class="buttondel" value="X" />
+			</div>
+			<div align="right" id="bysubject">
+			  <p class="text1">:ממוצע מינימלי באשכול</p>
+			</div>
+			<div class="inputline">
+			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
+			</div>
+			<div id="clonemetwo0" class="clonemetwo">
+			  <select name="name" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="name">
+				<option value="CsGeneral">מדמ"ח כללי</option>
+				<option value="InformationSecurity">אבטחת מידע</option>
+				<option value="Programming">תכנות</option>
+				<option value="DataScience">מדעי המידע</option>
+			  </select>
+
+
+
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ממוצע" />
+			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
+			</div>
+			<div align="right" id=avgentry>
+			  <p class="text1">:ממוצע תואר מינימלי</p>
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ממוצע" id="avg" />
+			</div>
+			<div class="submit">
+			  <input type="submit" value="חפש" id="button-blue" />
+			  <div class="ease"></div>
+			</div>
+			<datalist id="courses" hidden>"""
+	htmlbody=''
+	
+	for course in cours_query:
+		i=i+1
+		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> """
+		
+	htmlend="""</datalist>
+		  </form>
+		</div>
+		
+				
+				
+				
+	  </div>
+				<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+				<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+				<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
+	  </body>
+	  
+	  </html>"""
+
+	html=htmlstart+htmlbody+htmlend
+	return html
+
+def buildStudentEditPage(student):
+	htmlstart="""﻿<!DOCTYPE html>
+<html lang="he">
+	<link rel="stylesheet" type="text/css" href="studentEditPage/style.css">
+  <body>
+  <div id="form-main">
+    <div align="right">
+      <p class="titletext">:הפרטים שלי</p>
+    </div>
+    <div id="form-div">
+      <div align="right">
+        <p class="text1">:עיר מגורים</p>
+      </div>
+	<form class="form" id="form1" action="/dbHandler" method="post">
+      <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder='""" + str(student.city) + """'align "right" id="city" />
+      <div align="right">"""
+
+	htmlbody = """<p class="text1">:הקורסים שלי</p>
+      </div>
+		<div class="inputline">
+          <input type="button" id="buttonadd" value="הוסף קורס" />
+        </div>"""
+	for crs in student.student_courses:
+		htmlbody+= """
+        <div id="cloneme0" class="cloneme">
+          <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder='""" + str(course.course.course_name) + """' id="name" />
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder'=""" + str(course.grade) + """' />
+          <input type="button" id="buttondel0" class="buttondel" value="X" />
+		  
+        </div>"""
+		
+
+
+		
+	htmlend = """<div align="right" id=cventry>
+          <p class="text1" >:אופציונלי-הזן קורות חיים</p>
+        </div>
+        <input name="cv" type="file" id="cv" />
+        <div class="submit">
+          <input type="submit" value="שלח" id="button-blue" />
+          <div class="ease"> </div>
+        </div>
+      </form>
+    </div>
+		<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="studentEditPage/script.js"></script>
+  </div>
+
+  </body>
+
+</html>"""
+	
+	
+	
+	#htmlbody+= """<div class="form-element" ; align="right">
+		
+					#<div align="right">
+						#<p class="text">:עיר """+str(student.city)+"""</p>
+						
+					#</div>"""
+
+	#htmlend= """</html>"""
+	html=htmlstart + htmlbody
 	return html

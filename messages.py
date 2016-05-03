@@ -41,6 +41,7 @@ class Message(ndb.Model):
 	receiver = ndb.StructuredProperty(Author)
 	#receiver = ndb.StringProperty(indexed=False)
 	cont = ndb.StringProperty(indexed=False)
+	compMail = ndb.StringProperty(indexed=False)
 	compName = ndb.StringProperty(indexed=False)
 	jobName = ndb.StringProperty(indexed=False)
 	date = ndb.DateTimeProperty(auto_now_add=True)
@@ -51,7 +52,7 @@ class Conversation(ndb.Model):
 	
 class MessageHandler(webapp2.RequestHandler):
     def get(self):
-
+		logging.info("message handler")
 		conv_query = Conversation.query()	
 		#mess_query = Message.query()
 		#self.response.write(MESSAGE_PAGE_HTML)
@@ -93,6 +94,7 @@ class MessageSend(webapp2.RequestHandler):
 			self.message.receiver = Author(identity = rec)
 			self.message.compName = self.request.get('companyName')
 			self.message.jobName = self.request.get('jobId')
+			self.message.compMail = self.request.get('companyMail')
 			self.message.date = datetime.datetime.now()
 			userid = self.request.cookies.get('id')
 			self.message.sender = Author(identity = userid)
