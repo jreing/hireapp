@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" type="text/css" href="style.css">
+<body>
+
+  <div >
+    <p class="titletext"  >:הפרופיל שלי</p>
+  </div>
+
+  <div id="form-div">
+    <div align="right"> <p class="medtitletext">:הצעות שקיבלת</p>  </div>
+  
+
+
+      <div id="scroll">
+
+      </div>
+
+    <div align="right"> <p class="medtitletext" id="empty">...טרם קיבלת הצעות</p>  </div>
+
+  </div>
+
+
+  <body>
+	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	<div class="popup" data-popup="popup-1">
+    <div class="popup-inner">
+        <h2 class="txt">!ההרשמה בוצעה בהצלחה</h2>
+		
+        <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+    </div>
+</div>
+
+		<a class="btn" hidden data-popup-open="popup-1" href="#">Open Popup #1</a>
+<html>

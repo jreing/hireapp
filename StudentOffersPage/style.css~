@@ -1,0 +1,220 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,800);
+html {
+  background: url(http://thekitemap.com/images/feedback-img.jpg) no-repeat center center fixed;
+  background-size: cover;
+  height: 100%;
+}
+
+#feedback-page {
+  text-align: center;
+}
+
+#form-main {
+  width: 100%;
+  float: left;
+  padding-top: 0px;
+}
+
+#form-div {
+  background-color: rgba(72, 72, 72, 0.4);
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-top: 0px;
+  padding-bottom: 50px;
+  width: 75%;
+  margin-left: 10%;
+  //float: left;
+  //left: 50%;
+  //position: absolute;
+  margin-top: 70px;
+  margin-bottom: 100px;
+  //margin-left: -320px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+}
+
+
+
+.feedback-input3 {
+  color: #3c3c3c;
+  float: right;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  padding: 13px 13px 13px 54px;
+  margin-bottom: 10px;
+  width: 60%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+}
+
+.feedback-input:focus {
+  background: #fff;
+  box-shadow: 0;
+  border: 3px solid #3498db;
+  color: #3498db;
+  outline: none;
+  padding: 13px 13px 13px 54px;
+}
+
+.focused {
+  color: #30aed6;
+  border: #30aed6 solid 3px;
+}
+
+#name {
+  background-size: 30px 30px;
+  background-position: 11px 8px;
+  background-repeat: no-repeat;
+}
+
+#name:focus {
+  background-size: 30px 30px;
+  background-position: 8px 5px;
+  background-position: 11px 8px;
+  background-repeat: no-repeat;
+}
+
+#grade {
+  background-size: 30px 30px;
+  background-position: 11px 8px;
+  background-repeat: no-repeat;
+}
+
+#grade:focus {
+  background-size: 30px 30px;
+  background-position: 11px 8px;
+  background-repeat: no-repeat;
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  line-height: 150%;
+  resize: vertical;
+}
+.titletext {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  width: 90%;
+  color: white;
+  font-size: 80px;
+  padding-top: 5px;
+  margin-top: 60px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  margin-right: 40px;
+  text-align: right;
+  font-weight: 700;
+}
+
+.medtitletext {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  width: 100%;
+  color: white;
+  font-size: 50px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  font-weight: 70;
+}
+
+.medtitletextpadded {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  width: 100%;
+  color: white;
+  font-size: 50px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  font-weight: 70;
+  margin-top: 40px
+}
+
+.text1 {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: white;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.text2 {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+ 
+  width: 50%;
+  color: white;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.button {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  border: #fbfbfb solid 4px;
+  cursor: pointer;
+  float: left;
+  width: 95px;
+  margin-top: 13px;
+
+}
+
+.form-element {
+  border: 2px solid #fbfbfb;
+  padding: 14px;
+  margin: 1px;
+  width: 90%;
+  float: right;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  background-color: #3498db;
+  color: #fbfbfb;
+}
+
+.form-extra {
+  
+  padding: 14px;
+  margin: 1px;
+  width: 90%;
+  float: right;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  background-color: #3498db;
+  color: #fbfbfb;
+ 
+}
+
+.text {
+  margin-right: 30px;
+  display: inline-block;
+}
+
+.textsmallpad {
+  margin-right: 20px;
+  display: inline-block;
+}
+
+.textbigpad {
+  margin-right: 70px;
+  display: inline-block;
+}
+
+#scroll {
+   overflow-y: scroll;
+   height:800px;
+}
+
+
