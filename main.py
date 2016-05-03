@@ -2,8 +2,7 @@
 import cgi
 import urllib
 import datetime
-import logging
-import hashlib
+from db import *
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -12,9 +11,9 @@ from google.appengine.ext import ndb
 
 import webapp2
 logging.getLogger().setLevel(logging.INFO)
-from db import *
+
 from messages import *
-from time import time
+
 
 #end of DB class definitions
 #
@@ -213,6 +212,7 @@ class fileTest(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
 	('/dbDelete', dbDelete),
+	('/dbUserIdScramble', dbUserIdScramble),
 	('/dbBuild', dbBuild),
 	('/studentInputPage', MainHandler),
 	('/StudentWelcomePage/index.html', WelcomeHandler),	

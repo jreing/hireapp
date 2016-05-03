@@ -3,6 +3,10 @@ import urllib
 import datetime
 from methods import *
 
+#for hashing
+import hashlib
+from time import time
+
 #for blobstore
 from google.appengine.ext import blobstore
 from google.appengine.ext.blobstore import BlobKey
@@ -28,6 +32,8 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 
 import webapp2
+
+#for debugging
 import logging
 
 #DB class definitions:
@@ -116,10 +122,31 @@ class dbBuild(webapp2.RequestHandler):
 
 #deletes all courses from DB	
 class dbDelete(webapp2.RequestHandler):
-
 	def get(self):
-		ndb.delete_multi(Course.query().fetch(keys_only=True))
-		self.response.write('Database deleted')
+		passw=self.request.get("passw")
+		if (passw=="weLoveYouGoogle2016"):
+			ndb.delete_multi(Course.query().fetch(keys_only=True))
+			self.response.write('Database deleted')
+		else:
+			self.response.write('Wrong password')
+
+#changes all hash id's in the DB
+class dbUserIdScramble(webapp2.RequestHandler):
+	def get(self):
+		passw=self.request.get("passw")
+		if (passw=="weLoveYouGoogle2016"):
+			q=Student.query()
+			for s in q:
+				s.user_id=str(hashlib.sha512(s.google_id + str(time())).hexdigest())
+				s.put()
+			q=Company.query()
+			for c in q:
+				c.user_id=str(hashlib.sha512(c.google_id + str(time())).hexdigest())
+				c.put()
+			self.response.write('Database scrambled')
+		else:
+			self.response.write('Wrong password')
+
 
 #adds Student to DB
 class dbHandler(webapp2.RequestHandler):
