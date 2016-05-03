@@ -205,13 +205,15 @@ class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 		st = Student.query(Student.id==userid).get()
 		self.send_blob(st.cv_blob_key)
 
-#class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 
 class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
-		cv=self.request.get('cv')
-		userid = self.request.cookies.get('id')
+		
+		userid = self.request.get('user_id')
+		self.response.write("<html>"+ userid+ "</html>")
 		st = Student.query(Student.id==userid).get()
-		self.send_blob(st.cv_blob_key)
+		self.response.write (userid)
+		if (st!=None):
+			self.send_blob(st.cv_blob_key)
 
 #classes that send pages to user, should check if the duplicates can be reduced

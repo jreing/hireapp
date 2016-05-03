@@ -60,22 +60,19 @@ def buildQueryResultsPage(q):
 	for student in q:
 		i=i+1
 		hasCv=False
-		# if (student.cv_blob_key != None) :
-			# hasCv=True
+		if (student.cv_blob_key != None) :
+			hasCv=True
 		
 		if (hasCv) :
 			htmlbody+="""
-
 			<div class="form-element" ; align="right">
-
-			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
+			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.id)+""">
-			  <button type="button" onclick="location.href = 'getCV&cv="""+str(student.cv_blob_key)+ """';" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+			  <button type="button" onclick="location.href='getCV?user_id="""+str(student.id)+ """'" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
 			  <p class="textbigpad">:קורות חיים</p>
 			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
 			  <p class="text">:עיר</p>
-
 			</div>"""
 		else :
 			htmlbody+="""
@@ -121,9 +118,8 @@ def buildStudentOffersPage(conv_query, userid):
 	<html>
 	<link rel="stylesheet" type="text/css" href="StudentOffersPage/style.css">
 	<body>
-
   <div >
-    <p class="titletext"  >:הפרופיל שלי</p>
+    <p class="titletext"  >:ההצעות שלי</p>
   </div>
 
   <div id="form-div">
@@ -171,10 +167,11 @@ def buildStudentOffersPage(conv_query, userid):
   </div>"""
 
 	htmlend = """
-  <body>
-			<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
+  </body>
+	<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
-	<html>"""
+	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
 	return html
@@ -185,7 +182,10 @@ def buildStudentInputPage(cours_query):
 	htmlstart="""<!DOCTYPE html>
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="studentInputPage/style.css">
+<script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
+
 	  <body>
+<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
 	  <div id="form-main">
 		<div align="right">
 		  <p class="titletext">:הרשמה</p>
@@ -200,24 +200,16 @@ def buildStudentInputPage(cours_query):
 		    <p class="text1">:הזן קורסים וציונים</p>
 		  </div>
 		  
-
 		    <div class="inputline">
 		      <input type="button" id="buttonadd" value="הוסף קורס" />
 		    </div>
 		    <div id="cloneme0" class="cloneme">
-
-
 		      <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" autocomplete="off"/>
-
-
-
 		      <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
 		      <input type="button" id="buttondel0" class="buttondel" value="X" />
 			  
 		    </div>
 		
-
-
 		
 		
 		    <div align="right" id=cventry>
@@ -239,13 +231,17 @@ def buildStudentInputPage(cours_query):
 		  </form>
 		</div>
 		<div class="validation-result hidden"></div>
-			<script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
-		<script type="text/javascript" src="studentInputPage/script.js"></script>
+			
+		
 	  </div>
 
 	  </body>
 
-	</html>"""
+
+		<script type="text/javascript" src="studentInputPage/script.js"></script>
+
+	</html>
+"""
 
 	html=htmlstart+htmlbody+htmlend
 	return html
@@ -318,9 +314,9 @@ def buildCompanyQuery(cours_query):
 				
 				
 	  </div>
-				<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-				<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
-				<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+		<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </body>
 	  
 	  </html>"""
@@ -328,6 +324,7 @@ def buildCompanyQuery(cours_query):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
+<<<<<<< HEAD
 def buildStudentEditPage(student):
 	htmlstart="""﻿<!DOCTYPE html>
 <html lang="he">

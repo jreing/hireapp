@@ -61,9 +61,8 @@ $('#buttonadd').click(function ab() {
    // $('.buttondel').attr('disabled', 'disabled');
 //});
 function validateForm() {
-var allValid = $(".feedback-input").filter(function (key, element) {
-        var value = $(element).val();
-        
+	var allValid = $(".feedback-input").filter(function (key, element) {
+        var value = $(element).val();   
         return value !== "" && courses.indexOf(value) < 0;
     }).length === 0;
 
