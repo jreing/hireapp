@@ -85,7 +85,7 @@ class ResultsPage(webapp2.RequestHandler):
 class LogInForBarak(webapp2.RequestHandler):
 	def get(self):
 		logging.info('LogInForBarak START')
-		f = open("LogInForBarak/index.html")
+		f = open("index.html")
 		self.response.write(f.read())
 		f.close()
 
