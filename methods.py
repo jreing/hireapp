@@ -60,21 +60,20 @@ def buildQueryResultsPage(q):
 	for student in q:
 		i=i+1
 		hasCv=False
-		# if (student.cv_blob_key != None) :
-			# hasCv=True
+		if (student.cv_blob_key != None) :
+			hasCv=True
 		
 		if (hasCv) :
 			htmlbody+="""
-
 			<div class="form-element" ; align="right">
-
-			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
+			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.id)+""">
-			  <button type="button" onclick="location.href = 'getCV&cv="""+str(student.cv_blob_key)+ """';" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+			  <button type="button" onclick="location.href='getCV?user_id="""+str(student.id)+ """'" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
 			  <p class="textbigpad">:קורות חיים</p>
 			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
 			  <p class="text">:עיר</p>
+			  
 
 			</div>"""
 		else :

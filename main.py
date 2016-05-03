@@ -195,39 +195,6 @@ class fileTest(webapp2.RequestHandler):
 		for f in filenames:
 			self.create_file(f)
 
-	def list_bucket(self, bucket):
-		"""Create several files and paginate through them.
-
-		Production apps should set page_size to a practical value.
-
-		Args:
-		  bucket: bucket.
-		"""
-		self.response.write('Listbucket result:\n')
-
-		page_size = 1
-		stats = gcs.listbucket(bucket + '/foo', max_keys=page_size)
-		while True:
-		  count = 0
-		  for stat in stats:
-			count += 1
-			self.response.write(repr(stat))
-			self.response.write('\n')
-
-			if count != page_size or count == 0:
-				break
-			stats = gcs.listbucket(bucket + '/foo', max_keys=page_size, marker=stat.filename)
-
-	def list_bucket_directory_mode(self, bucket):
-		self.response.write('Listbucket directory mode result:\n')
-		for stat in gcs.listbucket(bucket + '/b', delimiter='/'):
-			self.response.write('%r' % stat)
-			self.response.write('\n')
-		if stat.is_dir:
-			for subdir_file in gcs.listbucket(stat.filename, delimiter='/'):
-				self.response.write('  %r' % subdir_file)
-				self.response.write('\n')
-
 	def delete_files(self):
 		self.response.write('Deleting files...\n')
 		for filename in self.tmp_filenames_to_clean_up:
