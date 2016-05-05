@@ -8,6 +8,8 @@ from google.appengine.ext import ndb
 import webapp2
 import logging
 
+from main import *
+from db import *
 from methods import *
 
 
@@ -110,10 +112,11 @@ class MessageSend(webapp2.RequestHandler):
 			self.conversation.put()
 			self.message.put()
 
-		
-
-		self.response.write('<html><body>message entered<pre>')
-		self.response.write('</pre></body></html>')
+		self.response.write("""<html><body> <b> message send successfully! </b> </body></html>""")
+		cours_query = Course.query()
+		page = buildCompanyQuery(cours_query)
+		self.response.write(page)
+		#self.response.write('</pre></body></html>')
 
 class MessageReply(webapp2.RequestHandler):
 	def get(self):
