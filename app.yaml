@@ -36,8 +36,8 @@ handlers:
 - url: /studentEditPage
   static_dir: studentEditPage
 
-- url: /toolbar
-  static_dir: toolbar  
+- url: /StudentToolbar
+  static_dir: StudentToolbar  
 
 - url: /jquery
   static_dir: jquery

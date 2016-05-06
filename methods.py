@@ -103,7 +103,7 @@ def buildQueryResultsPage(q):
   </div>
   </body>
   	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	
 	</html>"""
@@ -169,7 +169,7 @@ def buildStudentOffersPage(conv_query, user_id):
   </body>
 	<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
-	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -184,7 +184,7 @@ def buildStudentInputPage(course_query):
 <script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
 
 	  <body>
-<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 	  <div id="form-main">
 		<div align="right">
 		  <p class="titletext">:הרשמה</p>
@@ -314,7 +314,7 @@ def buildCompanyQuery(course_query):
 				
 	  </div>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-		<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+		<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 		<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </body>
 	  
