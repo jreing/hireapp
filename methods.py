@@ -103,8 +103,9 @@ def buildQueryResultsPage(q):
   </div>
   </body>
   	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
+	
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -348,16 +349,14 @@ def buildStudentEditPage(student):
 		htmlbody+= """
         <div id="cloneme0" class="cloneme">
           <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder='""" + str(crs.course.course_name) + """' id="name" />
-          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder'=""" + str(crs.grade) + """' />
-          <input type="button" id="buttondel0" class="buttondel" value="X" />
-		  
-        </div>"""
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder='""" + str(crs.grade) + """' />
+          <input type="button" id="buttondel0" class="buttondel" value="X" /< </div>
+		<div align="right" id=cventry>"""
 		
 
 
 		
-	htmlend = """<div align="right" id=cventry>
-          <p class="text1" >:אופציונלי-הזן קורות חיים</p>
+	htmlend = """<p class="text1" >:אופציונלי-הזן קורות חיים</p>
         </div>
         <input name="cv" type="file" id="cv" />
         <div class="submit">
@@ -384,5 +383,5 @@ def buildStudentEditPage(student):
 					#</div>"""
 
 	#htmlend= """</html>"""
-	html=htmlstart + htmlbody
+	html=htmlstart + htmlbody +htmlend
 	return html
