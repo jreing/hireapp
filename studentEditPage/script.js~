@@ -27,7 +27,7 @@ $('#buttonadd').click(function ab() {
   newNum = new Number(newNum + 1); // the numeric ID of the new input field being added
   // create the new element via clone(), and manipulate it's ID using newNum value
   //var newElem = $('#cloneme' + (newNum - 1)).clone().attr('id', 'cloneme' + newNum);
-  var newElem = $('.cloneme:first').clone().attr('id', 'cloneme' + newNum).attr('class', 'cloneme')
+  var newElem = $('.cloneme:first').clone().attr('id', 'cloneme' + newNum).attr('class', 'cloneme').attr('placeholder', 'name');
   // manipulate the name/id values of the input inside the new element
   newElem.children().eq(0).val('');
   newElem.children().eq(1).val('');

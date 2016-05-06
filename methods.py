@@ -355,12 +355,20 @@ def buildStudentEditPage(student):
 		
 
 
-		
-	htmlend = """<p class="text1" >:אופציונלי-הזן קורות חיים</p>
+	if (student.cv_blob_key != None) :
+			hasCv=True
+	htmcv = """<p class="text1" >:קורות חיים</p>
         </div>
-        <input name="cv" type="file" id="cv" />
-        <div class="submit">
-          <input type="submit" value="שלח" id="button-blue" />
+		<div align="right">
+		<input name="cv" type="file" id="cv" />"""
+	if(hasCv):	
+		htmcv += """<button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" class="Cvbutton">הצג</button>
+         </div>"""
+
+
+
+	htmend = """<div class="submit">
+          <input type="submit" value="שמור" id="button-blue" />
           <div class="ease"> </div>
         </div>
       </form>
@@ -373,15 +381,6 @@ def buildStudentEditPage(student):
 
 </html>"""
 	
-	
-	
-	#htmlbody+= """<div class="form-element" ; align="right">
-		
-					#<div align="right">
-						#<p class="text">:עיר """+str(student.city)+"""</p>
-						
-					#</div>"""
 
-	#htmlend= """</html>"""
-	html=htmlstart + htmlbody +htmlend
+	html=htmlstart + htmlbody + htmcv + htmend
 	return html
