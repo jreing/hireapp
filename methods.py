@@ -292,7 +292,7 @@ def buildCompanyQuery(course_query):
 			</div>
 			<div align="right" id=avgentry>
 			  <p class="text1">:ממוצע תואר מינימלי</p>
-			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ממוצע" id="avg" />
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="0" max="100" placeholder="ממוצע" id="avg" />
 			</div>
 			<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
