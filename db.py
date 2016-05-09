@@ -170,13 +170,15 @@ class dbHandler(webapp2.RequestHandler):
 			cv_blob_key=self.CreateFile(st.google_id,cv)
 		
 		course_names=self.request.get('name', allow_multiple=True)
+				
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
 			self.response.write ("Error")
 		s=[]
 		for i in range(0,len(course_names)):
-			c=Course(course_id='1', course_name=course_names[i], course_type="class")
-			s.append(Student_Course(grade=int(grade[i]), course=c))
+			course_query=Course.query (Course.course_name==course_names[i]).get()
+			#logging.info (course_query)
+			s.append(Student_Course(grade=int(grade[i]), course=course_query))
 		
 		
 		#people_resource = service.people()
