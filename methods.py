@@ -278,14 +278,14 @@ def buildCompanyQuery(course_query):
 			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
 			</div>
 			<div id="clonemetwo0" class="clonemetwo">
-			  <select name="name" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="name">
-				<option value="math">מתמטיקה</option>
-				<option value="Programming">תכנות</option>
-				<option value="CS Theory">תאוריות מדעי המחשב</option>
-				<option value="Security">אבטחת מידע</option>
-				<option value="DataScience">מדעי המידע</option>
-				<option value="Networks">רשתות</option>
-				<option value="Bioinformatics">ביואינפורמטיקה</option>
+			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="ctype">
+				<option value=1>מתמטיקה</option>
+				<option value=2>תכנות</option>
+				<option value=3>תאוריות מדעי המחשב</option>
+				<option value=4>אבטחת מידע</option>
+				<option value=5>מדעי המידע</option>
+				<option value=6>רשתות</option>
+				<option value=7>ביואינפורמטיקה</option>
 
 
 
@@ -293,7 +293,7 @@ def buildCompanyQuery(course_query):
 
 
 
-			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ממוצע" />
+			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
 			</div>
 			<div align="right" id=avgentry>
