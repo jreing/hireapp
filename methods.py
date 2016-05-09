@@ -268,7 +268,7 @@ def buildCompanyQuery(course_query):
 			</div>
 			<div id="cloneme0" class="cloneme">
 			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" />
-			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
 			  <input type="button" id="buttondel0" class="buttondel" value="X" />
 			</div>
 			<div align="right" id="bysubject">
@@ -287,12 +287,12 @@ def buildCompanyQuery(course_query):
 
 
 
-			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ממוצע" />
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ממוצע" />
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
 			</div>
 			<div align="right" id=avgentry>
 			  <p class="text1">:ממוצע תואר מינימלי</p>
-			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="0" max="100" placeholder="ממוצע" id="avg" />
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="60" max="100" placeholder="ממוצע" id="avg" />
 			</div>
 			<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
@@ -349,7 +349,7 @@ def buildStudentEditPage(student):
 		htmlbody+= """
         <div id="cloneme0" class="cloneme">
           <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder='""" + str(crs.course.course_name) + """' id="name" />
-          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder='""" + str(crs.grade) + """' />
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder='""" + str(crs.grade) + """' />
           <input type="button" id="buttondel0" class="buttondel" value="X" /< </div>
 		<div align="right" id=cventry>"""
 		
