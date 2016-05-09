@@ -103,8 +103,9 @@ def buildQueryResultsPage(q):
   </div>
   </body>
   	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
+	
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -291,7 +292,7 @@ def buildCompanyQuery(course_query):
 			</div>
 			<div align="right" id=avgentry>
 			  <p class="text1">:ממוצע תואר מינימלי</p>
-			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ממוצע" id="avg" />
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="0" max="100" placeholder="ממוצע" id="avg" />
 			</div>
 			<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
@@ -348,20 +349,26 @@ def buildStudentEditPage(student):
 		htmlbody+= """
         <div id="cloneme0" class="cloneme">
           <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder='""" + str(crs.course.course_name) + """' id="name" />
-          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder'=""" + str(crs.grade) + """' />
-          <input type="button" id="buttondel0" class="buttondel" value="X" />
-		  
-        </div>"""
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder='""" + str(crs.grade) + """' />
+          <input type="button" id="buttondel0" class="buttondel" value="X" /< </div>
+		<div align="right" id=cventry>"""
 		
 
 
-		
-	htmlend = """<div align="right" id=cventry>
-          <p class="text1" >:אופציונלי-הזן קורות חיים</p>
+	if (student.cv_blob_key != None) :
+			hasCv=True
+	htmcv = """<p class="text1" >:קורות חיים</p>
         </div>
-        <input name="cv" type="file" id="cv" />
-        <div class="submit">
-          <input type="submit" value="שלח" id="button-blue" />
+		<div align="right">
+		<input name="cv" type="file" id="cv" />"""
+	if(hasCv):	
+		htmcv += """<button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" class="Cvbutton">הצג</button>
+         </div>"""
+
+
+
+	htmend = """<div class="submit">
+          <input type="submit" value="שמור" id="button-blue" />
           <div class="ease"> </div>
         </div>
       </form>
@@ -374,15 +381,6 @@ def buildStudentEditPage(student):
 
 </html>"""
 	
-	
-	
-	#htmlbody+= """<div class="form-element" ; align="right">
-		
-					#<div align="right">
-						#<p class="text">:עיר """+str(student.city)+"""</p>
-						
-					#</div>"""
 
-	#htmlend= """</html>"""
-	html=htmlstart + htmlbody
+	html=htmlstart + htmlbody + htmcv + htmend
 	return html

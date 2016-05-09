@@ -1,5 +1,7 @@
 var newNum = 0;
 var elems = 1;
+
+
 var courses = $("#courses option").map(function () {
     return this.value;
 }).get();
@@ -59,8 +61,9 @@ $('#buttonadd').click(function ab() {
   //if (elems == 1)
    // $('.buttondel').attr('disabled', 'disabled');
 //});
-function validateForm() {
 
+function validateForm() {
+/*
 	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
         var value = $(element).val();   
         return value !== "" && courses.indexOf(value) < 0;
@@ -75,13 +78,11 @@ function validateForm() {
     if ( !allCourseNamesValid || !allGradesValid) {
 		alert("invalid course name");
 		return false }
-
+*/
 	return true;
-
-
 }
 
-}
+
 
 $('.buttondel')[ 0 ].onclick= b;
 $('.buttondel').attr('disabled', 'disabled');
