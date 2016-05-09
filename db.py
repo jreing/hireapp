@@ -42,7 +42,9 @@ class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
 	course_name = ndb.StringProperty(indexed=True, required=True)
-	course_type = ndb.StringProperty(indexed=False, required=True)
+	course_type = ndb.IntegerProperty(indexed=False, required=True)
+	course_weight = ndb.IntegerProperty(indexed=False, required=True)
+	
 
 class Student_Course(ndb.Model):
 	grade = ndb.IntegerProperty(indexed=True, required=True)
@@ -111,13 +113,13 @@ class minGradeQuery(webapp2.RequestHandler):
 class dbBuild(webapp2.RequestHandler):
 	
 	def get(self):
-		inputfile=open("courses.csv")
-		text = inputfile.readlines()
-		for i in range(0,len(text)-2,2):
-			c=Course(course_name=text[i],course_id=text[i+1], course_type="class")
-			c.put()
-			
-		inputfile.close()
+		import csv
+		with open('courses2.csv', 'rb') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter=',')
+			for row in spamreader:
+				c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
+				c.put()
+		
 		self.response.write('Database built')
 
 #deletes all courses from DB	
