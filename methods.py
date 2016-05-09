@@ -204,7 +204,7 @@ def buildStudentInputPage(course_query):
 		    </div>
 		    <div id="cloneme0" class="cloneme">
 		      <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" autocomplete="off"/>
-		      <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
+		      <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
 		      <input type="button" id="buttondel0" class="buttondel" value="X" />
 			  
 		    </div>
