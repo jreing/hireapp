@@ -68,7 +68,6 @@ class Student(ndb.Model):
 		#logging.info (ctypes)
 		#logging.info ("GET C TYPES FINISHED")
 		return ctypes
-		
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=True)
@@ -76,13 +75,15 @@ class Student(ndb.Model):
 	avg= ndb.IntegerProperty(indexed=True, required=True)
 	cv_blob_key = ndb.BlobKeyProperty()
 	user_id= ndb.StringProperty(indexed=True, required=True)
-	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()), repeated=True, indexed=True)
+	email=ndb.StringProperty(indexed=True, required=True)
+	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
+	
 	
 class Company(ndb.Model):
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	user_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=False)
-	#email = ndb.StringProperty(indexed=True, required=True)
+	email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=False)
 	
 	

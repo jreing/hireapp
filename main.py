@@ -31,20 +31,26 @@ class CompanyHandler(webapp2.RequestHandler):
 		#self.response.write(f.read())
 		#f.close()               
 
+class getEmail(webapp2.RequestHandler):
+	def get(self):
+		user_id = self.request.cookies.get('id')
+		student_query=Student.query(Student.user_id==user_id).get()
+		comapny_query=Company.query(Company.user_id==user_id).get()
+		if (student_query!=None):
+			email = student_query.email
+		elif (comapny_query!=None):
+			email = comapny_query.email
+		
+		logging.info(email)
+		
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
-
 		#logging.info("enter token sign in")
 
 		google_id=self.request.get('user_id')
-		user=users.User(google_id)
-		logging.info ("CHECK")
-		myemail=user.nickname()
-		logging.info (myemail)
-		
-		
-		#logging.info(myemail)
+
 		email=self.request.get('email')
+		
 		isStudent = self.request.get('isStudent')
 		
 		if (isStudent == 'true'):
@@ -55,7 +61,7 @@ class tokenSignIn(webapp2.RequestHandler):
 				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 				logging.info("writing student")
 				logging.info(user_id)
-				st= Student(student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id)
+				st= Student(email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id)
 				st.put()
 			else:
 				user_id=user_query.user_id
@@ -67,7 +73,7 @@ class tokenSignIn(webapp2.RequestHandler):
 				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 				logging.info("writing company")
 				logging.info(user_id)
-				cmp= Company(google_id=google_id, user_id=user_id, name="", city="")
+				cmp= Company(email=email, google_id=google_id, user_id=user_id, name="", city="")
 				cmp.put()
 			else:
 				user_id=user_query.user_id
@@ -115,10 +121,12 @@ class WelcomeHandler(webapp2.RequestHandler):
 class StudentHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
-		logging.info("reading cookie")
-		logging.info(user_id)
+		#logging.info("reading cookie")
+		#logging.info(user_id)
 		st = Student.query(Student.user_id==user_id).get()
-		if (st.avg == -1):
+		if (st==None):
+			self.response.write ("""<html> an error has occured, please reload page""")
+		elif (st.avg == -1):
 			self.response.write ("""<html><script>
 				window.location="/studentInputPage";
 				</script></html>""")
@@ -179,6 +187,7 @@ app = webapp2.WSGIApplication([
 	('/studentEditPage', StudentEditHandler),
 	('/getMyCV', getMyCV),
 	('/getCV', getCV),
+	('/getEmail', getEmail),
 	('/', LogInForBarak)
 	], debug=True)
 
