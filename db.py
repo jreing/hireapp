@@ -123,7 +123,6 @@ class minGradeQuery(webapp2.RequestHandler):
 		ctype_avgs=self.request.get("ctype_avg")
 		
 		q=Student.query()
-		logging.info(ctypes[i])
 		
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)-1):	
