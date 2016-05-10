@@ -76,6 +76,18 @@ class MessageHandler(webapp2.RequestHandler):
 
 
 class MessageSend(webapp2.RequestHandler):
+	def getEmail(self):
+		user_id = self.request.cookies.get('id')
+		student_query=Student.query(Student.user_id==user_id).get()
+		comapny_query=Company.query(Company.user_id==user_id).get()
+		if (student_query!=None):
+			email = student_query.email
+		elif (comapny_query!=None):
+			email = comapny_query.email
+		
+		logging.info(email)
+		return email
+
 	def post(self):
 		#self.conNum = threadNum(num=0)
 		#self.conNum.put()
@@ -148,3 +160,5 @@ class MessageReply(webapp2.RequestHandler):
 	def post(self):
 		self.message = Message(cont = self.request.get('mess'))
 
+
+		

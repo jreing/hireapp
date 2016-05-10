@@ -31,18 +31,6 @@ class CompanyHandler(webapp2.RequestHandler):
 		#self.response.write(f.read())
 		#f.close()               
 
-class getEmail(webapp2.RequestHandler):
-	def get(self):
-		user_id = self.request.cookies.get('id')
-		student_query=Student.query(Student.user_id==user_id).get()
-		comapny_query=Company.query(Company.user_id==user_id).get()
-		if (student_query!=None):
-			email = student_query.email
-		elif (comapny_query!=None):
-			email = comapny_query.email
-		
-		logging.info(email)
-		
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
 		#logging.info("enter token sign in")
@@ -187,7 +175,6 @@ app = webapp2.WSGIApplication([
 	('/studentEditPage', StudentEditHandler),
 	('/getMyCV', getMyCV),
 	('/getCV', getCV),
-	('/getEmail', getEmail),
 	('/', LogInForBarak)
 	], debug=True)
 
