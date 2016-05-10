@@ -338,7 +338,8 @@ def buildCompanyQuery(course_query):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
-def buildStudentEditPage(student):
+def buildStudentEditPage(student, course_query):
+	hasCv=False
 	htmlstart="""﻿<!DOCTYPE html>
 <html lang="he">
 	<link rel="stylesheet" type="text/css" href="studentEditPage/style.css">
@@ -352,7 +353,7 @@ def buildStudentEditPage(student):
         <p class="text1">:עיר מגורים</p>
       </div>
 	<form class="form" id="form1" action="/dbHandler" method="post">
-      <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder='""" + str(student.city) + """'align "right" id="city" />
+      <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" value='""" + str(student.city) + """'align "right" id="validateFormcity" />
       <div align="right">"""
 
 	htmlbody = """<p class="text1">:הקורסים שלי</p>
@@ -360,32 +361,45 @@ def buildStudentEditPage(student):
 		<div class="inputline">
           <input type="button" id="buttonadd" value="הוסף קורס" />
         </div>"""
+	j = 0
 	for crs in student.student_courses:
 		htmlbody+= """
-        <div id="cloneme0" class="cloneme">
-          <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder='""" + str(crs.course.course_name) + """' id="name" />
-          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder='""" + str(crs.grade) + """' />
-          <input type="button" id="buttondel0" class="buttondel" value="X" /< </div>
-		<div align="right" id=cventry>"""
+        <div id="cloneme""" + str(j) + """"class="cloneme">
+          <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" />
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" value='""" + str(crs.grade) + """' />
+          <input type="button" id="buttondel""" + str(j) + """" class="buttondel" onclick= "b(this.id)" value="X" />
+		 </div>"""
+		j+=1
 		
 
 
 	if (student.cv_blob_key != None) :
 			hasCv=True
-	htmcv = """<p class="text1" >:קורות חיים</p>
+	htmlcv = """<div align="right" id=cventry>
+				<p class="text1" >:קורות חיים</p>
         </div>
 		<div align="right">
 		<input name="cv" type="file" id="cv" />"""
 	if(hasCv):	
-		htmcv += """<button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" class="Cvbutton">הצג</button>
+		htmlcv += """<button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" class="Cvbutton">הצג</button>
          </div>"""
 
 
 
-	htmend = """<div class="submit">
+	htmlButt = """<div class="submit">
           <input type="submit" value="שמור" id="button-blue" />
           <div class="ease"> </div>
-        </div>
+        </div>"""
+
+	
+
+	htmlDlist= """<datalist id="courses" hidden>"""
+	i = 0 
+	for course in course_query:
+		i=i+1
+		htmlDlist+="""<option> """+  str(course.course_name) + """</option> data-id="1" """
+		
+	htmlend="""</datalist>
       </form>
     </div>
 		<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
@@ -397,5 +411,5 @@ def buildStudentEditPage(student):
 </html>"""
 	
 
-	html=htmlstart + htmlbody + htmcv + htmend
+	html=htmlstart + htmlbody + htmlcv + htmlButt + htmlDlist +htmlend
 	return html

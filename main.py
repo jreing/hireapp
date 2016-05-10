@@ -131,7 +131,9 @@ class StudentEditHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		student_query = Student.query(Student.user_id==user_id).get()
-		page = buildStudentEditPage(student_query)
+		logging.info(student_query.city)
+		course_query = Course.query()
+		page = buildStudentEditPage(student_query, course_query )
 		self.response.write(page)
 
 

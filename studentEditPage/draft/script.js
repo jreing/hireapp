@@ -1,19 +1,12 @@
-var newNum = $('.cloneme').length -1;
-var elems = $('.cloneme').length;
-
-
+var newNum = 0;
+var elems = 1;
 var courses = $("#courses option").map(function () {
     return this.value;
 }).get();
 
-if (elems == 1){
-	var inputs = document.getElementsByClassName("buttondel");
-	inputs[0].disabled = true;
-}
-
-function b(id) {
+function b() {
+  alert(this.id)
   
-  num = id.substring(9);
   elems--;
 
   $('#cloneme' + num).remove(); // remove the correct element
@@ -41,6 +34,7 @@ $('#buttonadd').click(function ab() {
   newElem.children().eq(1).val('');
   newElem.children().eq(2).attr('id', 'buttondel' + newNum).attr('class', 'buttondel');
  
+  newElem.children().eq(2)[ 0 ].onclick= b;
  
   // insert the new element after the last "duplicatable" input field
   //$('#cloneme' + (newNum-1)).after(newElem);
@@ -81,7 +75,7 @@ function validateForm() {
 
 }
 
-
+$('.buttondel')[ 1 ].onclick= b;
 
 
 

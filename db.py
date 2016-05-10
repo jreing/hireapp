@@ -165,6 +165,7 @@ class dbHandler(webapp2.RequestHandler):
 		#get student's cv file
 		cv=self.request.get('cv')
 		if (cv!=""):
+			logging.info ("cv detected")
 			#validate the user's file is a REAL PDF.
 			if (self.checkPdfFile(cv)==False):
 				#TODO - more elegent error message
@@ -204,9 +205,12 @@ class dbHandler(webapp2.RequestHandler):
 			</script></html>""")
 	
 	def checkPdfFile (self,file):
+		logging.info ("check cv")
 		cvFile= StringIO(file)
+		
 		try:
 			doc = pyPdf.PdfFileReader(cvFile)
+			logging.info ("cv check passed")
 			return True
 		except: 
 			return False
