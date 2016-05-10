@@ -295,19 +295,14 @@ def buildCompanyQuery(course_query):
 			<div id="clonemetwo0" class="clonemetwo">
 			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="ctype">
 				<option value=0>(לא נבחר אשכול)</option>
-			  <option value=1>מתמטיקה</option>
+				<option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
 				<option value=3>תאוריות מדעי המחשב</option>
 				<option value=4>אבטחת מידע</option>
 				<option value=5>מדעי המידע</option>
 				<option value=6>רשתות</option>
 				<option value=7>ביואינפורמטיקה</option>
-
-
-
 			  </select>
-
-
 
 			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
@@ -404,7 +399,7 @@ def buildStudentEditPage(student, course_query):
 	i = 0 
 	for course in course_query:
 		i=i+1
-		htmlDlist+="""<option> """+  str(course.course_name) + """</option> data-id="1" """
+		htmlDlist+="""<option data-id="1" > """+  str(course.course_name) + """</option> """
 		
 	htmlend="""</datalist>
       </form>
