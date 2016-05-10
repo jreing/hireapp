@@ -2,6 +2,7 @@
 var isStudent=undefined;
 
 function ForceLogin() {
+	setTimeout(function (){}, 1000);
 	 if (isStudent==true){
 		window.location="/studenthandler";
 	}

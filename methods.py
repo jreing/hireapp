@@ -65,7 +65,7 @@ def buildQueryResultsPage(q):
 		
 		if (hasCv) :
 			htmlbody+="""
-			<div class="form-element" ; align="right">
+			<div class="form-element" align="right">
 			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
@@ -77,7 +77,7 @@ def buildQueryResultsPage(q):
 		else :
 			htmlbody+="""
 
-			<div class="form-element" ; align="right">
+			<div class="form-element" align="right">
 
 			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
@@ -103,7 +103,7 @@ def buildQueryResultsPage(q):
   </div>
   </body>
   	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	
 	</html>"""
@@ -169,7 +169,7 @@ def buildStudentOffersPage(conv_query, user_id):
   </body>
 	<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
-	<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+	<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -184,7 +184,7 @@ def buildStudentInputPage(course_query):
 <script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
 
 	  <body>
-<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 	  <div id="form-main">
 		<div align="right">
 		  <p class="titletext">:הרשמה</p>
@@ -217,12 +217,18 @@ def buildStudentInputPage(course_query):
 
 		    <input name="cv" type="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 
+
 		    <div align="right" id=avgEntry>
 		      <p class="text1" >:אופציונלי-הזן ממוצע כללי</p>
 		    </div>
-		    <div id="cloneme0" class="cloneme">
+		    <div id="cloneme0" class="cloneme" align="right">
 		      <input name="average" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="average" placeholder="ממוצע" />			  
 		    </div>
+
+		    <div class="getEmailNotification" align="right">
+			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>
+			  <input type="checkbox" name="getEmailNotification" id="getEmailNotification" class="checkbox" >
+			</div>
 		
 		    <div class="submit">
 		      <input type="submit" value="שלח" id="button-blue" />
@@ -288,7 +294,8 @@ def buildCompanyQuery(course_query):
 			</div>
 			<div id="clonemetwo0" class="clonemetwo">
 			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="ctype">
-				<option value=1>מתמטיקה</option>
+				<option value=0>(לא נבחר אשכול)</option>
+			  <option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
 				<option value=3>תאוריות מדעי המחשב</option>
 				<option value=4>אבטחת מידע</option>
@@ -329,7 +336,7 @@ def buildCompanyQuery(course_query):
 				
 	  </div>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-		<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+		<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
 		<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </body>
 	  

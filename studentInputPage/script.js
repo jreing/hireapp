@@ -63,22 +63,25 @@ $('#buttonadd').click(function ab() {
 //});
 
 function validateForm() {
-/*
+	
 	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
         var value = $(element).val();   
-        return value !== "" && courses.indexOf(value) < 0;
+        return value === "" || courses.indexOf(value) < 0;
     }).length === 0;
 
 
-	var allGradesValid = $(".feedback-input2").filter(function (key, element) {
-        var value = $(element).val();   
-        return value !== "";
-    }).length === 0;
-
-    if ( !allCourseNamesValid || !allGradesValid) {
-		alert("invalid course name");
+ 	var allGradesValid = $(".feedback-input2").filter(function (key, element) {
+        var value = $(element).val();
+        return value === "";
+    }).length === 0; 
+	
+    if ( !allCourseNamesValid) {
+		alert("please enter a valid course name");
 		return false }
-*/
+		
+    if (!allGradesValid) {
+		alert("please enter a grade between 0 and 100");
+		return false }
 	return true;
 }
 
