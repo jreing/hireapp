@@ -65,7 +65,7 @@ def buildQueryResultsPage(q):
 		
 		if (hasCv) :
 			htmlbody+="""
-			<div class="form-element" ; align="right">
+			<div class="form-element" align="right">
 			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
@@ -77,7 +77,7 @@ def buildQueryResultsPage(q):
 		else :
 			htmlbody+="""
 
-			<div class="form-element" ; align="right">
+			<div class="form-element" align="right">
 
 			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
@@ -217,12 +217,18 @@ def buildStudentInputPage(course_query):
 
 		    <input name="cv" type="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 
+
 		    <div align="right" id=avgEntry>
 		      <p class="text1" >:אופציונלי-הזן ממוצע כללי</p>
 		    </div>
-		    <div id="cloneme0" class="cloneme">
+		    <div id="cloneme0" class="cloneme" align="right">
 		      <input name="average" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="average" placeholder="ממוצע" />			  
 		    </div>
+
+		    <div class="getEmailNotification" align="right">
+			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>
+			  <input type="checkbox" name="getEmailNotification" id="getEmailNotification" class="checkbox" >
+			</div>
 		
 		    <div class="submit">
 		      <input type="submit" value="שלח" id="button-blue" />
