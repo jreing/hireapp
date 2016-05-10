@@ -95,7 +95,9 @@ class minGradeQuery(webapp2.RequestHandler):
 		for c in student.ctypes.split(","):
 			if c==ctype: return True
 		return False
-
+	
+	#a function that given a student and ctype calculates his/her avg 
+	#in that ctype
 	def studentCTypeAvg(self,student,ctype):
 		weighted_sum=0
 		num_points=0
@@ -117,14 +119,11 @@ class minGradeQuery(webapp2.RequestHandler):
 		course_names=self.request.get_all('name')
 		grades= self.request.get_all('grade')
 		average=self.request.get('avg')	
-		ctype=self.request.get("ctype")
-		ctype_avg=self.request.get("ctype_avg")
+		ctypes=self.request.get("ctype")
+		ctype_avgs=self.request.get("ctype_avg")
 		
 		q=Student.query()
-		
-
-		logging.info(ctype)
-		
+		logging.info(ctypes[i])
 		
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)-1):	
@@ -136,23 +135,27 @@ class minGradeQuery(webapp2.RequestHandler):
 			q=q.filter (Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
 		#filter out by average
 		if average!="":
-			average=int(average);
-			q=q.filter (Student.avg>=average)	
+			q=q.filter (Student.avg>=int(average))
+			logging.info("MAIN AVERAGE QUERY")
+			logging.info (q.fetch(100))
 
 		#self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
 		
-		if(ctype!=0):
-			filteredRes=[]
-			for student in q:
-				if self.studentHasCType(student,ctype):
-					sctavg=self.studentCTypeAvg(student,ctype)
-					#logging.info("SCTAVG:" + str(sctavg))
-					if (int(sctavg)>=int(ctype_avg)):
-						filteredRes.append(student)
-			q=filteredRes
-			#logging.info(q)
+		for i in range(0,len(ctypes)-1):
+			ctypes[i]=int(ctypes[i])
+			if(ctypes[i]!=0):
+				logging.info("CTYPE QUERY")
+				filteredRes=[]
+				for student in q:
+					if self.studentHasCType(student,ctypes[i]):
+						sctavg=self.studentCTypeAvg(student,ctype[i])
+						#logging.info("SCTAVG:" + str(sctavg))
+						if (int(sctavg)>=int(ctype_avg)):
+							filteredRes.append(student)
+				q=filteredRes
+				#logging.info(q)
 			
 		page = buildQueryResultsPage(q)
 		self.response.write(page)
@@ -162,7 +165,7 @@ class dbBuild(webapp2.RequestHandler):
 	
 	def get(self):
 		import csv
-		with open('courses2.csv', 'rb') as csvfile:
+		with open('courses3.csv', 'rb') as csvfile:
 			spamreader = csv.reader(csvfile, delimiter=',')
 			for row in spamreader:
 				c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
@@ -238,7 +241,7 @@ class dbHandler(webapp2.RequestHandler):
 		#logging.info(s)
 		st.name = "demo"
 		st.city = self.request.get('city')
-		st.avg = 1000
+		st.avg = int(self.request.get('average'))
 		if (cv!=""):
 			st.cv_blob_key=BlobKey(cv_blob_key)
 		else:
