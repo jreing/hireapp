@@ -214,7 +214,16 @@ def buildStudentInputPage(course_query):
 		    <div align="right" id=cventry>
 		      <p class="text1" >:אופציונלי-הזן קורות חיים</p>
 		    </div>
+
 		    <input name="cv" type="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
+
+		    <div align="right" id=avgEntry>
+		      <p class="text1" >:אופציונלי-הזן ממוצע כללי</p>
+		    </div>
+		    <div id="cloneme0" class="cloneme">
+		      <input name="average" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="average" placeholder="ממוצע" />			  
+		    </div>
+		
 		    <div class="submit">
 		      <input type="submit" value="שלח" id="button-blue" />
 		      <div class="ease"> </div>
