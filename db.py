@@ -161,8 +161,10 @@ class minGradeQuery(webapp2.RequestHandler):
 				q = [val for val in filteredRes if val in q]
 				logging.info(filteredRes)
 			else:
-				q=filteredRes
+				if (ctypes[0]!=0):
+					q=filteredRes
 		
+		logging.info(q)
 		page = buildQueryResultsPage(q)
 		self.response.write(page)
 
