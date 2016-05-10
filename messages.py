@@ -1,6 +1,7 @@
 import cgi
 import urllib
 import datetime
+import time as t
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -78,9 +79,7 @@ class MessageSend(webapp2.RequestHandler):
 	def post(self):
 		#self.conNum = threadNum(num=0)
 		#self.conNum.put()
-		
-	
-		
+
 		recList = self.request.get_all('studentselect') 
 		destAdd = self.request.get('recv') + "@example.com"
 		#destId = users.User(destAdd)
@@ -112,11 +111,35 @@ class MessageSend(webapp2.RequestHandler):
 			self.conversation.put()
 			self.message.put()
 
-		self.response.write("""<html><body> <b> message send successfully! </b> </body></html>""")
+		#self.response.write("""<html><body> <b> message send successfully! </b> </body></html>""")
 		cours_query = Course.query()
 		page = buildCompanyQuery(cours_query)
 		self.response.write(page)
 		#self.response.write('</pre></body></html>')
+
+		self.response.write("""<html>
+									<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
+
+									<body>
+										
+									</body>
+										<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
+
+									<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="StudentWelcomePage/script.js"></script>
+	<div class="popup" data-popup="popup-1">
+    <div class="popup-inner">
+        <h2 class="txt">message was send successfully!</h2>
+		
+        <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+    </div>
+</div>
+
+		<a class="btn" hidden data-popup-open="popup-1" href="#">Open Popup #1</a>
+														
+
+									</html>""")
+
 
 class MessageReply(webapp2.RequestHandler):
 	def get(self):

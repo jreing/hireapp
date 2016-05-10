@@ -42,17 +42,32 @@ class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
 	course_name = ndb.StringProperty(indexed=True, required=True)
-	course_type = ndb.StringProperty(indexed=False, required=True)
+	course_type = ndb.IntegerProperty(indexed=False, required=True)
+	course_weight = ndb.IntegerProperty(indexed=False, required=True)
+	
 
 class Student_Course(ndb.Model):
 	grade = ndb.IntegerProperty(indexed=True, required=True)
 	#weight = ndb.IntegerProperty(indexed=False, required=True)
 	#semester = ndb.StringProperty(indexed=False, required=True)
 	course= ndb.StructuredProperty (Course, required=True)
+	#course_type=ndb.ComputedProperty(lambda self: self.course.course_type)
 	#hashed_id = ndb.IntegerProperty(indexed=False)
 	
-	
 class Student(ndb.Model):
+	#function for computed property that gets types of courses student has
+	def getCTypes(self):
+		ctypes=[]
+		#logging.info ("GET C TYPES")
+		for sc in self.student_courses:
+			if (sc.course==None): 
+				logging.info ("NONE")
+				continue
+			if str(sc.course.course_type) not in ctypes:
+				ctypes.append(str(sc.course.course_type))
+		#logging.info (ctypes)
+		#logging.info ("GET C TYPES FINISHED")
+		return ctypes
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=True)
@@ -60,37 +75,63 @@ class Student(ndb.Model):
 	avg= ndb.IntegerProperty(indexed=True, required=True)
 	cv_blob_key = ndb.BlobKeyProperty()
 	user_id= ndb.StringProperty(indexed=True, required=True)
-
-
-
+	email=ndb.StringProperty(indexed=True, required=True)
+	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
+	
+	
 class Company(ndb.Model):
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	user_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=False)
-	#email = ndb.StringProperty(indexed=True, required=True)
+	email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=False)
 	
 	
-	
 class minGradeQuery(webapp2.RequestHandler):
+
+	#function that check whether student has courses in the relevant cluster
+	def studentHasCType(self,student, ctype):
+		
+		for c in student.ctypes.split(","):
+			if c==ctype: return True
+		return False
+
+	def studentCTypeAvg(self,student,ctype):
+		weighted_sum=0
+		num_points=0
+		#logging.info("STARTED AVG" +str(ctype))
+		
+		for sc in student.student_courses:
+			#logging.info(sc.course.course_type)
+			#logging.info(ctype)
+			if (str(sc.course.course_type)==str(ctype)):
+				
+				weighted_sum+=sc.grade*sc.course.course_weight
+				num_points+=sc.course.course_weight
+				#logging.info(str(weighted_sum)+ "/"+str(num_points))
+				
+		if (num_points==0): return 0
+		else: return weighted_sum/num_points
+		
 	def post(self):	 
 		course_names=self.request.get_all('name')
 		grades= self.request.get_all('grade')
 		average=self.request.get('avg')	
-				
-		#self.response.write('<html><body>')
-		#debug prints
+		ctype=self.request.get("ctype")
+		ctype_avg=self.request.get("ctype_avg")
 		
-		#self.response.write(int(grades[0]))
-		#self.response.write(int(grades[1]))
-		#self.response.write("<br>End of Debug prints<br><br>")
 		q=Student.query()
+		
+
+		logging.info(ctype)
+		
+		
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)-1):	
 			if grades[i]=="" :
 				break
-			logging.info(i)
-			logging.info (len(grades)-1)
+			#logging.info(i)
+			#logging.info (len(grades)-1)
 			grade=int(grades[i])
 			q=q.filter (Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
 		#filter out by average
@@ -101,9 +142,18 @@ class minGradeQuery(webapp2.RequestHandler):
 		#self.response.write(q)
 		## TODO: write the response in a nicer way
 		q.fetch(100)
-		#for student in q:
-		#	self.response.write("""<br> <h1 style="color:red">Student %s <br>""" %student)
-		#self.response.write('End of Results</html></body>')
+		
+		if(ctype!=0):
+			filteredRes=[]
+			for student in q:
+				if self.studentHasCType(student,ctype):
+					sctavg=self.studentCTypeAvg(student,ctype)
+					#logging.info("SCTAVG:" + str(sctavg))
+					if (int(sctavg)>=int(ctype_avg)):
+						filteredRes.append(student)
+			q=filteredRes
+			#logging.info(q)
+			
 		page = buildQueryResultsPage(q)
 		self.response.write(page)
 
@@ -111,13 +161,13 @@ class minGradeQuery(webapp2.RequestHandler):
 class dbBuild(webapp2.RequestHandler):
 	
 	def get(self):
-		inputfile=open("courses.csv")
-		text = inputfile.readlines()
-		for i in range(0,len(text)-2,2):
-			c=Course(course_name=text[i],course_id=text[i+1], course_type="class")
-			c.put()
-			
-		inputfile.close()
+		import csv
+		with open('courses2.csv', 'rb') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter=',')
+			for row in spamreader:
+				c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
+				c.put()
+		
 		self.response.write('Database built')
 
 #deletes all courses from DB	
@@ -155,6 +205,7 @@ class dbHandler(webapp2.RequestHandler):
 		user_id = self.request.cookies.get('id')
 		
 		st = Student.query(Student.user_id==user_id).get()
+		
 		#get student's cv file
 		cv=self.request.get('cv')
 		if (cv!=""):
@@ -168,19 +219,22 @@ class dbHandler(webapp2.RequestHandler):
 			cv_blob_key=self.CreateFile(st.google_id,cv)
 		
 		course_names=self.request.get('name', allow_multiple=True)
+				
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
 			self.response.write ("Error")
 		s=[]
 		for i in range(0,len(course_names)):
-			c=Course(course_id='1', course_name=course_names[i], course_type="class")
-			s.append(Student_Course(grade=int(grade[i]), course=c))
+			course_query=Course.query (Course.course_name==course_names[i]).get()
+			#logging.info (course_query)
+			s.append(Student_Course(grade=int(grade[i]), course=course_query))
 		
 		
 		#people_resource = service.people()
 		#people_document = people_resource.get(userId='me').execute(
-		
+		city = self.request.get('city')
 		st.student_courses=s
+		#logging.info(s)
 		st.name = "demo"
 		st.city = self.request.get('city')
 		st.avg = 1000
@@ -188,10 +242,8 @@ class dbHandler(webapp2.RequestHandler):
 			st.cv_blob_key=BlobKey(cv_blob_key)
 		else:
 			st.cv_blob_key=None
-		#st= Student(student_courses=s,id="2", name="demo", city="demo",avg=40)
 		st.put()
-		## TODO: write the response in a nicer way
-		#self.response.write('<html><body>Test Entry added</body></html>')
+		
 		self.response.write ("""<html><script>
 			window.location="StudentWelcomePage/index.html";
 			</script></html>""")

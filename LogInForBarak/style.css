@@ -27,7 +27,6 @@ html {
   position: absolute;
   margin-top: 100px;
   margin-left: -260px;
-  -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
 }
 
@@ -100,7 +99,6 @@ html {
 
 #employ_button {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  float: center;
   width: 100%;
   border: #fbfbfb solid 4px;
   cursor: pointer;

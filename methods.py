@@ -65,7 +65,7 @@ def buildQueryResultsPage(q):
 		
 		if (hasCv) :
 			htmlbody+="""
-			<div class="form-element" ; align="right">
+			<div class="form-element" align="right">
 			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
@@ -77,7 +77,7 @@ def buildQueryResultsPage(q):
 		else :
 			htmlbody+="""
 
-			<div class="form-element" ; align="right">
+			<div class="form-element" align="right">
 
 			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
@@ -204,7 +204,7 @@ def buildStudentInputPage(course_query):
 		    </div>
 		    <div id="cloneme0" class="cloneme">
 		      <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" autocomplete="off"/>
-		      <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
+		      <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
 		      <input type="button" id="buttondel0" class="buttondel" value="X" />
 			  
 		    </div>
@@ -214,7 +214,22 @@ def buildStudentInputPage(course_query):
 		    <div align="right" id=cventry>
 		      <p class="text1" >:אופציונלי-הזן קורות חיים</p>
 		    </div>
+
 		    <input name="cv" type="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
+
+
+		    <div align="right" id=avgEntry>
+		      <p class="text1" >:אופציונלי-הזן ממוצע כללי</p>
+		    </div>
+		    <div id="cloneme0" class="cloneme" align="right">
+		      <input name="average" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="average" placeholder="ממוצע" />			  
+		    </div>
+
+		    <div class="getEmailNotification" align="right">
+			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>
+			  <input type="checkbox" name="getEmailNotification" id="getEmailNotification" class="checkbox" >
+			</div>
+		
 		    <div class="submit">
 		      <input type="submit" value="שלח" id="button-blue" />
 		      <div class="ease"> </div>
@@ -268,7 +283,7 @@ def buildCompanyQuery(course_query):
 			</div>
 			<div id="cloneme0" class="cloneme">
 			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" />
-			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ציון" />
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
 			  <input type="button" id="buttondel0" class="buttondel" value="X" />
 			</div>
 			<div align="right" id="bysubject">
@@ -278,21 +293,28 @@ def buildCompanyQuery(course_query):
 			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
 			</div>
 			<div id="clonemetwo0" class="clonemetwo">
-			  <select name="name" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="name">
-				<option value="CsGeneral">מדמ"ח כללי</option>
-				<option value="InformationSecurity">אבטחת מידע</option>
-				<option value="Programming">תכנות</option>
-				<option value="DataScience">מדעי המידע</option>
+			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="ctype">
+				<option value=0>(לא נבחר אשכול)</option>
+			  <option value=1>מתמטיקה</option>
+				<option value=2>תכנות</option>
+				<option value=3>תאוריות מדעי המחשב</option>
+				<option value=4>אבטחת מידע</option>
+				<option value=5>מדעי המידע</option>
+				<option value=6>רשתות</option>
+				<option value=7>ביואינפורמטיקה</option>
+
+
+
 			  </select>
 
 
 
-			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder="ממוצע" />
+			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
 			</div>
 			<div align="right" id=avgentry>
 			  <p class="text1">:ממוצע תואר מינימלי</p>
-			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="ממוצע" id="avg" />
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="60" max="100" placeholder="ממוצע" id="avg" />
 			</div>
 			<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
@@ -349,18 +371,26 @@ def buildStudentEditPage(student):
 		htmlbody+= """
         <div id="cloneme0" class="cloneme">
           <input name="name" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder='""" + str(crs.course.course_name) + """' id="name" />
-          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="0" max="100" id="grade" placeholder='""" + str(crs.grade) + """' />
+          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder='""" + str(crs.grade) + """' />
           <input type="button" id="buttondel0" class="buttondel" value="X" /< </div>
 		<div align="right" id=cventry>"""
 		
 
 
-		
-	htmlend = """<p class="text1" >:אופציונלי-הזן קורות חיים</p>
+	if (student.cv_blob_key != None) :
+			hasCv=True
+	htmcv = """<p class="text1" >:קורות חיים</p>
         </div>
-        <input name="cv" type="file" id="cv" />
-        <div class="submit">
-          <input type="submit" value="שלח" id="button-blue" />
+		<div align="right">
+		<input name="cv" type="file" id="cv" />"""
+	if(hasCv):	
+		htmcv += """<button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" class="Cvbutton">הצג</button>
+         </div>"""
+
+
+
+	htmend = """<div class="submit">
+          <input type="submit" value="שמור" id="button-blue" />
           <div class="ease"> </div>
         </div>
       </form>
@@ -373,15 +403,6 @@ def buildStudentEditPage(student):
 
 </html>"""
 	
-	
-	
-	#htmlbody+= """<div class="form-element" ; align="right">
-		
-					#<div align="right">
-						#<p class="text">:עיר """+str(student.city)+"""</p>
-						
-					#</div>"""
 
-	#htmlend= """</html>"""
-	html=htmlstart + htmlbody +htmlend
+	html=htmlstart + htmlbody + htmcv + htmend
 	return html

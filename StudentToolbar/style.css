@@ -16,18 +16,15 @@
 #cssmenu {
   border: 1px solid #133e40;
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
   width: auto;
 }
 #cssmenu ul {
-  zoom: 1;
   background: #3498db;
   padding: 5px 10px;
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
@@ -48,7 +45,6 @@
 }
 #cssmenu li a {
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
@@ -61,7 +57,6 @@
 }
 #cssmenu li.active {
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
@@ -69,20 +64,17 @@
 }
 #cssmenu li.active a {
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
   display: block;
   background: #1e6468;
   border: 1px solid #133e40;
-  -moz-box-shadow: inset 0 5px 10px #133e40;
   -webkit-box-shadow: inset 0 5px 10px #133e40;
   box-shadow: inset 0 5px 10px #133e40;
 }
 #cssmenu li:hover {
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
@@ -90,14 +82,12 @@
 }
 #cssmenu li:hover a {
   -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
   display: block;
   background: #1e6468;
   border: 1px solid #133e40;
-  -moz-box-shadow: inset 0 5px 10px #133e40;
   -webkit-box-shadow: inset 0 5px 10px #133e40;
   box-shadow: inset 0 5px 10px #133e40;
 }

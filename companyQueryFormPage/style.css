@@ -27,7 +27,6 @@ html {
   position: absolute;
   margin-top: 100px;
   margin-left: -260px;
-  -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
 }
 
@@ -92,14 +91,6 @@ input[type="text"]:-moz-placeholder {
     text-align: right;
 }
 
-input[type="text"]:-ms-input-placeholder {
-    text-align: right;
-}
-
-input[type="text"]::-webkit-input-placeholder {
-    text-align: right;
-}
-
 .feedback-input select option {
   text-align:right;
 }
@@ -109,7 +100,6 @@ select{
 
 .feedback-input:focus {
   background: #fff;
-  box-shadow: 0;
   border: 3px solid #3498db;
   color: #3498db;
   outline: none;
@@ -157,16 +147,10 @@ textarea {
     text-align: right;
 }
 
-::-webkit-input-placeholder { /* WebKit browsers */
-    direction: rtl;
-}
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
     direction: rtl;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ but I'm not sure about working */
-    direction: rtl;
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
     direction: rtl;
 }
 
@@ -303,5 +287,62 @@ textarea {
   background-color: white;
 }
 
-
+.popup {
+    width:100%;
+    height:100%;
+    display:none;
+    position:fixed;
+    top:0px;
+    left:0px;
+    background:rgba(0,0,0,0.75);
 }
+ 
+/* Inner */
+.popup-inner {
+    max-width:700px;
+    width:90%;
+    padding:40px;
+    position:absolute;
+    top:50%;
+    left:55%;
+    -webkit-transform:translate(-50%, -50%);
+    transform:translate(-50%, -50%);
+    box-shadow:0px 2px 6px rgba(0,0,0,1);
+    border-radius:3px;
+    background:#fff;
+}
+ 
+/* Close Button */
+.popup-close {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0px;
+    right:0px;
+    transition:ease 0.25s all;
+    -webkit-transform:translate(50%, -50%);
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:20px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
+ 
+.popup-close:hover {
+    -webkit-transform:translate(50%, -50%) rotate(180deg);
+    transform:translate(50%, -50%) rotate(180deg);
+    background:rgba(0,0,0,1);
+    text-decoration:none;
+}
+.txt{
+  text-align: center;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 50px;
+}
+

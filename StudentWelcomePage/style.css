@@ -28,7 +28,6 @@ html {
   
   margin-top: 70px;
   margin-bottom: 100px;
-  -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
 }
 
@@ -55,7 +54,6 @@ html {
 
 .feedback-input:focus {
   background: #fff;
-  box-shadow: 0;
   border: 3px solid #3498db;
   color: #3498db;
   outline: none;
@@ -121,7 +119,6 @@ textarea {
   font-size: 50px;
   padding-top: 5px;
   padding-bottom: 20px;
-  font-weight: 70;
 }
 
 .medtitletextpadded {
@@ -132,7 +129,6 @@ textarea {
   font-size: 50px;
   padding-top: 5px;
   padding-bottom: 20px;
-  font-weight: 70;
   margin-top: 40px
 }
 
