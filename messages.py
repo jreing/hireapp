@@ -5,6 +5,8 @@ import time as t
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.api import mail
+
 
 import webapp2
 import logging
@@ -76,17 +78,18 @@ class MessageHandler(webapp2.RequestHandler):
 
 
 class MessageSend(webapp2.RequestHandler):
-	def getEmail(self):
-		user_id = self.request.cookies.get('id')
-		student_query=Student.query(Student.user_id==user_id).get()
-		comapny_query=Company.query(Company.user_id==user_id).get()
-		if (student_query!=None):
-			email = student_query.email
-		elif (comapny_query!=None):
-			email = comapny_query.email
+	# def getEmail(self):
+	# 	user_id = self.request.cookies.get('id')
+	# 	student_query=Student.query(Student.user_id==user_id).get()
+	# 	comapny_query=Company.query(Company.user_id==user_id).get()
+	# 	if (student_query!=None):
+	# 		email = student_query.email
+	# 	elif (comapny_query!=None):
+	# 		email = comapny_query.email
 		
-		logging.info(email)
-		return email
+	# 	logging.info("getEmailResult:"+email)
+	# 	self.response.write('getEmailResult is:' + email+'\n')
+	# 	return email
 
 	def post(self):
 		#self.conNum = threadNum(num=0)
@@ -102,6 +105,15 @@ class MessageSend(webapp2.RequestHandler):
 		#self.rec = self.key.get()
 		
 		for rec in recList:
+			user_address=Student.query(Student.user_id==rec).get().email
+			if not mail.is_email_valid(user_address):
+				self.response.write("please enter valid email address!")
+			else:
+				sender_address = "support@example.com"
+				subject = "New Message From TauHire"
+				body = """ You Got A Job Offer in TauHire!!! """
+				mail.send_mail(sender_address, user_address, subject, body)
+				#self.response.write("mail was good")
 			self.conversation = Conversation()
 			self.message = Message(cont = self.request.get('note'))
 			self.message.receiver = Author(identity = rec)
@@ -161,4 +173,18 @@ class MessageReply(webapp2.RequestHandler):
 		self.message = Message(cont = self.request.get('mess'))
 
 
-		
+
+# class ConfirmUserSignup(webapp2.RequestHandler):
+#     def post(self):
+#     	user_address = self.request.get('companyMail')
+#     	#self.response.write('mail is:' + user_address)
+#     	logging.info(user_address)
+#         if not mail.is_email_valid(user_address):
+#             self.response.write("please enter valid email address, please please please!!!")
+#         else:
+#         #sender_address = "Example.com Support <support@example.com>"
+#         	sender_address = "support@example.com"
+#         	subject = "Confirm your registration"
+#         	body = """ I'm in! Yalla Macabi!!!!!!!!!!!!!!!!!!!!!!!!! """
+#         	mail.send_mail(sender_address, user_address, subject, body)
+#         	self.response.write("mail was good")
