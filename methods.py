@@ -29,7 +29,7 @@ def buildQueryResultsPage(q):
 
   <div id="form-div">
     <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
-    <form class="form" id="form1" action="/messageSend" method="post">
+    <form class="form" id="form1" action="/messageSend" onsubmit="return validateForm()" method="post">
       <div align="right">
         <p class="text1">:שם החברה</p>
         <input name="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם" id="companyName" />
@@ -169,7 +169,7 @@ def buildStudentOffersPage(conv_query, user_id):
   </body>
 	<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
-	<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
+	<script type="text/javascript" src="StudentToolbar/loadToolbar.js"></script>
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -190,12 +190,14 @@ def buildStudentInputPage(course_query):
 		  <p class="titletext">:הרשמה</p>
 		</div>
 		<div id="form-div">
-		  <div align="right">
-		    <p class="text1">:הזן עיר מגורים</p>
-		  </div>
+	
 		<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
-		  <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="עיר" id="city" />
-		  <div align="right">
+		  <div>
+			  <p class="text2" id="element1">:הזן עיר מגורים</p>
+			  <input name="city" id="element2" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input4" placeholder="עיר" id="city" />
+		  </div>
+		  
+		  <div align="right" id="gradeentry">
 		    <p class="text1">:הזן קורסים וציונים</p>
 		  </div>
 		  
@@ -211,19 +213,20 @@ def buildStudentInputPage(course_query):
 		
 		
 		
-		    <div align="right" id=cventry>
-		      <p class="text1" >:אופציונלי-הזן קורות חיים</p>
+		    <div align="right" id="cventry">
+		      <p class="text2" id="element1" >:אופציונלי-הזן קורות חיים</p>
+			  <input name="cv" type="file" id="element2" class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 		    </div>
 
-		    <input name="cv" type="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
+		    
 
 
-		    <div align="right" id=avgEntry>
-		      <p class="text1" >:אופציונלי-הזן ממוצע כללי</p>
-		    </div>
-		    <div id="cloneme0" class="cloneme" align="right">
-		      <input name="average" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="average" placeholder="ממוצע" />			  
-		    </div>
+
+		    <div id="avgEntry" >
+				<p class="text2" id="element1">:הזן ממוצע כללי</p> 
+
+				<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" placeholder="ממוצע" />			  
+			</div>
 
 		    <div class="getEmailNotification" align="right">
 			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>

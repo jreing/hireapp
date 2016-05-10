@@ -14,3 +14,19 @@ $('#select-all').click(function(event) {
     });
   }
 });
+
+function validateForm() {
+	
+	var NoStudentsSelected = $(".checkbox").filter(function (key, element) {
+        var value = $(element).checked();   
+		return var
+    }).length === 0;
+
+
+    if ( NoStudentsSelected) {
+		alert("please select at least one recipient");
+		return false }
+		
+
+	return true;
+}

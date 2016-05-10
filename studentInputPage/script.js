@@ -75,6 +75,11 @@ function validateForm() {
         return value === "";
     }).length === 0; 
 	
+	var avgValid = $(".average").filter(function (key, element) {
+        var value = $(element).val();
+        return value === "";
+    }).length === 0; 
+
     if ( !allCourseNamesValid) {
 		alert("please enter a valid course name");
 		return false }
@@ -82,6 +87,11 @@ function validateForm() {
     if (!allGradesValid) {
 		alert("please enter a grade between 0 and 100");
 		return false }
+		
+	if (!avgValid) {
+		alert("please enter a grade average between 0 and 100");
+		return false }
+		
 	return true;
 }
 

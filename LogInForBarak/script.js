@@ -46,7 +46,7 @@ function onLogin(googleUser){
 	
 	xhr.send('user_id=' + profile.Ka + "&email=" + email + "&isStudent=" + isStudent);
 	
-	document.getElementById("employ_button").disabled=false;
+	document.getElementById("employ_button").hidden=false;
 	
 	//console.log(xhr.readyState);
 	//alert("Ending onLogin");
