@@ -77,7 +77,7 @@ class Student(ndb.Model):
 	user_id= ndb.StringProperty(indexed=True, required=True)
 	email=ndb.StringProperty(indexed=True, required=True)
 	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
-	
+	allow_emails= ndb.BooleanProperty(indexed=False, required=True)
 	
 class Company(ndb.Model):
 	google_id = ndb.StringProperty(indexed=True, required=True)
@@ -217,6 +217,7 @@ class dbHandler(webapp2.RequestHandler):
 		
 		st = Student.query(Student.user_id==user_id).get()
 		
+		
 		#get student's cv file
 		cv=self.request.get('cv')
 		if (cv!=""):
@@ -246,8 +247,14 @@ class dbHandler(webapp2.RequestHandler):
 		#people_document = people_resource.get(userId='me').execute(
 		city = self.request.get('city')
 		st.student_courses=s
-		#logging.info(s)
+		
 		st.name = "demo"
+		logging.info(self.request.get('getEmailNotification'))
+		if (self.request.get('getEmailNotification')=="true"):
+			st.allow_emails=True
+		else:
+			st.allow_emails=False
+		
 		st.city = self.request.get('city')
 		st.avg = int(self.request.get('average'))
 		if (cv!=""):
