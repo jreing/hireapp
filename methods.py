@@ -288,7 +288,8 @@ def buildCompanyQuery(course_query):
 			</div>
 			<div id="clonemetwo0" class="clonemetwo">
 			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="ctype">
-				<option value=1>מתמטיקה</option>
+				<option value=0>(לא נבחר אשכול)</option>
+			  <option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
 				<option value=3>תאוריות מדעי המחשב</option>
 				<option value=4>אבטחת מידע</option>
