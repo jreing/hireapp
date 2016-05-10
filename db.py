@@ -93,7 +93,7 @@ class minGradeQuery(webapp2.RequestHandler):
 	def studentHasCType(self,student, ctype):
 		
 		for c in student.ctypes.split(","):
-			if c==ctype: return True
+			if int(c)==ctype: return True
 		return False
 	
 	#a function that given a student and ctype calculates his/her avg 
@@ -119,43 +119,50 @@ class minGradeQuery(webapp2.RequestHandler):
 		course_names=self.request.get_all('name')
 		grades= self.request.get_all('grade')
 		average=self.request.get('avg')	
-		ctypes=self.request.get("ctype")
-		ctype_avgs=self.request.get("ctype_avg")
+		ctypes=self.request.get_all("ctype")
+		ctype_avgs=self.request.get_all("ctype_avg")
 		
 		q=Student.query()
+		#logging.info(self.request)
+		logging.info(ctypes)
 		
 		#filter out student by grades in specific courses
-		for i in range (0,len(grades)-1):	
+		for i in range (0,len(grades)):	
 			if grades[i]=="" :
 				break
 			#logging.info(i)
 			#logging.info (len(grades)-1)
 			grade=int(grades[i])
 			q=q.filter (Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
+		q.fetch(100)
+			
 		#filter out by average
 		if average!="":
-			q=q.filter (Student.avg>=int(average))
+			p=Student.query (Student.avg>=int(average))
 			logging.info("MAIN AVERAGE QUERY")
-			logging.info (q.fetch(100))
+			p.fetch(100)
+			q = [val for val in q if val in p]
 
-		#self.response.write(q)
-		## TODO: write the response in a nicer way
-		q.fetch(100)
+		#logging.info(q.fetch(100))
 		
-		for i in range(0,len(ctypes)-1):
+		for i in range(0,len(ctypes)):
+			logging.info(i)
+			filteredRes=[]
 			ctypes[i]=int(ctypes[i])
 			if(ctypes[i]!=0):
 				logging.info("CTYPE QUERY")
-				filteredRes=[]
 				for student in q:
 					if self.studentHasCType(student,ctypes[i]):
-						sctavg=self.studentCTypeAvg(student,ctype[i])
-						#logging.info("SCTAVG:" + str(sctavg))
-						if (int(sctavg)>=int(ctype_avg)):
+						sctavg=self.studentCTypeAvg(student,ctypes[i])
+						logging.info("SCTAVG:" + str(sctavg))
+						if (int(sctavg)>=int(ctype_avgs[i])):
 							filteredRes.append(student)
+			if (i>=1):
+				q = [val for val in filteredRes if val in q]
+				logging.info(filteredRes)
+			else:
 				q=filteredRes
-				#logging.info(q)
-			
+		
 		page = buildQueryResultsPage(q)
 		self.response.write(page)
 
