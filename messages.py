@@ -118,7 +118,7 @@ class MessageSend(webapp2.RequestHandler):
 		#self.response.write('</pre></body></html>')
 
 		self.response.write("""<html>
-									<link rel="stylesheet" type="text/css" href="StudentWelcomePage/style.css">
+									<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
 
 									<body>
 										
