@@ -38,7 +38,10 @@ handlers:
 
 - url: /StudentToolbar
   static_dir: StudentToolbar  
-
+  
+- url: /CompanyToolbar
+  static_dir: CompanyToolbar  
+  
 - url: /jquery
   static_dir: jquery
   

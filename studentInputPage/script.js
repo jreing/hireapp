@@ -85,11 +85,11 @@ function validateForm() {
 		return false }
 		
     if (!allGradesValid) {
-		alert("please enter a grade between 0 and 100");
+		alert("please enter a grade between 60 and 100");
 		return false }
 		
 	if (!avgValid) {
-		alert("please enter a grade average between 0 and 100");
+		alert("please enter a grade average between 60 and 100");
 		return false }
 		
 	return true;
