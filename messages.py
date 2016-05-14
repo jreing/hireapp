@@ -105,15 +105,19 @@ class MessageSend(webapp2.RequestHandler):
 		#self.rec = self.key.get()
 		
 		for rec in recList:
-			user_address=Student.query(Student.user_id==rec).get().email
-			if not mail.is_email_valid(user_address):
-				self.response.write("please enter valid email address!")
-			else:
-				sender_address = "support@example.com"
-				subject = "New Message From TauHire"
-				body = """ You Got A Job Offer in TauHire!!! """
-				mail.send_mail(sender_address, user_address, subject, body)
-				#self.response.write("mail was good")
+			
+			student=Student.query(Student.user_id==rec).get()
+			if student.allow_emails==True:
+				user_address=student.email
+				
+				if not mail.is_email_valid(user_address):
+					self.response.write("please enter valid email address!")
+				else:
+					sender_address = "support@example.com"
+					subject = "New Message From TauHire"
+					body = """ You Got A Job Offer in TauHire!!! """
+					mail.send_mail(sender_address, user_address, subject, body)
+					#self.response.write("mail was good")
 			self.conversation = Conversation()
 			self.message = Message(cont = self.request.get('note'))
 			self.message.receiver = Author(identity = rec)
