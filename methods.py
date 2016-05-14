@@ -345,10 +345,13 @@ def buildCompanyQuery(course_query):
 
 def buildStudentEditPage(student, course_query):
 	hasCv=False
+	
 	htmlstart="""﻿<!DOCTYPE html>
-<html lang="he">
+	<html lang="he">
 	<link rel="stylesheet" type="text/css" href="studentEditPage/style.css">
+	<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
   <body>
+  <script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
   <div id="form-main">
     <div align="right">
       <p class="titletext">:הפרטים שלי</p>
@@ -381,15 +384,26 @@ def buildStudentEditPage(student, course_query):
 	if (student.cv_blob_key != None) :
 			hasCv=True
 	htmlcv = """<div align="right" id=cventry>
-				<p class="text1" >:קורות חיים</p>
-        </div>
+				<p class="text2" id="element1" >:קורות חיים</p>
+        
 		<div align="right">
-		<input name="cv" type="file" id="cv" />"""
+		<input name="cv" type="file" id="element2" class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
+		</div>"""
+		
 	if(hasCv):	
-		htmlcv += """<button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" class="Cvbutton">הצג</button>
+		htmlcv += """<div> <button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" class="Cvbutton">הצג</button>
          </div>"""
 
+	htmlAvg = """<div align="right" id="avgEntry" >
+				<p class="text2" id="element1">:ממוצע כללי </p> 
 
+				<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" value='""" + str(student.avg) + """' />			  
+			</div>
+
+		    <div class="getEmailNotification" align="right">
+			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>
+			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" >
+			</div>"""
 
 	htmlButt = """<div class="submit">
           <input type="submit" value="שמור" id="button-blue" />
@@ -407,7 +421,7 @@ def buildStudentEditPage(student, course_query):
 	htmlend="""</datalist>
       </form>
     </div>
-		<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
+		
 	<script type="text/javascript" src="studentEditPage/script.js"></script>
   </div>
 
@@ -416,5 +430,5 @@ def buildStudentEditPage(student, course_query):
 </html>"""
 	
 
-	html=htmlstart + htmlbody + htmlcv + htmlButt + htmlDlist +htmlend
+	html=htmlstart + htmlbody + htmlcv + htmlAvg + htmlButt +htmlDlist +htmlend
 	return html

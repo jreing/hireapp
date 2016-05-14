@@ -221,7 +221,7 @@ class dbHandler(webapp2.RequestHandler):
 		#get student's cv file
 		cv=self.request.get('cv')
 		if (cv!=""):
-			logging.info ("cv detected")
+			logging.info ("cv detected " + cv)
 			#validate the user's file is a REAL PDF.
 			if (self.checkPdfFile(cv)==False):
 				#TODO - more elegent error message

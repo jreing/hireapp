@@ -19,15 +19,14 @@ html {
   background-color: rgba(72, 72, 72, 0.4);
   padding-left: 35px;
   padding-right: 35px;
-  padding-top: 35px;
+  padding-top: 50px;
   padding-bottom: 50px;
-  width: 575px;
+  width: 40%;
   float: left;
-  left: 50%;
+  left: 35%;
   position: absolute;
   margin-top: 100px;
-  margin-left: -260px;
-  -moz-border-radius: 7px;
+  
   -webkit-border-radius: 7px;
 }
 
@@ -87,21 +86,54 @@ html {
 
 }
 
+.feedback-input4 {
+  color: #3c3c3c;
+  
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  padding: 13px 13px 13px 54px;
+  margin-bottom: 10px;
+  width: 30%;
+  margin-left: 5%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+
+}
+
+.average {
+  color: #3c3c3c;
+  
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  padding: 13px 13px 13px 54px;
+  margin-bottom: 10px;
+  width: 30%;
+  margin-left: 5%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+
+}
+
 input[type="text"]:-moz-placeholder {
-    text-align: right;
-}
-
-input[type="text"]:-ms-input-placeholder {
-    text-align: right;
-}
-
-input[type="text"]::-webkit-input-placeholder {
     text-align: right;
 }
 
 .feedback-input:focus {
   background: #fff;
-  box-shadow: 0;
   border: 3px solid #3498db;
   color: #3498db;
   outline: none;
@@ -165,6 +197,18 @@ textarea {
   font-weight: bold;
   float: right;
   width: 100%;
+  color: white;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.text2 {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
   color: white;
   font-size: 34px;
   padding-top: 5px;
@@ -246,5 +290,27 @@ textarea {
   background-color: white;
 }
 
+.textsmallpad {
+  color: white;
+}
+#gradeentry {
+padding-top: 100px;
+padding-bottom: 90px;
+}
+
+#cventry {
+padding-top: 60px;
+padding-bottom: 60px;
+}
+
+#file {
+padding-top: 900px;
 
 }
+
+#avgEntry {
+padding-top: 80px;
+padding-bottom: 120px;
+}
+#element1 {float:right;}
+#element2 {float:left;}
