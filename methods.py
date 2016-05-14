@@ -190,7 +190,7 @@ def buildStudentInputPage(course_query):
 <script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
 
 	  <body>
-<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
+<script type="text/javascript" src="/StudentToolbar/loadToolbarInputPage.js"></script>
 	  <div id="form-main">
 		<div align="right">
 		  <p class="titletext">:הרשמה</p>
