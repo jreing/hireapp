@@ -278,7 +278,7 @@ def buildCompanyQuery(course_query):
 		
 		<div id="form-main">
 		<div align="right">
-		  <p class="titletext">:סינון מועמדים</p>
+		  <p class="titletext">:חיפוש מועמדים</p>
 		</div>
 		<div id="form-div">
 
