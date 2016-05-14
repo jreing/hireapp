@@ -250,7 +250,7 @@ class dbHandler(webapp2.RequestHandler):
 		
 		st.name = "demo"
 		logging.info(self.request.get('getEmailNotification'))
-		if (self.request.get('getEmailNotification')=="true"):
+		if (self.request.get('getEmailNotification')=="True"):
 			st.allow_emails=True
 		else:
 			st.allow_emails=False
