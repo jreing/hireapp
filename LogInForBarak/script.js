@@ -19,7 +19,7 @@ function getCookie(cname) {
 
 function ForceLogin() {
 
-	if (getCookie("id")!=""){
+	if (getCookie("id")==""){
 		//alert("forcedlogin")
 		setTimeout(function (){}, 10000);
 	}
