@@ -73,33 +73,17 @@ function getCookie(cname) {
     return "";
 } 
 
-function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-      console.log('User signed out.');
-    });
-	// var token = gapi.auth.getToken();
-	// alert(token)
-	// if (token) {
-	// var accessToken = gapi.auth.getToken().access_token;
-	// if (accessToken) {
-    // // make http get request towards: 'https://accounts.google.com/o/oauth2/revoke?token=' + accessToken
-    // // In angular you can do it like this:
-    // // $http({
-    // //   method: 'GET',
-    // //   url: 'https://accounts.google.com/o/oauth2/revoke?token=' + accessToken
-    // // });
-	  // }
-	// }
-	//gapi.auth.setToken(null);
-	//gapi.auth.signOut();
-	auth2.signOut();
-	document.cookie = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
-	
-	document.location="/StudentLogout"
-	
-	
-  }
+// function signOut() {
+	// alert("logout");
+    // var auth2 = gapi.auth2.getAuthInstance();
+    // auth2.signOut().then(function () {
+		// console.log('User signed out.');
+
+    // });
+
+	// auth2.signOut();
+
+  // }
   
 
 function renderButton() {
