@@ -366,7 +366,7 @@ def buildStudentEditPage(student, course_query):
       <div align="right">
         <p class="text1">:עיר מגורים</p>
       </div>
-	<form class="form" id="form1" action="/dbHandler" method="post">
+	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
       <input name="city" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" value='""" + str(student.city) + """'align "right" id="validateFormcity" />
       <div align="right">"""
 
