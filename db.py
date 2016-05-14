@@ -177,7 +177,7 @@ class dbBuild(webapp2.RequestHandler):
 	
 	def get(self):
 		#add a mail to allowedCompany so it can be seen in console
-		ac = allowedCompany(email="fanpeterssohn@gmail.com")
+		ac = allowedCompany(email="tauhireteam@gmail.com")
 		ac.put()
 		
 		import csv
