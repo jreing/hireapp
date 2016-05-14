@@ -47,11 +47,19 @@ function onLogin(googleUser){
 	xhr.send('user_id=' + profile.Ka + "&email=" + email + "&isStudent=" + isStudent);
 	
 	document.getElementById("employ_button").hidden=false;
+	xhr.onreadystatechange = function() {
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+        if (xhr.responseText=="Access Denied, Unauthorized User"){
+			document.write(xhr.responseText);
+		}	
+		else {
+			ForceLogin();
+		}
+    }
+	//setTimeout(function() {}, 2000);
+	}
 	
-	//console.log(xhr.readyState);
-	//alert("Ending onLogin");
-	setTimeout(function() {ForceLogin()}, 1000);
-	//ForceLogin();
+
 }
 
 function onFailure(error) {

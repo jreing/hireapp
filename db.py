@@ -79,6 +79,10 @@ class Student(ndb.Model):
 	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
 	allow_emails= ndb.BooleanProperty(indexed=False, required=True)
 	
+	
+class allowedCompany(ndb.Model):
+	email =ndb.StringProperty(indexed=True, required=True)
+	
 class Company(ndb.Model):
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	user_id = ndb.StringProperty(indexed=True, required=True)
@@ -150,7 +154,7 @@ class minGradeQuery(webapp2.RequestHandler):
 			filteredRes=[]
 			ctypes[i]=int(ctypes[i])
 			if(ctypes[i]!=0):
-				logging.info("CTYPE QUERY")
+				#logging.info("CTYPE QUERY")
 				for student in q:
 					if self.studentHasCType(student,ctypes[i]):
 						sctavg=self.studentCTypeAvg(student,ctypes[i])
@@ -159,12 +163,12 @@ class minGradeQuery(webapp2.RequestHandler):
 							filteredRes.append(student)
 			if (i>=1):
 				q = [val for val in filteredRes if val in q]
-				logging.info(filteredRes)
+				#logging.info(filteredRes)
 			else:
 				if (ctypes[0]!=0):
 					q=filteredRes
 		
-		logging.info(q)
+		#logging.info(q)
 		page = buildQueryResultsPage(q)
 		self.response.write(page)
 
@@ -172,6 +176,10 @@ class minGradeQuery(webapp2.RequestHandler):
 class dbBuild(webapp2.RequestHandler):
 	
 	def get(self):
+		#add a mail to allowedCompany so it can be seen in console
+		ac = allowedCompany(email="fanpeterssohn@gmail.com")
+		ac.put()
+		
 		import csv
 		with open('courses3.csv', 'rb') as csvfile:
 			spamreader = csv.reader(csvfile, delimiter=',')
@@ -217,7 +225,6 @@ class dbHandler(webapp2.RequestHandler):
 		
 		st = Student.query(Student.user_id==user_id).get()
 		
-		
 		#get student's cv file
 		cv=self.request.get('cv')
 		if (cv!=""):
@@ -241,8 +248,6 @@ class dbHandler(webapp2.RequestHandler):
 			course_query=Course.query (Course.course_name==course_names[i]).get()
 			#logging.info (course_query)
 			s.append(Student_Course(grade=int(grade[i]), course=course_query))
-		
-		
 		#people_resource = service.people()
 		#people_document = people_resource.get(userId='me').execute(
 		city = self.request.get('city')
