@@ -104,7 +104,7 @@ def buildQueryResultsPage(q):
   </div>
   </body>
   	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
+	<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	
 	</html>"""
@@ -340,7 +340,7 @@ def buildCompanyQuery(course_query):
 				
 	  </div>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-		<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
+		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </body>
 	  
