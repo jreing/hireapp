@@ -291,7 +291,7 @@ def buildCompanyQuery(course_query):
 			  <input type="button" id="buttonadd" value="הוסף קורס" />
 			</div>
 			<div id="cloneme0" class="cloneme">
-			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" />
+			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" autocomplete="off" />
 			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
 			  <input type="button" id="buttondel0" class="buttondel" value="X" />
 			</div>
@@ -379,7 +379,7 @@ def buildStudentEditPage(student, course_query):
 	for crs in student.student_courses:
 		htmlbody+= """
         <div id="cloneme""" + str(j) + """"class="cloneme">
-          <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" />
+          <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" autocomplete="off" />
           <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" value='""" + str(crs.grade) + """' />
           <input type="button" id="buttondel""" + str(j) + """" class="buttondel" onclick= "b(this.id)" value="X" />
 		 </div>"""
