@@ -111,11 +111,11 @@ class MessageSend(webapp2.RequestHandler):
 				user_address=student.email
 				
 				if not mail.is_email_valid(user_address):
-					self.response.write("please enter valid email address!")
+					self.response.write("Error: student email address is not valid!")
 				else:
 					sender_address = "support@example.com"
-					subject = "New Message From TauHire"
-					body = """ You Got A Job Offer in TauHire!!! """
+					subject = "TauHire team - New Message Notification"
+					body = """ Dear Sir/Madam, \n \n You have a new Job Offer in TauHire website, \n \n Please visit http://hireapp-1279.appspot.com/LogInForBarak/index to see your messages, \n \n Best regards, \n \n TauHire team"""
 					mail.send_mail(sender_address, user_address, subject, body)
 					#self.response.write("mail was good")
 			self.conversation = Conversation()
