@@ -67,7 +67,7 @@ function onLogin(googleUser){
 	
 	xhr.send('user_id=' + profile.Ka + "&email=" + email + "&isStudent=" + isStudent);
 	
-	document.getElementById("employ_button").hidden=false;
+	//document.getElementById("employ_button").hidden=false;
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
 			if (xhr.responseText=="Access Denied, Unauthorized User"){
