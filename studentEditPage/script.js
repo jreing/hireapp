@@ -67,18 +67,36 @@ $('#buttonadd').click(function ab() {
    // $('.buttondel').attr('disabled', 'disabled');
 //});
 function validateForm() {
-	var allValid = $(".feedback-input").filter(function (key, element) {
+	
+	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
         var value = $(element).val();   
-        return value !== "" && courses.indexOf(value) < 0;
+        return value === "" || courses.indexOf(value) < 0;
     }).length === 0;
 
-    if ( !allValid ) {
-		alert("invalid course name");
+
+ 	var allGradesValid = $(".feedback-input2").filter(function (key, element) {
+        var value = $(element).val();
+        return value === "";
+    }).length === 0; 
+	
+	var avgValid = $(".average").filter(function (key, element) {
+        var value = $(element).val();
+        return value === "";
+    }).length === 0; 
+
+    if ( !allCourseNamesValid) {
+		alert("please enter a valid course name");
 		return false }
-
+		
+    if (!allGradesValid) {
+		alert("please enter a grade between 0 and 100");
+		return false }
+		
+	if (!avgValid) {
+		alert("please enter a grade average between 0 and 100");
+		return false }
+		
 	return true;
-
-
 }
 
 

@@ -219,7 +219,8 @@ class dbUserIdScramble(webapp2.RequestHandler):
 
 #adds Student to DB
 class dbHandler(webapp2.RequestHandler):
-	def post(self):	
+	def post(self):
+		cvKey = False
 		#get userid from cookie
 		user_id = self.request.cookies.get('id')
 		
@@ -237,6 +238,9 @@ class dbHandler(webapp2.RequestHandler):
 			
 			#write user's CV File into blobstore
 			cv_blob_key=self.CreateFile(st.google_id,cv)
+		elif(st.cv_blob_key!=None):
+			cvKey = True
+		
 		
 		course_names=self.request.get('name', allow_multiple=True)
 				
@@ -264,7 +268,7 @@ class dbHandler(webapp2.RequestHandler):
 		st.avg = int(self.request.get('average'))
 		if (cv!=""):
 			st.cv_blob_key=BlobKey(cv_blob_key)
-		else:
+		elif(cvKey!= True):
 			st.cv_blob_key=None
 		st.put()
 		

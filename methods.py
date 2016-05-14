@@ -397,7 +397,7 @@ def buildStudentEditPage(student, course_query):
 		</div>"""
 		
 	if(hasCv):	
-		htmlcv += """<div> <button type="button" onclick="location.href='getMyCV'" id="Cvbutton" class="Cvbutton">הצג</button>
+		htmlcv += """<div><button type="button" onclick="location.href='getMyCV'" id="Cvbutton" class="Cvbutton">הצג</button>
          </div>"""
 
 	htmlAvg = """<div align="right" id="avgEntry" >
@@ -407,10 +407,14 @@ def buildStudentEditPage(student, course_query):
 			</div>
 
 		    <div class="getEmailNotification" align="right">
-			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>
-			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" >
-			</div>"""
-
+			  <label for="getEmailNotification" class="textsmallpad">עדכון במייל לגבי הצעת משרה</label>
+			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" """
+			  
+	if(student.allow_emails == True):
+		htmlAvg+="""checked"""
+	
+	htmlAvg+="""> </div>"""
+	
 	htmlButt = """<div class="submit">
           <input type="submit" value="שמור" id="button-blue" />
           <div class="ease"> </div>
