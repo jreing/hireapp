@@ -29,7 +29,8 @@ def buildQueryResultsPage(q):
 
   <div id="form-div">
     <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
-    <form class="form" id="form1" action="/messageSend" onsubmit="return validateForm()" method="post">
+    <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend" method="post">
+
       <div align="right">
         <p class="text1">:שם החברה</p>
         <input name="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם" id="companyName" />
@@ -115,8 +116,12 @@ def buildStudentOffersPage(conv_query, user_id):
 	i=0
 	htmlstart= """<!DOCTYPE html>
 	<html>
+	
 	<link rel="stylesheet" type="text/css" href="StudentOffersPage/style.css">
 	<body>
+	<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js" defer></script>
+	<script type="text/javascript" src="StudentToolbar/loadToolbar.js" defer></script>
+	<script type="text/javascript"  src="StudentOffersPage/script.js" defer></script>
   <div >
     <p class="titletext"  >:ההצעות שלי</p>
   </div>
@@ -167,9 +172,10 @@ def buildStudentOffersPage(conv_query, user_id):
 
 	htmlend = """
   </body>
-	<script type="text/javascript" src="StudentOffersPage/jquery-2.2.3.js"></script>
-	<script type="text/javascript" src="StudentOffersPage/script.js"></script>
-	<script type="text/javascript" src="StudentToolbar/loadToolbar.js"></script>
+	
+	
+	
+	
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
@@ -191,7 +197,7 @@ def buildStudentInputPage(course_query):
 		</div>
 		<div id="form-div">
 	
-		<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/dbHandler" method="post" enctype="multipart/form-data">
 		  <div>
 			  <p class="text2" id="element1">:הזן עיר מגורים</p>
 			  <input name="city" id="element2" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input4" placeholder="עיר" id="city" />

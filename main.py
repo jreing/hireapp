@@ -34,7 +34,7 @@ class CompanyHandler(webapp2.RequestHandler):
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
 		#logging.info("enter token sign in")
-
+		
 		google_id=self.request.get('user_id')
 
 		email=self.request.get('email')
@@ -58,18 +58,27 @@ class tokenSignIn(webapp2.RequestHandler):
 			user_query = Company.query(Company.google_id==google_id).get()
 			#if company is logging up for the first time
 			if (user_query == None):
-				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
-				logging.info("writing company")
-				logging.info(user_id)
-				cmp= Company(email=email, google_id=google_id, user_id=user_id, name="", city="")
-				cmp.put()
+				#allow company user to be created only if the email
+				#is on the allowedCompany list
+				if allowedCompany.query(allowedCompany.email==email).get()!=None:
+					user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
+					logging.info("writing company")
+					logging.info(user_id)
+					cmp= Company(email=email, google_id=google_id, user_id=user_id, name="", city="")
+					cmp.put()
+				else:
+					self.response.write("Access Denied, Unauthorized User")
+					return
 			else:
 				user_id=user_query.user_id
 		#logging.info("writing cookie")
 		#logging.info(user_id)
 		self.response.set_cookie("id", user_id)
-		
-		
+	
+	#use this function to add an AllowedCompany
+	def addAllowedCompany(email):
+		ac = allowedCompany(email=email)
+		ac.put()
 		
 class MainHandler(webapp2.RequestHandler):
 	def get(self):

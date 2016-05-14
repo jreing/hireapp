@@ -151,13 +151,11 @@ class MessageSend(webapp2.RequestHandler):
 									<body>
 										
 									</body>
-										<script type="text/javascript" src="/toolbar/loadtoolbar.js"></script>
 
-									<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="StudentWelcomePage/script.js"></script>
 	<div class="popup" data-popup="popup-1">
     <div class="popup-inner">
-        <h2 class="txt">message was send successfully!</h2>
+        <h2 class="txt">message was sent successfully!</h2>
 		
         <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
     </div>
