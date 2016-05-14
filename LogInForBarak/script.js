@@ -18,12 +18,11 @@ function getCookie(cname) {
 
 
 function ForceLogin() {
-
-	if (getCookie("id")==""){
-		//alert("forcedlogin")
-		setTimeout(function (){}, 10000);
+	console.log(getCookie("id"));
+	while (getCookie("id")==""){
+		console.log("forcedlogin");
 	}
-	 if (isStudent==true){
+	if (isStudent==true){
 		window.location="/studenthandler";
 	}
 	else{
@@ -70,16 +69,17 @@ function onLogin(googleUser){
 	
 	document.getElementById("employ_button").hidden=false;
 	xhr.onreadystatechange = function() {
-    if (xhr.readyState == XMLHttpRequest.DONE) {
-        if (xhr.responseText=="Access Denied, Unauthorized User"){
-			document.write(xhr.responseText);
-			
-		}	
-		else {
-			setTimeout(ForceLogin(), 10000);
-			
+		if (xhr.readyState == XMLHttpRequest.DONE) {
+			if (xhr.responseText=="Access Denied, Unauthorized User"){
+				document.write(xhr.responseText);
+				
+			}	
+			else {
+				
+				setTimeout(ForceLogin, 1000);
+				
+			}
 		}
-    }
 
 	}
 	
