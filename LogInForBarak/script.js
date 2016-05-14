@@ -1,8 +1,28 @@
 //document.getElementById("login").style.width = document.getElementById("employ_button").style.width;
 var isStudent=undefined;
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+} 
+
+
 function ForceLogin() {
-	setTimeout(function (){}, 2000);
+
+	if (getCookie("id")!=""){
+		//alert("forcedlogin")
+		setTimeout(function (){}, 10000);
+	}
 	 if (isStudent==true){
 		window.location="/studenthandler";
 	}
@@ -10,6 +30,8 @@ function ForceLogin() {
 		window.location="/companyQueryFormPage";
 	}
 } 
+
+
 
 function onLogin(googleUser){
 	//alert("Started onLogin")
@@ -51,12 +73,14 @@ function onLogin(googleUser){
     if (xhr.readyState == XMLHttpRequest.DONE) {
         if (xhr.responseText=="Access Denied, Unauthorized User"){
 			document.write(xhr.responseText);
+			
 		}	
 		else {
-			ForceLogin();
+			setTimeout(ForceLogin(), 10000);
+			
 		}
     }
-	//setTimeout(function() {}, 2000);
+
 	}
 	
 
@@ -66,20 +90,6 @@ function onFailure(error) {
   console.log(error);
   location.reload();
 }
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length,c.length);
-        }
-    }
-    return "";
-} 
 
 // function signOut() {
 	// alert("logout");
