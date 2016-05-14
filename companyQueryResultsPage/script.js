@@ -16,17 +16,16 @@ $('#select-all').click(function(event) {
 });
 
 function validateForm() {
-	alert("hi");
+
 	var NoStudentsSelected = $(".checkbox").filter(function (key, element) {
-        var value = $(element).checked();   
-		alert("var");
+        var value = $(element)[0].checked;
 		return value
     }).length === 0;
 
 	
     if ( NoStudentsSelected) {
 		alert("please select at least one recipient");
-		return false }
+		return false; }
 		
 
 	return true;
