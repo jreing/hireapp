@@ -115,7 +115,7 @@ class MessageSend(webapp2.RequestHandler):
 				else:
 					sender_address = "support@example.com"
 					subject = "TauHire team - New Message Notification"
-					body = """ Dear Sir/Madam, \n \n You have a new Job Offer in TauHire website, \n \n Please visit http://hireapp-1279.appspot.com/LogInForBarak/.html to see your messages, \n \n Best regards, \n \n TauHire team"""
+					body = """ Dear Sir/Madam, \n \n You have a new Job Offer in TauHire website, \n \n Please visit our site to view your messages, \n \n Best regards, \n \n TauHire team"""
 					mail.send_mail(sender_address, user_address, subject, body)
 					#self.response.write("mail was good")
 			self.conversation = Conversation()
