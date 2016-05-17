@@ -265,6 +265,7 @@ class dbHandler(webapp2.RequestHandler):
 			st.allow_emails=False
 		
 		st.city = self.request.get('city')
+		curr_average = st.avg
 		st.avg = int(self.request.get('average'))
 		if (cv!=""):
 			st.cv_blob_key=BlobKey(cv_blob_key)
@@ -272,9 +273,14 @@ class dbHandler(webapp2.RequestHandler):
 			st.cv_blob_key=None
 		st.put()
 		
-		self.response.write ("""<html><script>
-			window.location="StudentWelcomePage/index.html";
-			</script></html>""")
+		if (curr_average == -1):
+			self.response.write ("""<html><script>
+				window.location="StudentWelcomePage/index.html";
+				</script></html>""")
+		else:
+			self.response.write ("""<html><script>
+				window.location="/StudentOffersPage";
+				</script></html>""")
 	
 	def checkPdfFile (self,file):
 		logging.info ("check cv")
