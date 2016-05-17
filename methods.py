@@ -377,13 +377,14 @@ def buildStudentEditPage(student, course_query):
         </div>"""
 	j = 0
 	for crs in student.student_courses:
-		htmlbody+= """
-        <div id="cloneme""" + str(j) + """"class="cloneme">
-          <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" />
-          <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" value='""" + str(crs.grade) + """' />
-          <input type="button" id="buttondel""" + str(j) + """" class="buttondel" onclick= "b(this.id)" value="X" />
-		 </div>"""
-		j+=1
+		if (crs!=None):
+			htmlbody+= """
+			<div id="cloneme""" + str(j) + """"class="cloneme">
+			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" />
+			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" value='""" + str(crs.grade) + """' />
+			  <input type="button" id="buttondel""" + str(j) + """" class="buttondel" onclick= "b(this.id)" value="X" />
+			 </div>"""
+			j+=1
 		
 
 
