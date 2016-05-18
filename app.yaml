@@ -8,45 +8,59 @@ handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
+  secure: always
   
 - url: /studentInputPage
   static_dir: studentInputPage
+  secure: always
 
 - url: /companyQueryFormPage
   static_dir: companyQueryFormPage
+  secure: always
  
 - url: /companyQueryResultsPage
   static_dir: companyQueryResultsPage
+  secure: always
 
 - url: /chooseEmployOrStudentPage
   static_dir: chooseEmployOrStudentPage
+  secure: always
   
 - url: /StudentWelcomePage
   static_dir: StudentWelcomePage
+  secure: always
   
 - url: /StudentOffersPage
   static_dir: StudentOffersPage
+  secure: always
 
 - url: /FirstPageOfHireApp
   static_dir: FirstPageOfHireApp
+  secure: always
 
 - url: /LogInForBarak
   static_dir: LogInForBarak 
+  secure: always
 
 - url: /studentEditPage
   static_dir: studentEditPage
+  secure: always
 
 - url: /StudentToolbar
-  static_dir: StudentToolbar  
+  static_dir: StudentToolbar
+  secure: always  
   
 - url: /CompanyToolbar
   static_dir: CompanyToolbar  
+  secure: always
   
 - url: /jquery
   static_dir: jquery
+  secure: always
   
 - url: .*
   script: main.app
+  secure: always
 
 
   
