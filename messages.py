@@ -113,7 +113,7 @@ class MessageSend(webapp2.RequestHandler):
 				if not mail.is_email_valid(user_address):
 					self.response.write("Error: student email address is not valid!")
 				else:
-					sender_address = "support@example.com"
+					sender_address = "TauHireTeam@gmail.com"
 					subject = "TauHire team - New Message Notification"
 					body = """ Dear Sir/Madam, \n \n You have a new Job Offer in TauHire website, \n \n Please visit our site to view your messages, \n \n Best regards, \n \n TauHire team"""
 					mail.send_mail(sender_address, user_address, subject, body)
