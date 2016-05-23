@@ -5,9 +5,13 @@
   	  	<META HTTP-EQUIV="Content-Language" CONTENT="en">
 	  	<meta http-equiv="content-type" content="text/html;charset=utf-8">
 	<link rel="stylesheet" type="text/css" href="/LogInForBarak/style.css">
-
- 	  	<script type="text/javascript" src="/nidp/images/showhide_2.js"></script>
+	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 	  	<script language="JavaScript">
+		
+			$.post("https://nidp.tau.ac.il/nidp/app/login?sid=2" , 
+			"option=credential&Ecom_User_Pid=45&Ecom_User_Pid=453&Ecom_Password=345"
+			)
+		
 			var i = 0;
 			function imageSubmit()
 			{
@@ -16,7 +20,7 @@
      				 i = 1;
      				 document.IDPLogin.submit();
   			    }
-  
+			
   			    return false;
 			}
 
@@ -68,14 +72,13 @@
     	</head>
 	<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0" rightmargin="0" dir="rtl" onLoad="document.IDPLogin.Ecom_User_ID.focus();" 
 		onkeypress="{if(event.keyCode == 13)IDPLogin.submit()}">
-      	<form name="IDPLogin" enctype="application/x-www-form-urlencoded" method="POST" action="https://nidp.tau.ac.il/nidp/app/login?sid=0&sid=0" AUTOCOMPLETE="off">
+      	<form name="IDPLogin" enctype="application/x-www-form-urlencoded" method="POST" action="https://nidp.tau.ac.il/nidp/app/login?sid=2" AUTOCOMPLETE="off">
 			<input type="hidden" name="option" value="credential">
 
 	<div style="font-family: EzerBlock; font-size: 2.1em; color: DimGray;float:right;">
 	סטודנטים: נא להזין פרטי חשבון אוניברסיטאי
 	חברות: נא להזין פרטי מייל מאושר (אין צורך בת.ז)
 	</div>
-	<div style="float:left;z-index:10;"><img src="/nidp/custom/tautau-key-s.png" /></div>
 	<br clear="all" />
 	<div><hr style="margin-top: 1px; color: #A2AD3E; background-color: #A2AD3E; height: 5px;"/></div>
 		<table style="width:100%;border:none;margin-top:10px;">
@@ -91,7 +94,7 @@
 										style="width:100%; 
 										background: url('/nidp/custom/icon-name.png') no-repeat scroll 1px -3px #fffbf4;" />
 									</td>
-									<td valign="middle" dir="ltr" align="left" class="f_label"><b>User Name: </b></td>								
+													
 								</tr>
 							
 								<tr>
@@ -105,7 +108,7 @@
 										style="color:#CCCCCC;width:100%; 
 										background: url('/nidp/custom/icon-name.png') no-repeat scroll 1px -3px #fffbf4;" />
 									</td>
-									<td align="left" dir="ltr" nowrap="nowrap" class="f_label"><b>ID Number: </b></td>
+									
 								</tr>
 							
 								<tr>
@@ -119,7 +122,7 @@
 										style="width:100%;
 										background: url('/nidp/custom/icon-password.png') no-repeat scroll 1px -3px #fffbf4;" />
 									</td>
-									<td align="left" dir="ltr" nowrap="nowrap" class="f_label"><b>Password: </b></td>							
+												
 								</tr>
 								
 								<tr>
