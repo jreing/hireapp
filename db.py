@@ -95,9 +95,10 @@ class minGradeQuery(webapp2.RequestHandler):
 
 	#function that check whether student has courses in the relevant cluster
 	def studentHasCType(self,student, ctype):
-		
+		if (ctype==''): return False
 		for c in student.ctypes.split(","):
-			if int(c)==ctype: return True
+			if c=='': return False
+			if int(c)==int(ctype): return True
 		return False
 	
 	#a function that given a student and ctype calculates his/her avg 

@@ -166,6 +166,12 @@ class Logout(webapp2.RequestHandler):
 		self.response.headers.add_header(*cookie.output().split(': ', 1))
 		self.redirect("/") 
 
+class doubleLogin(webapp2.RequestHandler):
+	def get(self):
+		logging.info('LogInForBarak START')
+		f = open("doublelogin.html")
+		self.response.write(f.read())
+		f.close()
 
 
 app = webapp2.WSGIApplication([
@@ -186,7 +192,8 @@ app = webapp2.WSGIApplication([
 	('/studentEditPage', StudentEditHandler),
 	('/getMyCV', getMyCV),
 	('/getCV', getCV),
-	('/', LogInForBarak)
+	('/', LogInForBarak),
+	('/doubleLogin', doubleLogin)
 	], debug=True)
 
 
