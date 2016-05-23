@@ -99,9 +99,14 @@ function validateForm() {
 	return true;
 }
 
+var city = document.getElementById("element2").value;
+var select = document.getElementById("element2")
 
-
-
+for (var i=1; i<select.length;i++){
+	if (select[i].value === city){
+		select.selectedIndex = i;
+		}
+	}
 
 //make sure that file chosen has a valid extension
 var file = document.getElementById('cv');
