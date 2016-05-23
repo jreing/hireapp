@@ -10,6 +10,10 @@ handlers:
   upload: favicon\.ico
   secure: always
   
+- url: /bgimg
+  static_dir: bgimg
+  secure: always
+  
 - url: /studentInputPage
   static_dir: studentInputPage
   secure: always
