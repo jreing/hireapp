@@ -234,5 +234,15 @@ textarea {
   width: 75px;
 }
 
+input[type='text']{
+text-align:right;
+}
 
+input[type='text']:focus{
+text-align:right;
+}
+
+#name.input[type='text']:focus{
+text-align:right;
+}
 
