@@ -282,7 +282,7 @@ def buildCompanyQuery(course_query):
 	htmlstart="""<!DOCTYPE html>
 	<html>
 		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
-	  <body>אזור מגורים
+	  <body>
 		
 		<div id="form-main">
 		<div align="right">
@@ -325,7 +325,7 @@ def buildCompanyQuery(course_query):
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
 			</div>
 		<div align="right">
-			<p class="text1">:איזור מגורים</p>
+			<p class="text1">:אזור מגורים</p>
 		  <select name="city" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align "right" id="validateFormcity" />
 				<option value=0 > כל האזורים</option>
 				<option value="תל אביב" > תל אביב</option>

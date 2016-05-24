@@ -156,7 +156,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		#logging.info(ctypes)
 		
 		#filter by residence
-		if 
+		#if 
 		q=q.filter()
 		
 		#filter out student by grades in specific courses
