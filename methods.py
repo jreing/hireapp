@@ -430,7 +430,6 @@ def buildStudentEditPage(student, course_query):
 				<option value=3> מרכז גוש דן</option>
 				<option value=4> דרום גוש דן</option>
 				<option value=5> אשדוד</option>
-				<option value=0> (לא נבחר איזור)</option>
 			  </select>
       <div align="right">"""
 
@@ -473,8 +472,8 @@ def buildStudentEditPage(student, course_query):
 				<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" value='""" + str(student.avg) + """' />			  
 			</div>"""
 	htmlYear = """<div>
-			  <p class="text2" id="yearElem">:שנת לימודים</p>
- 				<select name="year" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
+			  <p class="text2" id="element1">:שנת לימודים</p>
+ 				<select name="year" id="yearElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
 				<option value=""" + str(student.year) + """>(לא נבחר )</option>
 				<option value=1> 'א</option>
 				<option value=2> 'ב</option>
@@ -485,8 +484,8 @@ def buildStudentEditPage(student, course_query):
 	
 	htmlAvail = """<br><br><br><br>
 			<div>
-			  <p class="text2" id="availElem">:סוג משרה</p>
-			  <select name="availability" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
+			  <p class="text2" id="element1">:סוג משרה</p>
+			  <select name="availability" id="availElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
 				<option value=""" + str(student.availability) + """>(לא נבחר סוג)</option>
 				<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
