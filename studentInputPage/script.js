@@ -92,6 +92,14 @@ function validateForm() {
 		alert("please enter a grade average between 60 and 100");
 		return false }
 		
+	var git=document.getElementById("git").value;
+	
+	if (git.indexOf("github.com/"==-1){
+		alert("please enter github.com/(YOUR ACCOUNT)");
+		return false
+	}
+	
+	
 	return true;
 }
 

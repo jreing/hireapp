@@ -83,7 +83,9 @@ function validateForm() {
         var value = $(element).val();
         return value === "";
     }).length === 0; 
-
+	
+	var git=document.getElementById("git").value;
+	
     if ( !allCourseNamesValid) {
 		alert("please enter a valid course name");
 		return false }
@@ -95,7 +97,12 @@ function validateForm() {
 	if (!avgValid) {
 		alert("please enter a grade average between 60 and 100");
 		return false }
-		
+	
+	if (git.indexOf("github.com")==-1){
+		alert("please enter github.com/(YOUR ACCOUNT)");
+		return false;
+	}
+	
 	return true;
 }
 
