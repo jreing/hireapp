@@ -94,7 +94,7 @@ function validateForm() {
 		
 	var git=document.getElementById("git").value;
 	
-	if (git.indexOf("github.com/"==-1){
+	if (git.indexOf("github.com/"==-1)){
 		alert("please enter github.com/(YOUR ACCOUNT)");
 		return false
 	}
@@ -110,6 +110,30 @@ $('.buttondel').attr('disabled', 'disabled');
 
 //make sure that file chosen has a valid extension
 var file = document.getElementById('cv');
+
+$(document).ready(function() {
+// Tooltip only Text
+var msg="!פרטיותכם חשובה לנו<br/>SSL האתר מאובטח על ידי<br/>.רק חברות שאושרו על ידי צוות האתר יוכלו בנתונים שהזנתם, ורק באופן אנונימי"
+$('#masterTooltip').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<p class="tooltip"></p>')
+        .html(msg)
+        .appendTo('body')
+        .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX - 509; //Get X coordinates
+        var mousey = e.pageY - 90; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+});
+});
+
 if (file!=null){
 	file.onchange = function(e){
 		var bad=false;

@@ -68,32 +68,37 @@ def buildQueryResultsPage(q):
 		hasCv=False
 		if (student.cv_blob_key != None) :
 			hasCv=True
-		
+			
+		htmlbody+="""
+			<div class="form-element" align="right">"""
+			
 		if (hasCv) :
 			htmlbody+="""
-			<div class="form-element" align="right">
 			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
 			  <button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
-			  <p class="textbigpad">:קורות חיים</p>
-			  <p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			  <p class="text">:עיר</p>
-			</div>"""
+			  <p class="textbigpad">:קורות חיים</p>"""
+			  
 		else :
 			htmlbody+="""
-
-			<div class="form-element" align="right">
-
 			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
 			  <p class="textbigasCvButton">לא צורף</p>
-			  <p class="textbigpad">:קורות חיים</p>
-			  <p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			  <p class="text">:עיר</p>
-
-			</div>"""		
+			  <p class="textbigpad">:קורות חיים</p>"""
+			  
+		htmlbody+="""
+			<p class="text" >"""+availTranslate(student.availability).decode('utf-8', 'ignore')+"""</p>
+			<p class="text">:זמינות</p>
+			<p class="text" >"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""</p>
+			<p class="text">:שנה</p>
+			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
+			<p class="text">:איזור</p>
+			<p class="text" >"""+ student.git.decode('utf-8', 'ignore')+"""</p>
+			<p class="text">:גיט</p>
+			</div>"""	
+			  	
 	
 	htmlend="""
       </div>
@@ -189,13 +194,15 @@ def buildStudentOffersPage(conv_query, user_id):
 
 def buildStudentInputPage(course_query):
 	i=0
+	message=""" This is my statement one.\n;This is my statement2"""
 	htmlstart="""<!DOCTYPE html>
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="studentInputPage/style.css">
-<script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
+		
 
 	  <body>
-<script type="text/javascript" src="/StudentToolbar/loadToolbarInputPage.js"></script>
+		<script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/StudentToolbar/loadToolbarInputPage.js"></script>
 	  <div id="form-main">
 		<div align="right">
 		  <p class="titletext">:הרשמה</p>
@@ -277,8 +284,8 @@ def buildStudentInputPage(course_query):
 			</div>
 			
 			<div id="info">
-			
-<a href="#" class="ui-icon ui-corner-all ui-nodisc-icon ui-icon-info ui-btn-icon-notext ui-btn-b ui-btn-inline">Info</a>	
+			<a class="ui-btn ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right" data-rel="dialog" id="masterTooltip" title=" """+message+""" ">פרטיות</a>			
+
 			</div>
 			
 		    <div class="submit">
@@ -299,15 +306,13 @@ def buildStudentInputPage(course_query):
 			
 		
 	  </div>
-
 	  </body>
 
 
 		<script type="text/javascript" src="studentInputPage/script.js"></script>
 
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-	</html>
-"""
+	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
 	return html
@@ -321,6 +326,19 @@ def residenceTranslate(num):
 		5: "אשדוד"
 	} .get(num, "לא הוזן")
 	
+def yearTranslate(num):
+	return{
+		1: "א",
+		2: "ב",
+		3: "ג",
+		4: "ד",
+	} .get(num, "לא הוזן")	
+	
+def availTranslate(num):
+	return{
+		1: "חצי משרה",
+		2: "משרה מלאה",
+	} .get(num, "לא הוזן")
 	
 def buildCompanyQuery(course_query):
 	i=0
@@ -328,6 +346,8 @@ def buildCompanyQuery(course_query):
 	<html>
 		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
 	  <body>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		
 		<div id="form-main">
 		<div align="right">
@@ -387,7 +407,7 @@ def buildCompanyQuery(course_query):
 				<option value=5> אשדוד</option>
 			  </select></div>"""
 
-	htmlButt ="""		<div class="submit">
+	htmlButt ="""<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
@@ -402,11 +422,11 @@ def buildCompanyQuery(course_query):
 	htmlYear = """<br><br><div align="right" >
 			  <p class="text1" id="element1">:שנת לימודים</p>
  				<select name="year" id="yearElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
-				<option value=0>(לא נבחר )</option>
-				<option value=1> 'א</option>
-				<option value=2> 'ב</option>
-				<option value=3> 'ג</option>
-				<option value=4> 'ד</option>
+				<option value=0>(לא נבחר)</option>
+				<option value=1> א</option>
+				<option value=2> ב</option>
+				<option value=3> ג</option>
+				<option value=4> ד</option>
 			  </select>
 		  </div>"""
 	
@@ -420,18 +440,16 @@ def buildCompanyQuery(course_query):
 				
 			  </select>
 			</div>"""	
-	htmlend="""	
-	  </div>
-		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
-		<script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
+	htmlend="""	</div>
+		
+		
 	  </body>
-	  
+	  <script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </html>"""
 	htmlGit = """<div class="hasgit" align="right">
 			  <label for="hasgit" class="textsmallpad">חפש סטודנט עם חשבון גיט</label>
 			  <input type="checkbox" value="True" name="hasgit" id="hasgit" class="checkbox"> </div>"""
-	html=htmlstart+htmlYear +htmlAvail +htmlbody+htmlGit+htmlButt+ htmlend
+	html=htmlstart+htmlYear +htmlAvail +htmlGit +htmlButt +htmlbody+ htmlend
 	return html
 
 def buildStudentEditPage(student, course_query):
@@ -554,8 +572,7 @@ def buildStudentEditPage(student, course_query):
   </div>
 
   </body>
-
-</html>"""
+  </html>"""
 	
 
 	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlButt +htmlDlist +htmlend
