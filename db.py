@@ -369,13 +369,13 @@ class dbHandler(webapp2.RequestHandler):
 		st.year = int(year)
 		
 		logging.info("avail added")
-		#availablity validation and handling
+		#availability validation and handling
 		availability = self.request.get('availability')
 		if (availability.isdigit()==False or int(availability)>2 or int(availability)<0):
 			self.errormsg()
 			return
-		st.availablity = int(availability)
-		
+		st.availability = int(availability)
+		logging.info(st.availability)
 		logging.info("git added")
 		#git validation and handling
 		git = self.request.get('git')
@@ -395,7 +395,7 @@ class dbHandler(webapp2.RequestHandler):
 		st.avg = int(new_avg)
 		
 		
-		
+		logging.info(st)
 		st.put()
 		
 		if (curr_average == -1):
