@@ -56,8 +56,6 @@ class Student_Course(ndb.Model):
 	#hashed_id = ndb.IntegerProperty(indexed=False)
 	
 	
-
-	
 class Student(ndb.Model):
 	#function for computed property that gets types of courses student has
 	def getCTypes(self):
@@ -144,10 +142,12 @@ class minGradeQuery(webapp2.RequestHandler):
 			if grade.isdigit()==False: self.errormsg()
 		if average!="" and average.isdigit()==False: self.errormsg()
 		if len(ctypes)!=len(ctype_avgs): self.errormsg()
-		for ctype in ctypes:
-			if ctype.isdigit()==False: self.errormsg()
-		#for ctype_avg in ctypes_avgs:
-			#if ctype_avg.isdigit()==False: self.errormsg()
+		if (len(ctypes) != 0 ):
+			for ctype in ctypes:
+				if ctype.isdigit()==False: self.errormsg()
+		if (len(ctype_avgs)!=0):
+			for ctype_avg in ctype_avgs:
+				if ctype_avg.isdigit()==False: self.errormsg()
 		if residence.isdigit()==False: self.errormsg()
 		
 		
@@ -156,7 +156,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		#logging.info(ctypes)
 		
 		#filter by residence
-		#if 
+
 		q=q.filter()
 		
 		#filter out student by grades in specific courses
