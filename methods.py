@@ -313,7 +313,7 @@ def buildStudentInputPage(course_query):
 
 		<script type="text/javascript" src="studentInputPage/script.js"></script>
 
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	</html>"""
 
 	html=htmlstart+htmlbody+htmlend
