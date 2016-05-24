@@ -94,7 +94,7 @@ function validateForm() {
 		
 	var git=document.getElementById("git").value;
 	
-	if (git.indexOf("github.com/"==-1){
+	if (git.indexOf("github.com/"==-1)){
 		alert("please enter github.com/(YOUR ACCOUNT)");
 		return false
 	}
