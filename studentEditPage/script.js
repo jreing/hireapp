@@ -127,25 +127,29 @@ setSelect("yearElem")
 //make sure that file chosen has a valid extension
 var file = document.getElementById('cv');
 
-file.onchange = function(e){
-	var bad=false;
-	if (this.value.match(/\.([^.]+)$/)==null) {
-		bad=true;
-	}
-	else{
-		var ext =  this.value.match(/\.([^.]+)$/)[1];
-	    switch(ext){
-			case 'pdf':
-			case 'doc':
-			case 'docx':
-			case 'txt':
-				break;
-			default:
-				bad=true;
+if (file!=null){
+	file.onchange = function(e){
+		var bad=false;
+		if (this.value.match(/\.([^.]+)$/)==null) {
+			bad=true;
 		}
-	}
-	if (bad==true){
-		alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
-		this.value='';
-	}
-};
+		else{
+			var ext =  this.value.match(/\.([^.]+)$/)[1];
+			switch(ext){
+				case 'pdf':
+				case 'doc':
+				case 'docx':
+				case 'txt':
+					break;
+				default:
+					bad=true;
+			}
+		}
+		if (bad==true){
+			alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
+			this.value='';
+		}
+	};
+
+}
+	
