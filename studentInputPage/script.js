@@ -103,7 +103,7 @@ $('.buttondel').attr('disabled', 'disabled');
 //make sure that file chosen has a valid extension
 var file = document.getElementById('cv');
 
-file.onchange = function(e){
+/* file.onchange = function(e){
 	var bad=false;
 	if (this.value.match(/\.([^.]+)$/)==null) {
 		bad=true;
@@ -124,4 +124,27 @@ file.onchange = function(e){
 		alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
 		this.value='';
 	}
-};
+}; */
+
+$(document).ready(function() {
+// Tooltip only Text
+var msg="!פרטיותכם חשובה לנו<br/>SSL האתר מאובטח על ידי<br/>.רק חברות שאושרו על ידי צוות האתר יוכלו בנתונים שהזנתם, ורק באופן אנונימי"
+$('#masterTooltip').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<p class="tooltip"></p>')
+        .html(msg)
+        .appendTo('body')
+        .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX - 509; //Get X coordinates
+        var mousey = e.pageY - 90; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+});
+});

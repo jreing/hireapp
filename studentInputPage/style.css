@@ -5,11 +5,29 @@ html {
   height: 100%;
 }
 
-.ui-icon {
-  -ms-transform: scale(2); /* IE 9 */
-  -webkit-transform: scale(2); /* Chrome, Safari, Opera */
-  transform: scale(2);
+.ui-btn {
+border: none !important;
+  /*-ms-transform: scale(2); 
+  -webkit-transform: scale(2); 
+  transform: scale(2);*/
   margin-bottom: -25px;
+  disabled: disabled;
+  cursor: pointer;
+}
+
+
+.tooltip {
+white-space: pre-wrap;
+	display:none;
+	position:absolute;
+	border:1px solid #333;
+	background-color:#161616;
+	border-radius:5px;
+	padding:10px;
+	color:#fff;
+	font-size:12px Arial;
+	text-align: right;
+	cursor: pointer;
 }
 
 #info {

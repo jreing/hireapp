@@ -184,6 +184,7 @@ def buildStudentOffersPage(conv_query, user_id):
 
 def buildStudentInputPage(course_query):
 	i=0
+	message=""" This is my statement one.\n;This is my statement2"""
 	htmlstart="""<!DOCTYPE html>
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="studentInputPage/style.css">
@@ -272,8 +273,8 @@ def buildStudentInputPage(course_query):
 			</div>
 			
 			<div id="info">
-			
-<a href="#" class="ui-icon ui-corner-all ui-nodisc-icon ui-icon-info ui-btn-icon-notext ui-btn-b ui-btn-inline">Info</a>	
+<a class="ui-btn ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right" data-rel="dialog" id="masterTooltip" title=" """+message+""" ">פרטיות</a>			
+
 			</div>
 			
 		    <div class="submit">
@@ -294,7 +295,6 @@ def buildStudentInputPage(course_query):
 			
 		
 	  </div>
-
 	  </body>
 
 
