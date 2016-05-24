@@ -58,6 +58,8 @@ def buildQueryResultsPage(q):
 	  
 	htmlbody=''
 	hasCv=False
+	##TODO: add redirection here
+	#if q=""
 	for student in q:
 		i=i+1
 		hasCv=False
