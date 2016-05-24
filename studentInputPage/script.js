@@ -92,6 +92,14 @@ function validateForm() {
 		alert("please enter a grade average between 60 and 100");
 		return false }
 		
+	var git=document.getElementById("git").value;
+	
+	if (git.indexOf("github.com/"==-1){
+		alert("please enter github.com/(YOUR ACCOUNT)");
+		return false
+	}
+	
+	
 	return true;
 }
 
@@ -102,29 +110,6 @@ $('.buttondel').attr('disabled', 'disabled');
 
 //make sure that file chosen has a valid extension
 var file = document.getElementById('cv');
-
-/* file.onchange = function(e){
-	var bad=false;
-	if (this.value.match(/\.([^.]+)$/)==null) {
-		bad=true;
-	}
-	else{
-		var ext =  this.value.match(/\.([^.]+)$/)[1];
-	    switch(ext){
-			case 'pdf':
-			case 'doc':
-			case 'docx':
-			case 'txt':
-				break;
-			default:
-				bad=true;
-		}
-	}
-	if (bad==true){
-		alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
-		this.value='';
-	}
-}; */
 
 $(document).ready(function() {
 // Tooltip only Text
@@ -148,3 +133,29 @@ $('#masterTooltip').hover(function(){
         .css({ top: mousey, left: mousex })
 });
 });
+
+if (file!=null){
+	file.onchange = function(e){
+		var bad=false;
+		if (this.value.match(/\.([^.]+)$/)==null) {
+			bad=true;
+		}
+		else{
+			var ext =  this.value.match(/\.([^.]+)$/)[1];
+			switch(ext){
+				case 'pdf':
+				case 'doc':
+				case 'docx':
+				case 'txt':
+					break;
+				default:
+					bad=true;
+			}
+		}
+		if (bad==true){
+			alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
+			this.value='';
+		}
+	};
+}
+

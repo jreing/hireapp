@@ -366,6 +366,7 @@ class dbHandler(webapp2.RequestHandler):
 		if (year.isdigit()==False or int(year)>4 or int(year)<0):
 			self.errormsg()
 			return
+		logging.info(year)
 		st.year = int(year)
 		
 		logging.info("avail added")
@@ -374,8 +375,8 @@ class dbHandler(webapp2.RequestHandler):
 		if (availability.isdigit()==False or int(availability)>2 or int(availability)<0):
 			self.errormsg()
 			return
+		logging.info(availability)
 		st.availability = int(availability)
-		logging.info(st.availability)
 		logging.info("git added")
 		#git validation and handling
 		git = self.request.get('git')

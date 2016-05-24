@@ -83,7 +83,9 @@ function validateForm() {
         var value = $(element).val();
         return value === "";
     }).length === 0; 
-
+	
+	var git=document.getElementById("git").value;
+	
     if ( !allCourseNamesValid) {
 		alert("please enter a valid course name");
 		return false }
@@ -95,13 +97,20 @@ function validateForm() {
 	if (!avgValid) {
 		alert("please enter a grade average between 60 and 100");
 		return false }
-		
+	
+	if (git.indexOf("github.com")==-1){
+		alert("please enter github.com/(YOUR ACCOUNT)");
+		return false;
+	}
+	
 	return true;
 }
 
 function setSelect(elem){
+	
 	var residence = document.getElementById(elem).value;
 	var select = document.getElementById(elem)
+	//alert(elem + " len " + select.length)
 	for (var i=1; i<select.length;i++){
 		if (select[i].value === residence){
 			select.selectedIndex = i;
@@ -125,25 +134,29 @@ setSelect("yearElem")
 //make sure that file chosen has a valid extension
 var file = document.getElementById('cv');
 
-file.onchange = function(e){
-	var bad=false;
-	if (this.value.match(/\.([^.]+)$/)==null) {
-		bad=true;
-	}
-	else{
-		var ext =  this.value.match(/\.([^.]+)$/)[1];
-	    switch(ext){
-			case 'pdf':
-			case 'doc':
-			case 'docx':
-			case 'txt':
-				break;
-			default:
-				bad=true;
+if (file!=null){
+	file.onchange = function(e){
+		var bad=false;
+		if (this.value.match(/\.([^.]+)$/)==null) {
+			bad=true;
 		}
-	}
-	if (bad==true){
-		alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
-		this.value='';
-	}
-};
+		else{
+			var ext =  this.value.match(/\.([^.]+)$/)[1];
+			switch(ext){
+				case 'pdf':
+				case 'doc':
+				case 'docx':
+				case 'txt':
+					break;
+				default:
+					bad=true;
+			}
+		}
+		if (bad==true){
+			alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
+			this.value='';
+		}
+	};
+
+}
+	
