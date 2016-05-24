@@ -113,7 +113,7 @@ var file = document.getElementById('cv');
 
 $(document).ready(function() {
 // Tooltip only Text
-var msg="!פרטיותכם חשובה לנו<br/>SSL האתר מאובטח על ידי<br/>.רק חברות שאושרו על ידי צוות האתר יוכלו בנתונים שהזנתם, ורק באופן אנונימי"
+var msg="!פרטיותך חשובה לנו<br/>.SSL האתר מאובטח על ידי<br/>.רק חברות שאושרו על ידי צוות האתר יוכלו לצפות בנתוניך, ורק באופן אנונימי"
 $('#masterTooltip').hover(function(){
         // Hover over code
         var title = $(this).attr('title');

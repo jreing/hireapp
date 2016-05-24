@@ -264,13 +264,13 @@ def buildStudentInputPage(course_query):
 			  </select>
 			</div>
 			
-			<div align="right" id="cventry">
+			<br><div align="right" id="cventry">
 		      <p class="text2" id="element1" >:אופציונלי-הזן קורות חיים</p>
 			  <input name="cv" type="file" id="element2" class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 		    </div>
 			
 			
-			<div id="gitEntry" >
+			<br><div id="gitEntry" >
 				<p class="text2" id="element1">:אופציונלי - הזן חשבון גיט</p><br><br>
 
 				<input name="git" type="text" class="git" id="git" placeholder="" />			  
