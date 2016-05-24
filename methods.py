@@ -310,9 +310,9 @@ def buildCompanyQuery(course_query):
 			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
 			</div>
 			<div id="clonemetwo0" class="clonemetwo">
-			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם אשכול" id="ctype">
-				<option value=0>(לא נבחר אשכול)</option>
-				<option value=1>מתמטיקה</option>
+			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input"  id="ctype">
+				<option selected="selected"  value=0>(לא נבחר אשכול)</option>
+				<option value=1 >מתמטיקה</option>
 				<option value=2>תכנות</option>
 				<option value=3>תאוריות מדעי המחשב</option>
 				<option value=4>אבטחת מידע</option>
@@ -324,7 +324,14 @@ def buildCompanyQuery(course_query):
 			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="הסר" />
 			</div>
-		<div align="right">
+		
+
+			<div align="right" id=avgentry>
+			  <p class="text1">:ממוצע תואר מינימלי</p>
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="60" max="100" placeholder="ממוצע" id="avg" />
+			</div>
+
+			<div align="right">
 			<p class="text1">:אזור מגורים</p>
 		  <select name="city" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align "right" id="validateFormcity" />
 				<option value=0 > כל האזורים</option>
@@ -336,13 +343,6 @@ def buildCompanyQuery(course_query):
 				<option value="אשדוד"> אשדוד</option>
 			  </select></div>
 
-
-
-
-			<div align="right" id=avgentry>
-			  <p class="text1">:ממוצע תואר מינימלי</p>
-			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="60" max="100" placeholder="ממוצע" id="avg" />
-			</div>
 			<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
 			  <div class="ease"></div>

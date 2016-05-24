@@ -242,10 +242,10 @@ textarea {
   cursor: pointer;
   background-color: #3498db;
   color: white;
-  font-size: 34px;
+  font-size: 26px;
   padding-top: 7px;
   margin-top: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 8px;
   margin-left: 6px;
   font-weight: 700;
 }
@@ -258,10 +258,10 @@ textarea {
   cursor: pointer;
   background-color: #3498db;
   color: white;
-  font-size: 34px;
+  font-size: 26px;
   padding-top: 7px;
   margin-top: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 8px;
   margin-left: 6px;
   font-weight: 700;
 }
