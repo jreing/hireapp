@@ -98,7 +98,7 @@ function validateForm() {
 		alert("please enter a grade average between 60 and 100");
 		return false }
 	
-	if (git.indexOf("github.com")==-1){
+	if (git!="" && git.indexOf("github.com")==-1){
 		alert("please enter github.com/(YOUR ACCOUNT)");
 		return false;
 	}

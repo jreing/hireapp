@@ -104,13 +104,13 @@ function validateForm() {
 	
  	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
         var value = $(element).val();   
-        return value === "" || courses.indexOf(value) < 0;
-    }).length === 0;
-
+        return ((value === "") || (courses.indexOf(value) < 0));
+    }).length >= 0;
+	
  	var allGradesValid = $(".feedback-input2").filter(function (key, element) {
         var value = $(element).val();
         return value === "";
-    }).length === 0; 
+    }).length >= 0; 
 	
 	
  	var allCategoriesValid = $(".clonemetwo").filter(function (key, element) {

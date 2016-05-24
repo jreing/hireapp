@@ -94,7 +94,7 @@ function validateForm() {
 		
 	var git=document.getElementById("git").value;
 	
-	if (git.indexOf("github.com/"==-1)){
+	if (git!="" && git.indexOf("github.com/"==-1)){
 		alert("please enter github.com/(YOUR ACCOUNT)");
 		return false
 	}
@@ -113,7 +113,7 @@ var file = document.getElementById('cv');
 
 $(document).ready(function() {
 // Tooltip only Text
-var msg="!פרטיותכם חשובה לנו<br/>SSL האתר מאובטח על ידי<br/>.רק חברות שאושרו על ידי צוות האתר יוכלו בנתונים שהזנתם, ורק באופן אנונימי"
+var msg="!פרטיותך חשובה לנו<br/>.SSL האתר מאובטח על ידי<br/>.רק חברות שאושרו על ידי צוות האתר יוכלו לצפות בנתוניך, ורק באופן אנונימי"
 $('#masterTooltip').hover(function(){
         // Hover over code
         var title = $(this).attr('title');
