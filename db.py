@@ -285,6 +285,7 @@ class dbUserIdScramble(webapp2.RequestHandler):
 class dbHandler(webapp2.RequestHandler):
 	def errormsg(self):
 		#TODO: write prettier error message display
+		self.response.write(self.request)
 		self.response.write("invalid request to server")
 		return 
 
@@ -351,6 +352,7 @@ class dbHandler(webapp2.RequestHandler):
 			st.allow_emails=False
 			
 		
+		logging.info("residence added")
 		#residence validation and handling
 		residence = self.request.get('residence')
 		if (residence.isdigit()==False or int(residence)>5 or int(residence)<0):
@@ -358,6 +360,7 @@ class dbHandler(webapp2.RequestHandler):
 			return
 		st.residence = int(residence)
 		
+		logging.info("year added")
 		#year validation and handling
 		year = self.request.get('year')
 		if (year.isdigit()==False or int(year)>4 or int(year)<0):
@@ -365,13 +368,15 @@ class dbHandler(webapp2.RequestHandler):
 			return
 		st.year = int(year)
 		
+		logging.info("avail added")
 		#availablity validation and handling
-		availablity = self.request.get('availablity')
-		if (availablity.isdigit()==False or int(availablity)>2 or int(availablity)<0):
+		availability = self.request.get('availability')
+		if (availability.isdigit()==False or int(availability)>2 or int(availability)<0):
 			self.errormsg()
 			return
-		st.availablity = int(availablity)
+		st.availablity = int(availability)
 		
+		logging.info("git added")
 		#git validation and handling
 		git = self.request.get('git')
 		
