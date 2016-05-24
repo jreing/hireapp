@@ -270,7 +270,12 @@ def buildStudentInputPage(course_query):
 			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>
 			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" >
 			</div>
-		
+			
+			<div id="info">
+			
+<a href="#" class="ui-icon ui-corner-all ui-nodisc-icon ui-icon-info ui-btn-icon-notext ui-btn-b ui-btn-inline">Info</a>	
+			</div>
+			
 		    <div class="submit">
 		      <input type="submit" value="שלח" id="button-blue" />
 		      <div class="ease"> </div>
@@ -295,6 +300,7 @@ def buildStudentInputPage(course_query):
 
 		<script type="text/javascript" src="studentInputPage/script.js"></script>
 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	</html>
 """
 
