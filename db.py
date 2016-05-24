@@ -152,13 +152,20 @@ class minGradeQuery(webapp2.RequestHandler):
 		
 		
 		q=Student.query()
+		q.fetch(100)
+		
 		#logging.info(self.request)
 		#logging.info(ctypes)
-		
+		logging.info("Residence")
+		logging.info(residence)
 		#filter by residence
 
-		q=q.filter()
-		
+		if (int(residence)>0 and int(residence)<6):
+			
+			p=Student.query(Student.residence==int(residence))
+			p.fetch(100)
+			q = [val for val in p if val in q]
+			
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)):	
 			if grades[i]=="" :
@@ -166,8 +173,9 @@ class minGradeQuery(webapp2.RequestHandler):
 			#logging.info(i)
 			#logging.info (len(grades)-1)
 			grade=int(grades[i])
-			q=q.filter (Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
-		q.fetch(100)
+			p=Student.query(Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
+			p.fetch(100)
+			q = [val for val in p if val in q]
 			
 		#filter out by average
 		if average!="":
@@ -179,7 +187,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		#logging.info(q.fetch(100))
 		
 		for i in range(0,len(ctypes)):
-			logging.info(i)
+			#logging.info(i)
 			filteredRes=[]
 			ctypes[i]=int(ctypes[i])
 			if(ctypes[i]!=0):
