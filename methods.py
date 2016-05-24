@@ -456,8 +456,8 @@ def buildStudentEditPage(student, course_query):
 
 	if (student.cv_blob_key != None) :
 			hasCv=True
-	htmlcv = """<div align="right" id=cventry>
-				<p class="text2" id="element1" >:קורות חיים</p>
+	htmlcv = """<br><br><div align="right" id=cventry>
+				<p class="text3" id="element1" >:קורות חיים</p>
         
 		<div align="right">
 		<input name="cv" type="file" id="element2" class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
@@ -471,16 +471,42 @@ def buildStudentEditPage(student, course_query):
 				<p class="text2" id="element1">:ממוצע כללי </p> 
 
 				<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" value='""" + str(student.avg) + """' />			  
-			</div>
+			</div>"""
+	htmlYear = """<div>
+			  <p class="text2" id="element1">:שנת לימודים</p>
+ 				<select name="year" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
+				<option value=0>(לא נבחר )</option>
+				<option value=1> 'א</option>
+				<option value=2> 'ב</option>
+				<option value=3> 'ג</option>
+				<option value=4> 'ד</option>
+			  </select>
+		  </div>"""
+	
+	htmlAvail = """<br><br><br><br>
+			<div>
+			  <p class="text2" id="element1">:סוג משרה</p>
+			  <select name="availability" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
+				<option value=0>(לא נבחר סוג)</option>
+				<option value=1> חצי משרה</option>
+				<option value=2> משרה מלאה</option>
+				
+			  </select>
+			</div>"""
 
-		    <div class="getEmailNotification" align="right">
+	htmlGit = """<br><br><br><br><div id="gitEntry" >
+				<p class="text2" id="element1">:חשבון גיט</p><br><br>
+
+				<input name="git" type="text" class="git" id="element2" id="git" placeholder="" />			  
+			</div>"""
+	htmlMail = """<br><br><br><br><div class="getEmailNotification" align="right">
 			  <label for="getEmailNotification" class="textsmallpad">עדכון במייל לגבי הצעת משרה</label>
 			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" """
 			  
 	if(student.allow_emails == True):
-		htmlAvg+="""checked"""
+		htmlMail+="""checked"""
 	
-	htmlAvg+="""> </div>"""
+	htmlMail+="""> </div>"""
 	
 	htmlButt = """<div class="submit">
           <input type="submit" value="שמור" id="button-blue" />
@@ -507,5 +533,5 @@ def buildStudentEditPage(student, course_query):
 </html>"""
 	
 
-	html=htmlstart + htmlbody + htmlcv + htmlAvg + htmlButt +htmlDlist +htmlend
+	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlButt +htmlDlist +htmlend
 	return html
