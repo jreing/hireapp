@@ -39,7 +39,7 @@ $('#buttonadd').click(function ab() {
  
   // insert the new element after the last "duplicatable" input field
   //$('#cloneme' + (newNum-1)).after(newElem);
-  $(newElem).insertBefore('#cventry');
+  $(newElem).insertBefore('#avgEntry');
   // enable the "remove" button
   //$('.buttondel').attr('disabled', '');
   var inputs = document.getElementsByClassName("buttondel");

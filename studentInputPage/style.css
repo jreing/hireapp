@@ -122,6 +122,48 @@ html {
 
 }
 
+.feedback-input5 {
+  color: #3c3c3c;
+  
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  padding: 13px 13px 13px 54px;
+  margin-bottom: 10px;
+  width: 45%;
+  margin-left: 5%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+
+}
+
+.feedback-input6 {
+  color: #3c3c3c;
+  
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  padding: 13px 13px 13px 54px;
+  margin-bottom: 10px;
+  width: 45%;
+  margin-left: 5%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+
+}
+
 .average {
   color: #3c3c3c;
   
@@ -142,6 +184,27 @@ html {
   border: 3px solid rgba(0, 0, 0, 0);
 
 }
+
+.git {
+  color: #3c3c3c;
+  
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  margin-bottom: 10px;
+  width: 40%;
+  margin-left: 60%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+
+}
+
 
 input[type="text"]:-moz-placeholder {
     text-align: right;
@@ -257,10 +320,10 @@ textarea {
   cursor: pointer;
   background-color: #3498db;
   color: white;
-  font-size: 34px;
+  font-size: 26px;
   padding-top: 7px;
   margin-top: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 8px;
   margin-left: 6px;
   font-weight: 700;
 }
@@ -308,6 +371,8 @@ textarea {
 
 .textsmallpad {
   color: white;
+  padding-top: 22px;
+ 
 }
 #gradeentry {
 padding-top: 100px;

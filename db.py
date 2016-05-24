@@ -70,6 +70,9 @@ class Student(ndb.Model):
 		#logging.info (ctypes)
 		#logging.info ("GET C TYPES FINISHED")
 		return ctypes
+	
+	def hasGit(self):
+		return self.git!=""
 		
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
@@ -81,7 +84,11 @@ class Student(ndb.Model):
 	email=ndb.StringProperty(indexed=True, required=True)
 	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
 	allow_emails= ndb.BooleanProperty(indexed=False, required=True)
-	residence=ndb.IntegerProperty(indexed=True)
+	residence=ndb.IntegerProperty(indexed=True, required=True)
+	availability=ndb.IntegerProperty(indexed=True, required=True)
+	year=ndb.IntegerProperty(indexed=True, required=True)
+	git=ndb.StringProperty(required=True)
+	hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
 	
 	
 class allowedCompany(ndb.Model):
@@ -157,14 +164,33 @@ class minGradeQuery(webapp2.RequestHandler):
 				if ctype_avg!="" and ctype_avg.isdigit()==False: self.errormsg()
 		if residence.isdigit()==False: self.errormsg()
 		
+		if year.isdigit()==False: self.errormsg()
+		if availability.isdigit()==False: self.errormsg()
+		if len(hasgit)>5: self.errormsg()
+
 		q=Student.query()
 		q.fetch(100)
 		
-
+		#filter by availability
+		if (int(availability)>0 and int(availability)<6):
+			p=Student.query(Student.availability==int(availability))
+			p.fetch(100)
+			q = [val for val in p if val in q]
+		
+		#filter by hasgit
+		if (hasgit=="True"):
+			p=Student.query(Student.hasgit==True)
+			p.fetch(100)
+			q = [val for val in p if val in q]
+		
+		#filter by year
+		if (int(year)>0 and int(year)<6):
+			p=Student.query(Student.year==int(year))
+			p.fetch(100)
+			q = [val for val in p if val in q]
+		
 		#filter by residence
-
 		if (int(residence)>0 and int(residence)<6):
-			
 			p=Student.query(Student.residence==int(residence))
 			p.fetch(100)
 			q = [val for val in p if val in q]
@@ -187,8 +213,6 @@ class minGradeQuery(webapp2.RequestHandler):
 			p.fetch(100)
 			q = [val for val in q if val in p]
 
-		#logging.info(q.fetch(100))
-		
 		for i in range(0,len(ctypes)):
 			#logging.info(i)
 			filteredRes=[]
@@ -261,7 +285,9 @@ class dbUserIdScramble(webapp2.RequestHandler):
 class dbHandler(webapp2.RequestHandler):
 	def errormsg(self):
 		#TODO: write prettier error message display
+		self.response.write(self.request)
 		self.response.write("invalid request to server")
+		return 
 
 	def post(self):
 		cvKey = False
@@ -274,6 +300,7 @@ class dbHandler(webapp2.RequestHandler):
 		cv=self.request.get('cv')
 		if (cv!=""):
 			#logging.info ("cv detected " + cv)
+			
 			#validate the user's file is a REAL PDF.
 			if (self.checkPdfFile(cv)==False):
 				#TODO - more elegent error message
@@ -285,51 +312,90 @@ class dbHandler(webapp2.RequestHandler):
 		elif(st.cv_blob_key!=None):
 			cvKey = True
 		
+		if (cv!=""):
+			st.cv_blob_key=BlobKey(cv_blob_key)
+		elif(cvKey!= True):
+			st.cv_blob_key=None
+		
+		#add courses and grades
 		course_names=self.request.get('name', allow_multiple=True)
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
 			#self.response.write ("Error")
 			self.errormsg()
-			
+
+		
+				
 		s=[]
 		for i in range(0,len(course_names)):
 			if (grade[i].isdigit()==False): continue
 			if (int(grade[i])>100 or int(grade[i])<60) : continue
-			
+			if (len(course_names[i])>50):
+				self.errormsg()
+				return
 			course_query=Course.query (Course.course_name==course_names[i]).get()
 			
 			if course_query==None : continue
 			
 			#logging.info (course_query)
 			s.append(Student_Course(grade=int(grade[i]), course=course_query))
-		#people_resource = service.people()
-		#people_document = people_resource.get(userId='me').execute(
 		
 		st.student_courses=s
 		
 		st.name = "demo"
 		#logging.info(self.request.get('getEmailNotification'))
+		
+		#handle allow-emails
 		if (self.request.get('getEmailNotification')=="True"):
 			st.allow_emails=True
 		else:
 			st.allow_emails=False
+			
+		
+		logging.info("residence added")
+		#residence validation and handling
 		residence = self.request.get('residence')
 		if (residence.isdigit()==False or int(residence)>5 or int(residence)<0):
 			self.errormsg()
-			
+			return
 		st.residence = int(residence)
+		
+		logging.info("year added")
+		#year validation and handling
+		year = self.request.get('year')
+		if (year.isdigit()==False or int(year)>4 or int(year)<0):
+			self.errormsg()
+			return
+		st.year = int(year)
+		
+		logging.info("avail added")
+		#availability validation and handling
+		availability = self.request.get('availability')
+		if (availability.isdigit()==False or int(availability)>2 or int(availability)<0):
+			self.errormsg()
+			return
+		st.availability = int(availability)
+		logging.info(st.availability)
+		logging.info("git added")
+		#git validation and handling
+		git = self.request.get('git')
+		logging.info(git)
+		if (git!="" and (len(git)>60 or git.find("git")==-1)):
+			self.errormsg()
+			return
+		st.git = git
 		
 		curr_average = st.avg
 		
+		#average validation
 		new_avg= self.request.get('average')
 		if (new_avg.isdigit()==False or int(new_avg)>100 or int(new_avg)<60):
 			self.errormsg()
+			return
 		st.avg = int(new_avg)
 		
-		if (cv!=""):
-			st.cv_blob_key=BlobKey(cv_blob_key)
-		elif(cvKey!= True):
-			st.cv_blob_key=None
+		
+		#logging.info(st)
 		st.put()
 		
 		if (curr_average == -1):
