@@ -187,9 +187,9 @@ textarea {
 }
 
 .text {
-  margin-right: 30px;
-  display: inline-block;
-  width: 50px;
+  margin-right: 5px;
+  display: inline;
+  width: 30px;
 }
 
 .checkbox {
@@ -230,7 +230,7 @@ textarea {
 
 .textbigasCvButton {
   margin-right: 50px;
-  display: inline-block;
+  display: inline;
   width: 75px;
 }
 

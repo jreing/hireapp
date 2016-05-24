@@ -140,6 +140,9 @@ class minGradeQuery(webapp2.RequestHandler):
 		ctypes=self.request.get_all("ctype")
 		ctype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
+		year=self.request.get("year")
+		availability=self.request.get("availability")
+		hasgit=self.request.get("hasgit")
 		
 		logging.info("grades " + str(len(grades)))
 		logging.info("course " + str(len(course_names)))
