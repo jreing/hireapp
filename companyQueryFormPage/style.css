@@ -106,10 +106,21 @@ html {
   border: 3px solid rgba(0, 0, 0, 0);
 }
 
-input[type="text"]:-moz-placeholder {
-    text-align: right;
-}
 
+
+/*input[type="text"]:-moz-placeholder {
+    text-align: right;
+}*/
+
+/* webkit solution */
+/*::-webkit-input-placeholder { 
+  text-align:right; 
+}*/
+/* mozilla solution */
+/*input:-moz-placeholder { 
+  text-align:right; 
+}
+*/
 .feedback-input select option {
   text-align:right;
 }
@@ -166,12 +177,20 @@ textarea {
     text-align: right;
 }
 
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+/*::-webkit-input-placeholder { 
     direction: rtl;
 }
-::-moz-placeholder { /* Mozilla Firefox 19+ but I'm not sure about working */
+:-moz-placeholder {
     direction: rtl;
 }
+::-moz-placeholder { 
+    direction: rtl;
+}
+:-ms-input-placeholder { 
+    direction: rtl;
+}*/
+
+
 
 .titletext {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
@@ -365,3 +384,18 @@ textarea {
   font-size: 50px;
 }
 
+input[type='text']{
+text-align:right;
+}
+
+input[type='text']:focus{
+text-align:left;
+}
+
+input[type='number']{
+text-align:center;
+}
+
+input[type='number']:focus{
+text-align:center;
+}
