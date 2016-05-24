@@ -58,6 +58,10 @@ def buildQueryResultsPage(q):
 	  
 	htmlbody=''
 	hasCv=False
+	
+	##TODO: add redirection here
+	#if q=""
+	
 	for student in q:
 		i=i+1
 		hasCv=False
@@ -380,26 +384,42 @@ def buildCompanyQuery(course_query):
 				<option value=3> מרכז גוש דן</option>
 				<option value=4> דרום גוש דן</option>
 				<option value=5> אשדוד</option>
-			  </select></div>
+			  </select></div>"""
 
-			<div class="submit">
+	htmlButt ="""		<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
-			  <div class="ease"></div>
-			</div>
-			<datalist id="courses" hidden>"""
-	htmlbody=''
+			  <div class="ease"></div>"""
+			  
+	htmlbody="""<div><datalist id="courses" hidden>"""
 	
 	for course in course_query:
 		i=i+1
 		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> \n"""
-		
-	htmlend="""</datalist>
-		  </form>
-		</div>
-		
+	
+	htmlbody+= """</datalist> </form> </div>"""
+	
+	htmlYear = """<br><br><div align="right" >
+			  <p class="text1" id="element1">:שנת לימודים</p>
+ 				<select name="year" id="yearElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
+				<option value=0>(לא נבחר )</option>
+				<option value=1> 'א</option>
+				<option value=2> 'ב</option>
+				<option value=3> 'ג</option>
+				<option value=4> 'ד</option>
+			  </select>
+		  </div>"""
+	
+	htmlAvail = """<br><br>
+			<div align="right" >
+			  <p class="text1" id="element1">:סוג משרה</p>
+			  <select name="availability" id="availElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
+				<option value=0>(לא נבחר סוג)</option>
+				<option value=1> חצי משרה</option>
+				<option value=2> משרה מלאה</option>
 				
-				
-				
+			  </select>
+			</div>"""	
+	htmlend="""	
 	  </div>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
@@ -407,8 +427,10 @@ def buildCompanyQuery(course_query):
 	  </body>
 	  
 	  </html>"""
-
-	html=htmlstart+htmlbody+htmlend
+	htmlGit = """<div class="hasgit" align="right">
+			  <label for="hasgit" class="textsmallpad">חפש סטודנט עם חשבון גיט</label>
+			  <input type="checkbox" value="True" name="hasgit" id="hasgit" class="checkbox"> </div>"""
+	html=htmlstart+htmlYear +htmlAvail +htmlbody+htmlGit+htmlButt+ htmlend
 	return html
 
 def buildStudentEditPage(student, course_query):
@@ -479,19 +501,19 @@ def buildStudentEditPage(student, course_query):
 			</div>"""
 	htmlYear = """<div>
 			  <p class="text2" id="element1">:שנת לימודים</p>
- 				<select name="year" id="yearElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
+ 				<select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
 				<option value=""" + str(student.year) + """>(לא נבחר )</option>
-				<option value=1> 'א</option>
-				<option value=2> 'ב</option>
-				<option value=3> 'ג</option>
-				<option value=4> 'ד</option>
+				<option value=1> א'</option>
+				<option value=2> ב'</option>
+				<option value=3> ג'</option>
+				<option value=4> ד'</option>
 			  </select>
 		  </div>"""
 	
 	htmlAvail = """<br><br><br><br>
 			<div>
 			  <p class="text2" id="element1">:סוג משרה</p>
-			  <select name="availability" id="availElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
+			  <select name="availability" id="availability" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
 				<option value=""" + str(student.availability) + """>(לא נבחר סוג)</option>
 				<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
