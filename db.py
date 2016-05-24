@@ -134,13 +134,12 @@ class minGradeQuery(webapp2.RequestHandler):
 		ctype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
 		
-		logging.info("grades " + str(grades[0]))
+		logging.info("grades " + str(len(grades)))
 		logging.info("course " + str(len(course_names)))
 		logging.info("average " + str(average))
-		logging.info("ctypes " + str(ctypes[0]))
+		logging.info("ctypes " + str(len(ctypes)))
 		logging.info("ctype_avgs " + str(len(ctype_avgs)))
 		logging.info("residence " + str(residence))
-		
 		
 		#server side input validation
 		if len(grades)!=len(course_names): self.errormsg()
@@ -149,23 +148,19 @@ class minGradeQuery(webapp2.RequestHandler):
 		for grade in grades:
 			if grade!="" and grade.isdigit()==False: self.errormsg()
 		if average!="" and average.isdigit()==False: self.errormsg()
-		if len(ctypes)!=len(ctype_avgs): self.errormsg()
-		if (len(ctypes) != 0 ):
+		if (len(ctypes)!=len(ctype_avgs)): self.errormsg()
+		if (len(ctypes) >0 and ctypes[0]!=""):
 			for ctype in ctypes:
 				if ctype.isdigit()==False: self.errormsg()
-		if (len(ctype_avgs)!=0):
+		if (len(ctype_avgs)>0 and ctypes[0]!=""):
 			for ctype_avg in ctype_avgs:
-				if ctype_avg.isdigit()==False: self.errormsg()
+				if ctype_avg!="" and ctype_avg.isdigit()==False: self.errormsg()
 		if residence.isdigit()==False: self.errormsg()
-		
 		
 		q=Student.query()
 		q.fetch(100)
 		
-		#logging.info(self.request)
-		#logging.info(ctypes)
-		logging.info("Residence")
-		logging.info(residence)
+
 		#filter by residence
 
 		if (int(residence)>0 and int(residence)<6):

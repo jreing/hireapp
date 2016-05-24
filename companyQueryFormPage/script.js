@@ -2,6 +2,9 @@ var newNum = 0;
 var elems = 1;
 var newNumtwo = 0;
 var elemstwo = 1;
+var courses = $("#courses option").map(function () {
+    return this.value;
+}).get();
 
 function b() {
   var num = this.id.substring(9);
@@ -89,8 +92,51 @@ $('#buttonaddtwo').click(function abtwo() {
 });
 
  
-
 $('.buttondel')[ 0 ].onclick= b;
 $('.buttondel').attr('disabled', 'disabled');
 $('.buttondeltwo')[ 0 ].onclick= btwo;
 $('.buttondeltwo').attr('disabled', 'disabled');
+
+
+
+
+function validateForm() {
+	
+ 	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
+        var value = $(element).val();   
+        return value === "" || courses.indexOf(value) < 0;
+    }).length === 0;
+
+ 	var allGradesValid = $(".feedback-input2").filter(function (key, element) {
+        var value = $(element).val();
+        return value === "";
+    }).length === 0; 
+	
+	
+ 	var allCategoriesValid = $(".clonemetwo").filter(function (key, element) {
+        var category = $(element).children().eq(0).val();
+		var grade = $(element).children().eq(1).val();
+		//alert("category, grade are"+(category!=0)+" , "+(grade === ""));
+        return category!=0 && grade === "";
+    }).length === 0; 	
+	
+
+    if ( !allCourseNamesValid) {
+		alert("please enter a valid course name");
+		return false }
+		
+    if (!allGradesValid) {
+		alert("please enter a grade between 60 and 100");
+		return false }
+		
+	if (!allCategoriesValid) {
+		alert("please enter a grade average between 60 and 100 for the category");
+		return false } 
+	
+	return true;
+}
+
+
+
+
+
