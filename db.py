@@ -146,8 +146,8 @@ class minGradeQuery(webapp2.RequestHandler):
 		if len(ctypes)!=len(ctype_avgs): self.errormsg()
 		for ctype in ctypes:
 			if ctype.isdigit()==False: self.errormsg()
-		for ctype_avg in ctypes_avgs:
-			if ctype_avg.isdigit()==False: self.errormsg()
+		# for ctype_avg in ctypes_avgs:
+		# 	if ctype_avg.isdigit()==False: self.errormsg()
 		if residence.isdigit()==False: self.errormsg()
 		
 		
