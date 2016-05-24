@@ -221,7 +221,7 @@ def buildStudentInputPage(course_query):
 		    <div id="cloneme0" class="cloneme">
 		      <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name" />
 		      <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
-		      <input type="button" id="buttondel0" class="buttondel" value="X" />
+		      <input type="button" id="buttondel0" class="buttondel" value="הסר" />
 			  
 		    </div>
 		
@@ -301,7 +301,7 @@ def buildCompanyQuery(course_query):
 			<div id="cloneme0" class="cloneme">
 			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name"  />
 			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
-			  <input type="button" id="buttondel0" class="buttondel" value="X" />
+			  <input type="button" id="buttondel0" class="buttondel" value="הסר" />
 			</div>
 			<div align="right" id="bysubject">
 			  <p class="text1">:ממוצע מינימלי באשכול</p>
@@ -322,7 +322,7 @@ def buildCompanyQuery(course_query):
 			  </select>
 
 			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
-			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="X" />
+			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="הסר" />
 			</div>
 		<div align="right">
 			<p class="text1">:אזור מגורים</p>
