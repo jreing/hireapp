@@ -174,7 +174,7 @@ class doubleLogin(webapp2.RequestHandler):
 		f.close()
 
 class noResults(webapp2.RequestHandler):
-	def post(self):
+	def get(self):
 		f = open("no_results_page.html")
 		self.response.write(f.read())
 		f.close()
