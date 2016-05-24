@@ -60,7 +60,8 @@ def buildQueryResultsPage(q):
 	hasCv=False
 	
 	##TODO: add redirection here
-	#if q=""
+	if q.count()==0:
+		htmlbody= "<script>window.location=/NoResults;</script>"
 	
 	for student in q:
 		i=i+1
@@ -265,7 +266,7 @@ def buildStudentInputPage(course_query):
 			<div id="gitEntry" >
 				<p class="text2" id="element1">:אופציונלי - הזן חשבון גיט</p><br><br>
 
-				<input name="git" type="text" class="git" id="element2" id="git" placeholder="" />			  
+				<input name="git" type="text" class="git" id="git" placeholder="" />			  
 			</div>
 			
 			
@@ -441,6 +442,7 @@ def buildStudentEditPage(student, course_query):
 	<link rel="stylesheet" type="text/css" href="studentEditPage/style.css">
 	<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
   <body>
+  <script type="text/javascript" src="studentEditPage/script.js"></script>
   <script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
   <div id="form-main">
     <div align="right">
@@ -471,15 +473,12 @@ def buildStudentEditPage(student, course_query):
 
 		if (crs!=None):
 			htmlbody+= """
-			<div id="cloneme""" + str(j) + """"class="cloneme">
+			<div id="cloneme""" + str(j) + """" class="cloneme">
 			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" />
 			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" value='""" + str(crs.grade) + """' />
 			  <input type="button" id="buttondel""" + str(j) + """" class="buttondel" onclick= "b(this.id)" value="X" />
 			 </div>"""
 			j+=1
-
-		
-
 
 	if (student.cv_blob_key != None) :
 			hasCv=True
@@ -524,7 +523,7 @@ def buildStudentEditPage(student, course_query):
 	htmlGit = """<br><br><br><br><div id="gitEntry" >
 				<p class="text2" id="element1">:חשבון גיט</p><br><br>
 
-				<input name="git" type="text" class="git" id="element2" id="git" placeholder="" value= '""" + str(student.git) + """' />			  
+				<input name="git" type="text" class="git" id="git" placeholder="" value= '""" + str(student.git) + """' />			  
 			</div>"""
 	htmlMail = """<br><br><br><br><div class="getEmailNotification" align="right">
 			  <label for="getEmailNotification" class="textsmallpad">עדכון במייל לגבי הצעת משרה</label>
@@ -552,7 +551,6 @@ def buildStudentEditPage(student, course_query):
       </form>
     </div>
 		
-	<script type="text/javascript" src="studentEditPage/script.js"></script>
   </div>
 
   </body>
