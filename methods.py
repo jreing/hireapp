@@ -279,7 +279,7 @@ def buildStudentInputPage(course_query):
 			</div>
 			
 			
-			<br><br><br><br><br><br>
+			<br><br><br>
 		    <div class="getEmailNotification" align="right">
 			  <label for="getEmailNotification" class="textsmallpad">לחץ כאן במידה והינך מעוניין לקבל עדכון במייל לגבי הצעת משרה</label>
 			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" >
