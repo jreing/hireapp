@@ -50,7 +50,7 @@ class Student_Course(ndb.Model):
 	grade = ndb.IntegerProperty(indexed=True, required=True)
 	#weight = ndb.IntegerProperty(indexed=False, required=True)
 	#semester = ndb.StringProperty(indexed=False, required=True)
-	course= ndb.StructuredProperty (Course, required=True, validator=sc_validator(prop,value))
+	course= ndb.StructuredProperty (Course, required=True)
 	
 	#course_type=ndb.ComputedProperty(lambda self: self.course.course_type)
 	#hashed_id = ndb.IntegerProperty(indexed=False)
@@ -72,9 +72,10 @@ class Student(ndb.Model):
 		#logging.info (ctypes)
 		#logging.info ("GET C TYPES FINISHED")
 		return ctypes
+		
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
-	city =ndb.StringProperty(indexed=True, required=True)
+	city =ndb.StringProperty(indexed=True)
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)	
 	avg= ndb.IntegerProperty(indexed=True, required=True)
 	cv_blob_key = ndb.BlobKeyProperty()
@@ -82,6 +83,7 @@ class Student(ndb.Model):
 	email=ndb.StringProperty(indexed=True, required=True)
 	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
 	allow_emails= ndb.BooleanProperty(indexed=False, required=True)
+	residence=ndb.IntegerProperty(indexed=True)
 	
 	
 class allowedCompany(ndb.Model):
@@ -96,7 +98,9 @@ class Company(ndb.Model):
 	
 	
 class minGradeQuery(webapp2.RequestHandler):
-
+	def errormsg():
+		self.response.write("invalid input")
+	
 	#function that check whether student has courses in the relevant cluster
 	def studentHasCType(self,student, ctype):
 		if (ctype==''): return False
@@ -130,10 +134,30 @@ class minGradeQuery(webapp2.RequestHandler):
 		average=self.request.get('avg')	
 		ctypes=self.request.get_all("ctype")
 		ctype_avgs=self.request.get_all("ctype_avg")
+		residence=self.request.get("residence")
+		
+		#server side input validation
+		if len(grades)!=len(course_names): self.errormsg()
+		for crs in course_names:
+			if len(crs)>50: self.errormsg()
+		for grade in grades:
+			if grade.isdigit()==False: self.errormsg()
+		if average!="" and average.isdigit()==False: self.errormsg()
+		if len(ctypes)!=len(ctype_avgs): self.errormsg()
+		for ctype in ctypes:
+			if ctype.isdigit()==False: self.errormsg()
+		for ctype_avg in ctypes_avgs:
+			if ctype_avg.isdigit()==False: self.errormsg()
+		if residence.isdigit()==False: self.errormsg()
+		
 		
 		q=Student.query()
 		#logging.info(self.request)
-		logging.info(ctypes)
+		#logging.info(ctypes)
+		
+		#filter by residence
+		if 
+		q=q.filter()
 		
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)):	
@@ -250,17 +274,16 @@ class dbHandler(webapp2.RequestHandler):
 		elif(st.cv_blob_key!=None):
 			cvKey = True
 		
-		
 		course_names=self.request.get('name', allow_multiple=True)
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
 			#self.response.write ("Error")
 			self.errormsg()
 			
-		
 		s=[]
 		for i in range(0,len(course_names)):
-			if grade[i]>100 or grade[i]<60 : continue
+			if (grade[i].isdigit()==False): continue
+			if (int(grade[i])>100 or int(grade[i])<60) : continue
 			
 			course_query=Course.query (Course.course_name==course_names[i]).get()
 			
@@ -270,19 +293,28 @@ class dbHandler(webapp2.RequestHandler):
 			s.append(Student_Course(grade=int(grade[i]), course=course_query))
 		#people_resource = service.people()
 		#people_document = people_resource.get(userId='me').execute(
-		city = self.request.get('city')
+		
 		st.student_courses=s
 		
 		st.name = "demo"
-		logging.info(self.request.get('getEmailNotification'))
+		#logging.info(self.request.get('getEmailNotification'))
 		if (self.request.get('getEmailNotification')=="True"):
 			st.allow_emails=True
 		else:
 			st.allow_emails=False
+		residence = self.request.get('residence')
+		if (residence.isdigit()==False or int(residence)>5 or int(residence)<0):
+			self.errormsg()
+			
+		st.residence = int(residence)
 		
-		st.city = self.request.get('city')
 		curr_average = st.avg
-		st.avg = int(self.request.get('average'))
+		
+		new_avg= self.request.get('average')
+		if (new_avg.isdigit()==False or int(new_avg)>100 or int(new_avg)<60):
+			self.errormsg()
+		st.avg = int(new_avg)
+		
 		if (cv!=""):
 			st.cv_blob_key=BlobKey(cv_blob_key)
 		elif(cvKey!= True):
