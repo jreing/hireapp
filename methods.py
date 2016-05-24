@@ -302,7 +302,7 @@ def buildCompanyQuery(course_query):
 		  <div align="right">
 			<p class="text1">:ציון מינימלי בקורס</p>
 		  </div>
-		  <form class="form" id="form1" action="/companyQueryResultsPage" method="post">
+		  <form class="form" id="form1" onsubmit="return validateForm()" action="/companyQueryResultsPage" method="post">
 
 			<div class="inputline">
 			  <input type="button" id="buttonadd" value="הוסף קורס" />
@@ -319,7 +319,7 @@ def buildCompanyQuery(course_query):
 			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
 			</div>
 			<div id="clonemetwo0" class="clonemetwo">
-			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input"  id="ctype">
+			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
 				<option selected="selected"  value=0>(לא נבחר אשכול)</option>
 				<option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
@@ -330,7 +330,7 @@ def buildCompanyQuery(course_query):
 				<option value=7>ביואינפורמטיקה</option>
 			  </select>
 
-			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
+			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input6" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="הסר" />
 			</div>
 		
