@@ -50,9 +50,13 @@ class Student_Course(ndb.Model):
 	grade = ndb.IntegerProperty(indexed=True, required=True)
 	#weight = ndb.IntegerProperty(indexed=False, required=True)
 	#semester = ndb.StringProperty(indexed=False, required=True)
-	course= ndb.StructuredProperty (Course, required=True)
+	course= ndb.StructuredProperty (Course, required=True, validator=sc_validator(prop,value))
+	
 	#course_type=ndb.ComputedProperty(lambda self: self.course.course_type)
 	#hashed_id = ndb.IntegerProperty(indexed=False)
+	
+	
+
 	
 class Student(ndb.Model):
 	#function for computed property that gets types of courses student has
@@ -220,6 +224,10 @@ class dbUserIdScramble(webapp2.RequestHandler):
 
 #adds Student to DB
 class dbHandler(webapp2.RequestHandler):
+	def errormsg(self):
+		#TODO: write prettier error message display
+		self.response.write("invalid request to server")
+
 	def post(self):
 		cvKey = False
 		#get userid from cookie
@@ -230,7 +238,7 @@ class dbHandler(webapp2.RequestHandler):
 		#get student's cv file
 		cv=self.request.get('cv')
 		if (cv!=""):
-			logging.info ("cv detected " + cv)
+			#logging.info ("cv detected " + cv)
 			#validate the user's file is a REAL PDF.
 			if (self.checkPdfFile(cv)==False):
 				#TODO - more elegent error message
@@ -244,13 +252,20 @@ class dbHandler(webapp2.RequestHandler):
 		
 		
 		course_names=self.request.get('name', allow_multiple=True)
-				
 		grade= self.request.get('grade', allow_multiple=True)
 		if (len(course_names)!=len(grade)):
-			self.response.write ("Error")
+			#self.response.write ("Error")
+			self.errormsg()
+			
+		
 		s=[]
 		for i in range(0,len(course_names)):
+			if grade[i]>100 or grade[i]<60 : continue
+			
 			course_query=Course.query (Course.course_name==course_names[i]).get()
+			
+			if course_query==None : continue
+			
 			#logging.info (course_query)
 			s.append(Student_Course(grade=int(grade[i]), course=course_query))
 		#people_resource = service.people()
