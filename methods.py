@@ -497,7 +497,7 @@ def buildStudentEditPage(student, course_query):
 	htmlGit = """<br><br><br><br><div id="gitEntry" >
 				<p class="text2" id="element1">:חשבון גיט</p><br><br>
 
-				<input name="git" type="text" class="git" id="element2" id="git" placeholder="" value= """ + str(student.git) + """ />			  
+				<input name="git" type="text" class="git" id="element2" id="git" placeholder="" value= '""" + str(student.git) + """' />			  
 			</div>"""
 	htmlMail = """<br><br><br><br><div class="getEmailNotification" align="right">
 			  <label for="getEmailNotification" class="textsmallpad">עדכון במייל לגבי הצעת משרה</label>

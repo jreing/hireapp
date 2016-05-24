@@ -379,7 +379,7 @@ class dbHandler(webapp2.RequestHandler):
 		logging.info("git added")
 		#git validation and handling
 		git = self.request.get('git')
-		
+		logging.info(git)
 		if (git!="" and (len(git)>60 or git.find("git")==-1)):
 			self.errormsg()
 			return
@@ -395,7 +395,7 @@ class dbHandler(webapp2.RequestHandler):
 		st.avg = int(new_avg)
 		
 		
-		logging.info(st)
+		#logging.info(st)
 		st.put()
 		
 		if (curr_average == -1):
