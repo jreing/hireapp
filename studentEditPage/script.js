@@ -99,14 +99,28 @@ function validateForm() {
 	return true;
 }
 
-var residence = document.getElementById("element2").value;
-var select = document.getElementById("element2")
+function setSelect(elem){
+	var residence = document.getElementById(elem).value;
+	var select = document.getElementById(elem)
+	for (var i=1; i<select.length;i++){
+		if (select[i].value === residence){
+			select.selectedIndex = i;
+			}
+		}		
+}
 
-for (var i=1; i<select.length;i++){
-	if (select[i].value === residence){
-		select.selectedIndex = i;
-		}
-	}
+//var residence = document.getElementById("element2").value;
+//var select = document.getElementById("element2")
+
+//for (var i=1; i<select.length;i++){
+	//if (select[i].value === residence){
+	//	select.selectedIndex = i;
+	//	}
+	//}
+	
+setSelect("element2")
+setSelect("availElem")
+setSelect("yearElem")
 
 //make sure that file chosen has a valid extension
 var file = document.getElementById('cv');
