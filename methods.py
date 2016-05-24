@@ -72,7 +72,7 @@ def buildQueryResultsPage(q):
 			  value="""+str(student.user_id)+""">
 			  <button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
 			  <p class="textbigpad">:קורות חיים</p>
-			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
+			  <p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
 			  <p class="text">:עיר</p>
 			</div>"""
 		else :
@@ -85,7 +85,7 @@ def buildQueryResultsPage(q):
 			  value="""+str(student.user_id)+""">
 			  <p class="textbigasCvButton">לא צורף</p>
 			  <p class="textbigpad">:קורות חיים</p>
-			  <p class="text" >"""+student.city.decode('utf-8', 'ignore')+"""</p>
+			  <p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
 			  <p class="text">:עיר</p>
 
 			</div>"""		
@@ -200,14 +200,13 @@ def buildStudentInputPage(course_query):
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/dbHandler" method="post" enctype="multipart/form-data">
 		  <div>
 			  <p class="text2" id="element1">:הזן אזור מגורים</p>
- 				<select name="city" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="city">
+ 				<select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
 				<option value=0>(לא נבחר איזור)</option>
-				<option value="תל אביב" > תל אביב</option>
-				<option value="נתניה"> נתניה</option>
-				<option value="השרון"> השרון</option>
-				<option value="גוש דן"> גוש דן</option>
-				<option value="ראשון לציון"> ראשון לציון</option>
-				<option value="אשדוד"> אשדוד</option>
+				<option value=1> תל אביב</option>
+				<option value=3> השרון</option>
+				<option value=4> מרכז גוש דן</option>
+				<option value=5> דרום גוש דן</option>
+				<option value=6> אשדוד</option>
 			  </select>
 		  </div>
 		  
@@ -277,6 +276,16 @@ def buildStudentInputPage(course_query):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
+def residenceTranslate(num):
+	return{
+		1: "תל אביב",
+		2: "השרון",
+		3: "מרכז גוש דן",
+		4: "דרום גוש דן",
+		5: "אשדוד"
+	} .get(num, "לא הוזן")
+	
+	
 def buildCompanyQuery(course_query):
 	i=0
 	htmlstart="""<!DOCTYPE html>
@@ -325,22 +334,22 @@ def buildCompanyQuery(course_query):
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="הסר" />
 			</div>
 		
-
 			<div align="right" id=avgentry>
 			  <p class="text1">:ממוצע תואר מינימלי</p>
 			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="60" max="100" placeholder="ממוצע" id="avg" />
 			</div>
 
-			<div align="right">
-			<p class="text1">:אזור מגורים</p>
-		  <select name="city" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align "right" id="validateFormcity" />
-				<option value=0 > כל האזורים</option>
-				<option value="תל אביב" > תל אביב</option>
-				<option value="נתניה"> נתניה</option>
-				<option value="השרון"> השרון</option>
-				<option value="גוש דן"> גוש דן</option>
-				<option value="ראשון לציון"> ראשון לציון</option>
-				<option value="אשדוד"> אשדוד</option>
+		<div align="right">
+
+			<p class="text1">:איזור מגורים</p>
+		  <select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align "right" id="validateFormcity" />
+				<option value=9 > כל האזורים</option>
+				<option value=0>(לא נבחר איזור)</option>
+				<option value=1> תל אביב</option>
+				<option value=2> השרון</option>
+				<option value=3> מרכז גוש דן</option>
+				<option value=4> דרום גוש דן</option>
+				<option value=5> אשדוד</option>
 			  </select></div>
 
 			<div class="submit">
@@ -352,7 +361,7 @@ def buildCompanyQuery(course_query):
 	
 	for course in course_query:
 		i=i+1
-		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> """
+		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> \n"""
 		
 	htmlend="""</datalist>
 		  </form>
@@ -390,14 +399,14 @@ def buildStudentEditPage(student, course_query):
         <p class="text1">:אזור מגורים</p>
       </div>
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
-	<select name="city" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align "right" id="validateFormcity" />
-				<option value='""" + str(student.city) + """'>(לא נבחר איזור)</option>
-				<option value="תל אביב" > תל אביב</option>
-				<option value="נתניה"> נתניה</option>
-				<option value="השרון"> השרון</option>
-				<option value="גוש דן"> גוש דן</option>
-				<option value="ראשון לציון"> ראשון לציון</option>
-				<option value="אשדוד"> אשדוד</option>
+	<select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align "right" id="validateFormcity" />
+				<option value=""" + str(student.residence) + """>(לא נבחר איזור)</option>
+				<option value=0>(לא נבחר איזור)</option>
+				<option value=1> תל אביב</option>
+				<option value=2> השרון</option>
+				<option value=3> מרכז גוש דן</option>
+				<option value=4> דרום גוש דן</option>
+				<option value=5> אשדוד</option>
 			  </select>
       <div align="right">"""
 
@@ -460,7 +469,7 @@ def buildStudentEditPage(student, course_query):
 	i = 0 
 	for course in course_query:
 		i=i+1
-		htmlDlist+="""<option data-id="1" > """+  str(course.course_name) + """</option> """
+		htmlDlist+="""<option data-id="1" > """+  str(course.course_name) + """</option> \n"""
 		
 	htmlend="""</datalist>
       </form>
