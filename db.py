@@ -134,12 +134,20 @@ class minGradeQuery(webapp2.RequestHandler):
 		ctype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
 		
+		logging.info("grades " + str(grades[0]))
+		logging.info("course " + str(len(course_names)))
+		logging.info("average " + str(average))
+		logging.info("ctypes " + str(ctypes[0]))
+		logging.info("ctype_avgs " + str(len(ctype_avgs)))
+		logging.info("residence " + str(residence))
+		
+		
 		#server side input validation
 		if len(grades)!=len(course_names): self.errormsg()
 		for crs in course_names:
 			if len(crs)>50: self.errormsg()
 		for grade in grades:
-			if grade.isdigit()==False: self.errormsg()
+			if grade!="" and grade.isdigit()==False: self.errormsg()
 		if average!="" and average.isdigit()==False: self.errormsg()
 		if len(ctypes)!=len(ctype_avgs): self.errormsg()
 		if (len(ctypes) != 0 ):
