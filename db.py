@@ -378,7 +378,7 @@ class dbHandler(webapp2.RequestHandler):
 		#git validation and handling
 		git = self.request.get('git')
 		
-		if (git!="" and (len(git)>60 or git.find("git")==-1))h:
+		if (git!="" and (len(git)>60 or git.find("git")==-1)):
 			self.errormsg()
 			return
 		st.git = git
