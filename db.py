@@ -134,31 +134,41 @@ class minGradeQuery(webapp2.RequestHandler):
 		ctype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
 		
+		logging.info("grades " + str(len(grades)))
+		logging.info("course " + str(len(course_names)))
+		logging.info("average " + str(average))
+		logging.info("ctypes " + str(len(ctypes)))
+		logging.info("ctype_avgs " + str(len(ctype_avgs)))
+		logging.info("residence " + str(residence))
+		
 		#server side input validation
 		if len(grades)!=len(course_names): self.errormsg()
 		for crs in course_names:
 			if len(crs)>50: self.errormsg()
 		for grade in grades:
-			if grade.isdigit()==False: self.errormsg()
+			if grade!="" and grade.isdigit()==False: self.errormsg()
 		if average!="" and average.isdigit()==False: self.errormsg()
-		if len(ctypes)!=len(ctype_avgs): self.errormsg()
-		if (len(ctypes) != 0 ):
+		if (len(ctypes)!=len(ctype_avgs)): self.errormsg()
+		if (len(ctypes) >0 and ctypes[0]!=""):
 			for ctype in ctypes:
 				if ctype.isdigit()==False: self.errormsg()
-		if (len(ctype_avgs)!=0):
+		if (len(ctype_avgs)>0 and ctypes[0]!=""):
 			for ctype_avg in ctype_avgs:
-				if ctype_avg.isdigit()==False: self.errormsg()
+				if ctype_avg!="" and ctype_avg.isdigit()==False: self.errormsg()
 		if residence.isdigit()==False: self.errormsg()
 		
-		
 		q=Student.query()
-		#logging.info(self.request)
-		#logging.info(ctypes)
+		q.fetch(100)
 		
+
 		#filter by residence
 
-		q=q.filter()
-		
+		if (int(residence)>0 and int(residence)<6):
+			
+			p=Student.query(Student.residence==int(residence))
+			p.fetch(100)
+			q = [val for val in p if val in q]
+			
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)):	
 			if grades[i]=="" :
@@ -166,8 +176,9 @@ class minGradeQuery(webapp2.RequestHandler):
 			#logging.info(i)
 			#logging.info (len(grades)-1)
 			grade=int(grades[i])
-			q=q.filter (Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
-		q.fetch(100)
+			p=Student.query(Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
+			p.fetch(100)
+			q = [val for val in p if val in q]
 			
 		#filter out by average
 		if average!="":
@@ -179,7 +190,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		#logging.info(q.fetch(100))
 		
 		for i in range(0,len(ctypes)):
-			logging.info(i)
+			#logging.info(i)
 			filteredRes=[]
 			ctypes[i]=int(ctypes[i])
 			if(ctypes[i]!=0):

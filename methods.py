@@ -321,7 +321,7 @@ def buildCompanyQuery(course_query):
 			<div id="clonemetwo0" class="clonemetwo">
 			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
 				<option selected="selected"  value=0>(לא נבחר אשכול)</option>
-				<option value=1 >מתמטיקה</option>
+				<option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
 				<option value=3>תאוריות מדעי המחשב</option>
 				<option value=4>אבטחת מידע</option>
@@ -343,8 +343,7 @@ def buildCompanyQuery(course_query):
 
 			<p class="text1">:איזור מגורים</p>
 		  <select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align "right" id="validateFormcity" />
-				<option value=9 > כל האזורים</option>
-				<option value=0>(לא נבחר איזור)</option>
+				<option value=0> כל האזורים</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
 				<option value=3> מרכז גוש דן</option>
@@ -401,12 +400,12 @@ def buildStudentEditPage(student, course_query):
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 	<select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align "right" id="validateFormcity" />
 				<option value=""" + str(student.residence) + """>(לא נבחר איזור)</option>
-				<option value=0>(לא נבחר איזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
 				<option value=3> מרכז גוש דן</option>
 				<option value=4> דרום גוש דן</option>
 				<option value=5> אשדוד</option>
+				<option value=0> (לא נבחר איזור)</option>
 			  </select>
       <div align="right">"""
 
