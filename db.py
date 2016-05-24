@@ -322,19 +322,16 @@ class dbHandler(webapp2.RequestHandler):
 		if (len(course_names)!=len(grade)):
 			#self.response.write ("Error")
 			self.errormsg()
-		if (len(course_name)>50):
-			self.errormsg()
-			return
-		if (grade.isdigit()==False):
-			self.errormsg()
-			return
+
 		
 				
 		s=[]
 		for i in range(0,len(course_names)):
 			if (grade[i].isdigit()==False): continue
 			if (int(grade[i])>100 or int(grade[i])<60) : continue
-			
+			if (len(course_names[i])>50):
+				self.errormsg()
+				return
 			course_query=Course.query (Course.course_name==course_names[i]).get()
 			
 			if course_query==None : continue
