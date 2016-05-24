@@ -9,6 +9,7 @@ sys.setdefaultencoding("utf-8")
 import cgi
 import urllib
 import datetime
+import logging
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
@@ -60,8 +61,9 @@ def buildQueryResultsPage(q):
 	hasCv=False
 	
 	##TODO: add redirection here
-	if q.count()==0:
-		htmlbody= "<script>window.location=/NoResults;</script>"
+	logging.info(q)
+	if q.count(100)==0:
+		htmlbody= '<script>window.location="/noResults";</script>'
 	
 	for student in q:
 		i=i+1
