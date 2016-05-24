@@ -91,12 +91,12 @@ def buildQueryResultsPage(q):
 			<p class="text" >"""+availTranslate(student.availability).decode('utf-8', 'ignore')+"""</p>
 			<p class="text">:זמינות</p>
 			<p class="text" >"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:שנה</p>"""
-			#<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			#<p class="text">:איזור</p>
-			#<p class="text" >"""+ student.git.decode('utf-8', 'ignore')+"""</p>
-			#<p class="text">:גיט</p>
-			#</div>"""	
+			<p class="text">:שנה</p>
+			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
+			<p class="text">:איזור</p>
+			<p class="text" >"""+ student.git.decode('utf-8', 'ignore')+"""</p>
+			<p class="text">:גיט</p>
+			</div>"""	
 			  	
 	
 	htmlend="""
