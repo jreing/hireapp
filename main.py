@@ -173,8 +173,15 @@ class doubleLogin(webapp2.RequestHandler):
 		self.response.write(f.read())
 		f.close()
 
+class noResults(webapp2.RequestHandler):
+	def get(self):
+		f = open("no_results_page.html")
+		self.response.write(f.read())
+		f.close()
+
 
 app = webapp2.WSGIApplication([
+	('/noResults', noResults),
 	('/dbDelete', dbDelete),
 	('/dbUserIdScramble', dbUserIdScramble),
 	('/dbBuild', dbBuild),
