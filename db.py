@@ -315,10 +315,6 @@ class dbHandler(webapp2.RequestHandler):
 		elif(st.cv_blob_key!=None):
 			cvKey = True
 		
-		if (cv!=""):
-			st.cv_blob_key=BlobKey(cv_blob_key)
-		elif(cvKey!= True):
-			st.cv_blob_key=None
 		
 		#add courses and grades
 		course_names=self.request.get('name', allow_multiple=True)
@@ -397,6 +393,11 @@ class dbHandler(webapp2.RequestHandler):
 			self.errormsg()
 			return
 		st.avg = int(new_avg)
+		
+		if (cv!=""):
+			st.cv_blob_key=BlobKey(cv_blob_key)
+		elif(cvKey!= True):
+			st.cv_blob_key=None
 		
 		
 		#logging.info(st)

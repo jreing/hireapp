@@ -400,7 +400,7 @@ def buildCompanyQuery(course_query):
 		<div align="right">
 
 			<p class="text1">:איזור מגורים</p>
-		  <select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align "right" id="validateFormcity" />
+		  <select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />
 				<option value=0> כל האזורים</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
@@ -462,7 +462,7 @@ def buildStudentEditPage(student, course_query):
 	<link rel="stylesheet" type="text/css" href="studentEditPage/style.css">
 	<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
   <body>
-  <script type="text/javascript" src="studentEditPage/script.js"></script>
+  
   <script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
   <div id="form-main">
     <div align="right">
@@ -473,7 +473,7 @@ def buildStudentEditPage(student, course_query):
         <p class="text1">:אזור מגורים</p>
       </div>
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
-	<select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align "right" id="validateFormcity" />
+	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" />
 				<option value=""" + str(student.residence) + """>(לא נבחר איזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
@@ -506,7 +506,7 @@ def buildStudentEditPage(student, course_query):
 				<p class="text3" id="element1" >:קורות חיים</p>
         
 		<div align="right">
-		<input name="cv" type="file" id="element2" class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
+		<input name="cv" type="file"  class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 		</div>"""
 		
 	if(hasCv):	
@@ -520,7 +520,7 @@ def buildStudentEditPage(student, course_query):
 			</div>"""
 	htmlYear = """<div>
 			  <p class="text2" id="element1">:שנת לימודים</p>
- 				<select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
+ 				<select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" >
 				<option value=""" + str(student.year) + """>(לא נבחר )</option>
 				<option value=1> א'</option>
 				<option value=2> ב'</option>
@@ -532,7 +532,7 @@ def buildStudentEditPage(student, course_query):
 	htmlAvail = """<br><br><br><br>
 			<div>
 			  <p class="text2" id="element1">:סוג משרה</p>
-			  <select name="availability" id="availability" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
+			  <select name="availability" id="availability" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5">
 				<option value=""" + str(student.availability) + """>(לא נבחר סוג)</option>
 				<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
@@ -569,11 +569,13 @@ def buildStudentEditPage(student, course_query):
 		
 	htmlend="""</datalist>
       </form>
+	  
     </div>
 		
   </div>
 
   </body>
+  <script type="text/javascript" src="studentEditPage/script.js"></script>
   </html>"""
 	
 

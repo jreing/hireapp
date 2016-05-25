@@ -107,8 +107,9 @@ function validateForm() {
 }
 
 function setSelect(elem){
-	
+
 	var residence = document.getElementById(elem).value;
+	
 	var select = document.getElementById(elem)
 	//alert(elem + " len " + select.length)
 	for (var i=1; i<select.length;i++){
@@ -127,7 +128,7 @@ function setSelect(elem){
 	//	}
 	//}
 	
-setSelect("element2")
+setSelect("residence")
 setSelect("availability")
 setSelect("year")
 
