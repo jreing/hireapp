@@ -60,11 +60,6 @@ def buildQueryResultsPage(q):
 	htmlbody=''
 	hasCv=False
 	
-	##TODO: add redirection here
-	logging.info(q)
-	if q.count(100)==0:
-		htmlbody= '<script>window.location="/noResults";</script>'
-	
 	for student in q:
 		i=i+1
 		hasCv=False

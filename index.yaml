@@ -18,7 +18,17 @@ indexes:
 
 - kind: Student
   properties:
+  - name: student_courses.course.course_id
+  - name: student_courses.grade
+
+- kind: Student
+  properties:
   - name: student_courses.course.course_name
+  - name: student_courses.grade
+
+- kind: Student
+  properties:
+  - name: student_courses.course_id
   - name: student_courses.grade
 
 - kind: Student_Course

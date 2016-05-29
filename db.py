@@ -42,8 +42,8 @@ class Course(ndb.Model):
 	"""Sub model for representing a course."""
 	course_id = ndb.StringProperty(indexed=True, required=True)
 	course_name = ndb.StringProperty(indexed=True, required=True)
-	course_type = ndb.IntegerProperty(indexed=False, required=True)
-	course_weight = ndb.IntegerProperty(indexed=False, required=True)
+	course_type = ndb.IntegerProperty(indexed=True, required=True)
+	course_weight = ndb.IntegerProperty(indexed=True, required=True)
 	
 
 class Student_Course(ndb.Model):
@@ -51,10 +51,10 @@ class Student_Course(ndb.Model):
 	#weight = ndb.IntegerProperty(indexed=False, required=True)
 	#semester = ndb.StringProperty(indexed=False, required=True)
 	course= ndb.StructuredProperty (Course, required=True)
-	
+	course_id= ndb.ComputedProperty(lambda self:self.course.course_id)
 	#course_type=ndb.ComputedProperty(lambda self: self.course.course_type)
 	#hashed_id = ndb.IntegerProperty(indexed=False)
-	
+
 	
 class Student(ndb.Model):
 	#function for computed property that gets types of courses student has
@@ -70,6 +70,20 @@ class Student(ndb.Model):
 		#logging.info (ctypes)
 		#logging.info ("GET C TYPES FINISHED")
 		return ctypes
+	
+	def getCGrades(self):
+		cgrades=[]
+		
+		#logging.info ("GET C TYPES")
+		for sc in self.student_courses:
+			if (sc.course==None): 
+				logging.info ("NONE")
+				continue
+			else:
+				cgrades.append(str((sc.course_id,sc.grade)))
+				
+		#logging.info ("GET C TYPES FINISHED")
+		return cgrades
 	
 	def hasGit(self):
 		return self.git!=""
@@ -89,6 +103,7 @@ class Student(ndb.Model):
 	year=ndb.IntegerProperty(indexed=True, required=True)
 	git=ndb.StringProperty(required=True)
 	hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
+	cgrades= ndb.ComputedProperty(lambda self: ",".join(self.getCGrades()))
 	
 	
 class allowedCompany(ndb.Model):
@@ -172,32 +187,42 @@ class minGradeQuery(webapp2.RequestHandler):
 		if len(hasgit)>5: self.errormsg()
 
 		q=Student.query()
-		q.fetch(100)
+		q=q.fetch(100)
+		
+		logging.info(q)
 		
 		#filter by availability
 		if (int(availability)>0 and int(availability)<6):
 			p=Student.query(Student.availability==int(availability))
-			p.fetch(100)
+			p=p.fetch(100)
 			q = [val for val in p if val in q]
+		
+		logging.info(q)
 		
 		#filter by hasgit
 		if (hasgit=="True"):
 			p=Student.query(Student.hasgit==True)
-			p.fetch(100)
+			p=pp.fetch(100)
 			q = [val for val in p if val in q]
+		
+		logging.info(q)
 		
 		#filter by year
 		if (int(year)>0 and int(year)<6):
 			p=Student.query(Student.year==int(year))
-			p.fetch(100)
+			p=p.fetch(100)
 			q = [val for val in p if val in q]
+		
+		logging.info(q)
 		
 		#filter by residence
 		if (int(residence)>0 and int(residence)<6):
 			p=Student.query(Student.residence==int(residence))
-			p.fetch(100)
+			p=p.fetch(100)
 			q = [val for val in p if val in q]
 			
+		logging.info(q)	
+		
 		#filter out student by grades in specific courses
 		for i in range (0,len(grades)):	
 			if grades[i]=="" :
@@ -205,15 +230,40 @@ class minGradeQuery(webapp2.RequestHandler):
 			#logging.info(i)
 			#logging.info (len(grades)-1)
 			grade=int(grades[i])
-			p=Student.query(Student.student_courses.grade>=grade, Student.student_courses.course.course_name==course_names[i])
-			p.fetch(100)
-			q = [val for val in p if val in q]
+			course=Course.query(Course.course_name==course_names[i]).get()
+			course_id=course.course_id
+			logging.info(course_id)
+			
+			#p1=Student.query(Student.student_courses.course_id==course_id)
+			p=Student.query(Student.student_courses.grade>=grade)
+			p=p.fetch(100)
+			p=[[val.google_id] +  val.cgrades.split("),(") for val in p]
+			logging.info(p)
+			p=[[p[i][0],p[i][j]] for i in range(len(p)) for j in range(1, len(p[i]))]
+			logging.info(p)
+			
+			#filter students that have both course and grade
+			p=[v[0] for v in p if \
+			(''.join(c for c in v[1].split("',")[0] if c.isdigit())== \
+			''.join(c for c in course_id if c.isdigit())) and\
+			((int(''.join(c for c in v[1].split("',")[1] if c.isdigit()))) \
+			>=grade)]
+			logging.info(p)
+			p1=[]
+			#build list of those students
+			for google_id in p:
+				p1.append(Student.query(Student.google_id==google_id).get())
+			
+			#intersect
+			q = [val for val in q if val in p1]
+			logging.info(p)
+			logging.info(q)
 			
 		#filter out by average
 		if average!="":
 			p=Student.query (Student.avg>=int(average))
 			logging.info("MAIN AVERAGE QUERY")
-			p.fetch(100)
+			p=p.fetch(100)
 			q = [val for val in q if val in p]
 
 		for i in range(0,len(ctypes)):
@@ -236,8 +286,15 @@ class minGradeQuery(webapp2.RequestHandler):
 					q=filteredRes
 		
 		#logging.info(q)
-		page = buildQueryResultsPage(q)
-		self.response.write(page)
+		
+		#/no results
+		if (q==[]):
+			f = open("no_results_page.html")
+			self.response.write(f.read())
+			f.close()
+		else: #build result page
+			page = buildQueryResultsPage(q)
+			self.response.write(page)
 
 #adds all courses to DB from the parsed courses files
 class dbBuild(webapp2.RequestHandler):
@@ -284,6 +341,7 @@ class dbUserIdScramble(webapp2.RequestHandler):
 			self.response.write('Wrong password')
 
 
+			
 #adds Student to DB
 class dbHandler(webapp2.RequestHandler):
 	def errormsg(self):
