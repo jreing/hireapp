@@ -304,6 +304,13 @@ class dbBuild(webapp2.RequestHandler):
 		ac = allowedCompany(email="tauhireteam@gmail.com")
 		ac.put()
 		
+		q=Student.query()
+		q=q.fetch(1000)
+		for st in q:
+			if st.year==None: st.year=0
+			if st.availability==None: st.availability=0
+			st.put()
+		
 		import csv
 		with open('courses3.csv', 'rb') as csvfile:
 			spamreader = csv.reader(csvfile, delimiter=',')
