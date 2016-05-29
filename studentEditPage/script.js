@@ -73,7 +73,8 @@ function validateForm() {
         return value === "" || courses.indexOf(value) < 0;
     }).length === 0;
 
-
+	var git=document.getElementById("git").value;
+	
  	var allGradesValid = $(".feedback-input2").filter(function (key, element) {
         var value = $(element).val();
         return value === "";
@@ -84,7 +85,23 @@ function validateForm() {
         return value === "";
     }).length === 0; 
 	
-	var git=document.getElementById("git").value;
+	var file = document.getElementById('cv');
+	var iscvvalid=true;
+
+	if (file.value!==""){
+		if (file.value.match(/\.([^.]+)$/)==null) {
+			iscvvalid=false;
+		}
+		else{
+			var ext =  file.value.match(/\.([^.]+)$/)[1];
+			switch(ext){
+				case 'pdf':
+					break;
+				default:
+					iscvvalid=false;
+			}
+		}
+	}
 	
     if ( !allCourseNamesValid) {
 		alert("please enter a valid course name");
@@ -98,10 +115,15 @@ function validateForm() {
 		alert("please enter a grade average between 60 and 100");
 		return false }
 	
-	if (git!="" && git.indexOf("github.com")==-1){
+	if (git!="" && git.substring(0,"www.github.com/".length) !== "www.github.com/"){
 		alert("please enter github.com/(YOUR ACCOUNT)");
 		return false;
 	}
+	
+	if (!iscvvalid){
+		alert('Error: Chosen file type is not allowed, please insert a pdf file');
+		return false
+	}	
 	
 	return true;
 }
@@ -132,32 +154,10 @@ setSelect("residence")
 setSelect("availability")
 setSelect("year")
 
-//make sure that file chosen has a valid extension
-var file = document.getElementById('cv');
 
-if (file!=null){
-	file.onchange = function(e){
-		var bad=false;
-		if (this.value.match(/\.([^.]+)$/)==null) {
-			bad=true;
-		}
-		else{
-			var ext =  this.value.match(/\.([^.]+)$/)[1];
-			switch(ext){
-				case 'pdf':
-				case 'doc':
-				case 'docx':
-				case 'txt':
-					break;
-				default:
-					bad=true;
-			}
-		}
-		if (bad==true){
-			alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
-			this.value='';
-		}
-	};
 
-}
+
+
+
+
 	

@@ -63,6 +63,7 @@ $('#buttonadd').click(function ab() {
 //});
 
 function validateForm() {
+	var git=document.getElementById("git").value;
 	
 	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
         var value = $(element).val();   
@@ -79,6 +80,23 @@ function validateForm() {
         var value = $(element).val();
         return value === "";
     }).length === 0; 
+	
+	var file = document.getElementsByName('cv')[0];
+	var iscvvalid=true;
+	if (file.value!==""){
+		if (file.value.match(/\.([^.]+)$/)==null) {
+			iscvvalid=false;
+		}
+		else{
+			var ext =  file.value.match(/\.([^.]+)$/)[1];
+			switch(ext){
+				case 'pdf':
+					break;
+				default:
+					iscvvalid=false;
+			}
+		}
+	}
 
     if ( !allCourseNamesValid) {
 		alert("please enter a valid course name");
@@ -91,13 +109,17 @@ function validateForm() {
 	if (!avgValid) {
 		alert("please enter a grade average between 60 and 100");
 		return false }
-		
-	var git=document.getElementById("git").value;
 	
-	if (git!="" && git.indexOf("github.com/"==-1)){
+	
+	if (git!="" && !git.startsWith("www.github.com/")){
 		alert("please enter github.com/(YOUR ACCOUNT)");
 		return false
 	}
+	
+	if (!iscvvalid){
+		alert('Error: Chosen file type is not allowed, please insert a pdf file');
+		return false
+	}	
 	
 	
 	return true;
@@ -108,8 +130,6 @@ function validateForm() {
 $('.buttondel')[ 0 ].onclick= b;
 $('.buttondel').attr('disabled', 'disabled');
 
-//make sure that file chosen has a valid extension
-var file = document.getElementById('cv');
 
 $(document).ready(function() {
 // Tooltip only Text
@@ -134,28 +154,5 @@ $('#masterTooltip').hover(function(){
 });
 });
 
-if (file!=null){
-	file.onchange = function(e){
-		var bad=false;
-		if (this.value.match(/\.([^.]+)$/)==null) {
-			bad=true;
-		}
-		else{
-			var ext =  this.value.match(/\.([^.]+)$/)[1];
-			switch(ext){
-				case 'pdf':
-				case 'doc':
-				case 'docx':
-				case 'txt':
-					break;
-				default:
-					bad=true;
-			}
-		}
-		if (bad==true){
-			alert('Error: Chosen file type is not allowed, allowed types are: *.doc, *.docx, *.pdf, *.txt');
-			this.value='';
-		}
-	};
-}
+
 
