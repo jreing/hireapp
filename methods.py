@@ -451,7 +451,7 @@ def buildCompanyQuery(course_query):
 	htmlGit = """<div class="hasgit" align="right">
 			  <label for="hasgit" class="textsmallpad">חפש סטודנט עם חשבון גיט</label>
 			  <input type="checkbox" value="True" name="hasgit" id="hasgit" class="checkbox"> </div>"""
-	html=htmlstart+htmlYear +htmlAvail +htmlGit +htmlButt +htmlbody+ htmlend
+	html=htmlstart+htmlYear +htmlAvail +htmlButt +htmlbody+ htmlend
 	return html
 
 def buildStudentEditPage(student, course_query):
