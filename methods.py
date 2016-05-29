@@ -55,7 +55,7 @@ def buildQueryResultsPage(q):
       </div>
 	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים</p> </div>
 
-      <div id="scroll" style="overflow-y: scroll; height:450px;">"""
+      <div id="scroll" style="overflow-y: scroll; height:600px;">"""
 	  
 	htmlbody=''
 	hasCv=False

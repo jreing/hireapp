@@ -101,15 +101,17 @@ $('.buttondeltwo').attr('disabled', 'disabled');
 
 
 function validateForm() {
- 	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
-        var value = $(element).val();   
-        return ((value === "") || (courses.indexOf(value) < 0));
-    }).length == 0;
+ 	var gradeWithoutCourse = $(".cloneme").filter(function (key, element) {
+        var course = $(element).children().eq(0).val();
+		var grade = $(element).children().eq(1).val(); 		
+        return grade !== "" && (course === ""|| courses.indexOf(course) < 0);
+    }).length !== 0;
 	
- 	var allGradesValid = $(".feedback-input2").filter(function (key, element) {
-        var value = $(element).val();
-        return value === "";
-    }).length == 0; 
+ 	var CourseWithoutGrade = $(".cloneme").filter(function (key, element) {
+        var course = $(element).children().eq(0).val();
+		var grade = $(element).children().eq(1).val(); 		
+        return grade === "" && !(course === ""|| courses.indexOf(course) < 0);
+    }).length !== 0;
 	
 	
  	var gradeWithoutCategory = $(".clonemetwo").filter(function (key, element) {
@@ -117,28 +119,28 @@ function validateForm() {
 		var grade = $(element).children().eq(1).val();
 		//alert("category, grade are"+(category!=0)+" , "+(grade === ""));
         return category==0 && grade !== "";
-    }).length === 0; 	
+    }).length !== 0; 	
 	
  	var categoryWithoutGrade = $(".clonemetwo").filter(function (key, element) {
         var category = $(element).children().eq(0).val();
 		var grade = $(element).children().eq(1).val();
 		//alert("category, grade are"+(category!=0)+" , "+(grade === ""));
         return category!=0 && grade === "";
-    }).length === 0;
+    }).length !== 0;
 	
-    if ( !allCourseNamesValid) {
-		alert("Exists an missing course name.\nPlease enter a valid course name");
+    if (gradeWithoutCourse) {
+		alert("Exists a grade with a missing course name.\nPlease enter a valid course name");
 		return false }
 		
-    if (!allGradesValid) {
-		alert("Exists an missing grade.\nPlease enter a course grade between 60 and 100");
+    if (CourseWithoutGrade) {
+		alert("Exists a course with a missing grade.\nPlease enter a course grade between 60 and 100");
 		return false }
 	
-	if (!gradeWithoutCategory) {
+	if (gradeWithoutCategory) {
 		alert("Exists a grade filter without a proper category.\nPlease enter a category for the grade");
 		return false } 
 		
-	if (!categoryWithoutGrade) {
+	if (categoryWithoutGrade) {
 		alert("Exists a category filter without a proper grade.\nPlease enter a grade average between 60 and 100 for the category");
 		return false } 
 	
