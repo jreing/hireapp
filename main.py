@@ -19,17 +19,35 @@ from messages import *
 #
 #
 #classes for actions:
+class ValidateCompany(webapp2.RequestHandler):
+	def post(self):
+		id = self.request.cookies.get('id')
+		logging.info(id)
+		if (Company.query(id==Company.user_id).get()!=None):
+			self.response.write(id+"#accepted")
+		else :
+			self.response.write("#rejected")
 
-
+class ValidateStudent(webapp2.RequestHandler):
+	def post(self):
+		id = self.request.cookies.get('id')
+		logging.info(id)
+		if (Student.query(id==Student.user_id).get()!=None):
+			self.response.write(id+"#accepted")
+		else :
+			self.response.write("#rejected")
+			
 class CompanyHandler(webapp2.RequestHandler):
 	def get(self):
-		cours_query = Course.query()
-		page = buildCompanyQuery(cours_query)
-		self.response.write(page)
-		#f = open("companyQueryFormPage\index.html") 
-		#self.response.charset="unicode"
-		#self.response.write(f.read())
-		#f.close()               
+		id = self.request.cookies.get('id')
+		logging.info(id)
+		if (Company.query(id==Company.user_id).get()==None):
+			self.response.write("<html> session timeout </html>")
+		else:
+			cours_query = Course.query()
+			page = buildCompanyQuery(cours_query)
+			self.response.write(page)			
+		
 
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
@@ -177,9 +195,11 @@ class doubleLogin(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-	('/dbDelete', dbDelete),
+	('/validateStudent', ValidateStudent),
+	('/validateCompany', ValidateCompany),
+	#('/dbDelete', dbDelete),
 	('/dbUserIdScramble', dbUserIdScramble),
-	('/dbBuild', dbBuild),
+	#('/dbBuild', dbBuild),
 	('/studentInputPage', MainHandler),
 	('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/studenthandler', StudentHandler),
@@ -195,7 +215,7 @@ app = webapp2.WSGIApplication([
 	('/getMyCV', getMyCV),
 	('/getCV', getCV),
 	('/', LogInForBarak),
-	('/doubleLogin', doubleLogin)
+	#('/doubleLogin', doubleLogin)
 	], debug=True)
 
 
