@@ -550,11 +550,11 @@ def buildStudentEditPage(student, course_query):
 	
 	htmlMail+="""> </div>"""
 	
-	htmlRecOffers = """<br><br><div class="recieveOffers" align="right">
-			  <label for="recieveOffers" class="textsmallpad">מצאתי משרה, אל תשלח לי הודעות בינתיים</label>
-			  <input type="checkbox" value="False" name="recieveOffers" id="recieveOffers" class="checkbox" """
+	htmlRecOffers = """<br><br><div class="receiveOffers" align="right">
+			  <label for="receiveOffers" class="textsmallpad">מצאתי משרה, אל תשלח לי הודעות בינתיים</label>
+			  <input type="checkbox" value="False" name="receiveOffers" id="receiveOffers" class="checkbox" """
 	
-	#if(student.recieve_offers == True):      #insert name of parameter in db here
+	#if(student.receive_offers == True):      #insert name of parameter in db here
 		#htmlRecOffers+="""checked"""
 	
 	htmlRecOffers+="""> </div>"""
