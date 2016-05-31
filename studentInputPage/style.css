@@ -223,11 +223,6 @@ white-space: pre-wrap;
 
 }
 
-
-input[type="text"]:-moz-placeholder {
-    text-align: right;
-}
-
 .feedback-input:focus {
   background: #fff;
   border: 3px solid #3498db;
@@ -501,4 +496,12 @@ padding-bottom: 120px;
   border: 1px solid #133e40;
   -webkit-box-shadow: inset 0 5px 10px #133e40;
   box-shadow: inset 0 5px 10px #133e40;
+}
+
+input[type='text']{
+text-align:right;
+}
+
+input[type='text']:focus{
+text-align:right;
 }
