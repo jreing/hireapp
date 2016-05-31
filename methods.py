@@ -468,7 +468,7 @@ def buildStudentEditPage(student, course_query):
         <p class="text1">:אזור מגורים</p>
       </div>
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
-	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" />
+	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
 				<option value=""" + str(student.residence) + """>(לא נבחר איזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
@@ -515,7 +515,7 @@ def buildStudentEditPage(student, course_query):
 			</div>"""
 	htmlYear = """<div>
 			  <p class="text2" id="element1">:שנת לימודים</p>
- 				<select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" >
+ 				<select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" dir="rtl" >
 				<option value=""" + str(student.year) + """>(לא נבחר )</option>
 				<option value=1> א'</option>
 				<option value=2> ב'</option>
@@ -527,7 +527,7 @@ def buildStudentEditPage(student, course_query):
 	htmlAvail = """<br><br><br><br>
 			<div>
 			  <p class="text2" id="element1">:סוג משרה</p>
-			  <select name="availability" id="availability" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5">
+			  <select name="availability" id="availability" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" dir="rtl">
 				<option value=""" + str(student.availability) + """>(לא נבחר סוג)</option>
 				<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
@@ -537,7 +537,6 @@ def buildStudentEditPage(student, course_query):
 
 	htmlGit = """<br><br><br><br><div id="gitEntry" >
 				<p class="text2" id="element1">:חשבון גיט</p><br><br>
-
 				<input name="git" type="text" class="git" id="git" placeholder="" value= '""" + str(student.git) + """' />			  
 			</div>"""
 	htmlMail = """<br><br><br><br><div class="getEmailNotification" align="right">
