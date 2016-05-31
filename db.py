@@ -310,14 +310,15 @@ class dbBuild(webapp2.RequestHandler):
 		for st in q:
 			if st.year==None: st.year=0
 			if st.availability==None: st.availability=0
+			if st.needs_job=None: st.needs_job=True;
 			st.put()
 		
-		import csv
-		with open('courses3.csv', 'rb') as csvfile:
-			spamreader = csv.reader(csvfile, delimiter=',')
-			for row in spamreader:
-				c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
-				c.put()
+		#import csv
+		#with open('courses3.csv', 'rb') as csvfile:
+		#	spamreader = csv.reader(csvfile, delimiter=',')
+		#	for row in spamreader:
+		#		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
+		#		c.put()
 		
 		self.response.write('Database built')
 
