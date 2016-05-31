@@ -104,7 +104,7 @@ class Student(ndb.Model):
 	git=ndb.StringProperty(required=True)
 	hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
 	cgrades= ndb.ComputedProperty(lambda self: ",".join(self.getCGrades()))
-	
+	needs_job=ndb.BooleanProperty(indexed=True, required=True)
 	
 class allowedCompany(ndb.Model):
 	email =ndb.StringProperty(indexed=True, required=True)
@@ -186,7 +186,8 @@ class minGradeQuery(webapp2.RequestHandler):
 		if availability.isdigit()==False: self.errormsg()
 		if len(hasgit)>5: self.errormsg()
 
-		q=Student.query()
+		#get only students who want to be found
+		q=Student.query(Student.needs_job==True)
 		q=q.fetch(100)
 		
 		logging.info(q)
@@ -353,7 +354,7 @@ class dbUserIdScramble(webapp2.RequestHandler):
 class dbHandler(webapp2.RequestHandler):
 	def errormsg(self):
 		#TODO: write prettier error message display
-		self.response.write(self.request)
+		#self.response.write(self.request)
 		self.response.write("invalid request to server")
 		return 
 
@@ -382,8 +383,8 @@ class dbHandler(webapp2.RequestHandler):
 		
 		
 		#add courses and grades
-		course_names=self.request.get('name', allow_multiple=True)
-		grade= self.request.get('grade', allow_multiple=True)
+		course_names=self.request.get_all('name')
+		grade= self.request.get_all('grade')
 		if (len(course_names)!=len(grade)):
 			#self.response.write ("Error")
 			self.errormsg()
@@ -414,7 +415,14 @@ class dbHandler(webapp2.RequestHandler):
 			st.allow_emails=True
 		else:
 			st.allow_emails=False
-			
+		
+		#handle needs_job
+		logging.info("needs_job")
+		logging.info(self.request.get('recieveOffers'))
+		if (self.request.get('recieveOffers')=="True"):
+			st.needs_job=True
+		else:
+			st.needs_job=False
 		
 		logging.info("residence added")
 		#residence validation and handling
@@ -441,7 +449,9 @@ class dbHandler(webapp2.RequestHandler):
 			return
 		logging.info(availability)
 		st.availability = int(availability)
+		
 		logging.info("git added")
+		
 		#git validation and handling
 		git = self.request.get('git')
 		logging.info(git)

@@ -71,8 +71,8 @@ function onLogin(googleUser){
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
 			if (xhr.responseText!=""){
-				document.write(xhr.responseText);
-				
+				//document.write(xhr.responseText);
+				window.location="/unauthorized"
 			}	
 			else {
 				
