@@ -421,9 +421,11 @@ class dbHandler(webapp2.RequestHandler):
 		logging.info("needs_job")
 		logging.info(self.request.get('receiveOffers'))
 		if (self.request.get('receiveOffers')=="True"):
-			st.needs_job=True
-		else:
+			#invert values of checkbox
 			st.needs_job=False
+		else:
+			st.needs_job=True
+		logging.info(st.needs_job)
 		
 		logging.info("residence added")
 		#residence validation and handling

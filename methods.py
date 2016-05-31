@@ -572,7 +572,8 @@ def buildStudentEditPage(student, course_query):
 	
 
 	logging.info(student.needs_job)
-	if(student.needs_job == True): 
+	#inverting values
+	if(student.needs_job != True): 
     
 		htmlRecOffers+="""checked"""
 	
