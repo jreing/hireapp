@@ -62,6 +62,10 @@ handlers:
 - url: /CompanyToolbar
   static_dir: CompanyToolbar  
   secure: always
+ 
+- url: /createAd
+  static_dir: createAd  
+  secure: always
   
 - url: /jquery
   static_dir: jquery

@@ -52,8 +52,13 @@ class Message(ndb.Model):
 	date = ndb.DateTimeProperty(auto_now_add=True)
 
 class Conversation(ndb.Model):
-	id = ndb.IntegerProperty(indexed = False)
-	message = ndb.StructuredProperty(Message, repeated=True)	
+	id = ndb.StringProperty(indexed = False)
+	message = ndb.StructuredProperty(Message, repeated=True)
+	#parameters	
+
+class Ad(ndb.Model):
+	id = ndb.IntegerProperty(repeated=True)
+	message = ndb.StructuredProperty(Message)
 	
 class MessageHandler(webapp2.RequestHandler):
     def get(self):

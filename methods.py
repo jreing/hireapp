@@ -209,7 +209,7 @@ def buildStudentInputPage(course_query):
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/dbHandler" method="post" enctype="multipart/form-data">
 		  <div>
 			  <p class="text2" id="element1">:הזן אזור מגורים</p>
- 				<select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
+ 				<select name="residence" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
 				<option value=0>(לא נבחר איזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
@@ -241,7 +241,7 @@ def buildStudentInputPage(course_query):
 			</div>
 			<div>
 			  <p class="text2" id="element1">:שנת לימודים</p>
- 				<select name="year" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
+ 				<select name="year" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
 				<option value=0>(לא נבחר )</option>
 				<option value=1> 'א</option>
 				<option value=2> 'ב</option>
@@ -253,7 +253,7 @@ def buildStudentInputPage(course_query):
 			<br><br><br><br>
 			<div>
 			  <p class="text2" id="element1">:הזן סוג משרה</p>
-			  <select name="availability" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
+			  <select name="availability" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
 				<option value=0>(לא נבחר סוג)</option>
 				<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
@@ -336,27 +336,13 @@ def availTranslate(num):
 		1: "חצי משרה",
 		2: "משרה מלאה",
 	} .get(num, "לא הוזן")
-	
-def buildCompanyQuery(course_query):
-	i=0
-	htmlstart="""<!DOCTYPE html>
-	<html>
-		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
-	  <body>
-		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
-		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
-		
-		<div id="form-main">
-		<div align="right">
-		  <p class="titletext">:חיפוש מועמדים</p>
-		</div>
-		<div id="form-div">
 
-		  <div align="right">
+def buildSearchParameters():
+	htmlMain = """
+		  
+			<div align="right">
 			<p class="text1">:ציון מינימלי בקורס</p>
 		  </div>
-		  <form class="form" id="form1" onsubmit="return validateForm()" action="/companyQueryResultsPage" method="post">
-
 			<div class="inputline">
 			  <input type="button" id="buttonadd" value="הוסף קורס" />
 			</div>
@@ -403,18 +389,6 @@ def buildCompanyQuery(course_query):
 				<option value=4> דרום גוש דן</option>
 				<option value=5> אשדוד</option>
 			  </select></div>"""
-
-	htmlButt ="""<div class="submit">
-			  <input type="submit" value="חפש" id="button-blue" />
-			  <div class="ease"></div>"""
-			  
-	htmlbody="""<div><datalist id="courses" hidden>"""
-	
-	for course in course_query:
-		i=i+1
-		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> \n"""
-	
-	htmlbody+= """</datalist> </form> </div>"""
 	
 	htmlYear = """<br><br><div align="right" >
 			  <p class="text1" id="element1">:שנת לימודים</p>
@@ -436,17 +410,60 @@ def buildCompanyQuery(course_query):
 				<option value=2> משרה מלאה</option>
 				
 			  </select>
-			</div>"""	
-	htmlend="""	</div>
+			</div>"""
+			
+	
+	return htmlMain + htmlYear +htmlAvail
+
+def buildCourseList(course_query):
+	i = 0
+	htmlbody="""<div><datalist id="courses" hidden>"""
+	
+	for course in course_query:
+		i=i+1
+		htmlbody+="""<option> """+  str(course.course_name) + """</option data-id="1"> \n"""
+	
+	htmlbody+= """</datalist>"""
+	
+	return htmlbody
+	
+def buildCompanyQuery(course_query):
+	i=0
+	htmlstart="""<!DOCTYPE html>
+	<html>
+		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
+	  <body>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		
+		<div id="form-main">
+		<div align="right">
+		  <p class="titletext">:חיפוש מועמדים</p>
+		</div>
+		<div id="form-div">
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/companyQueryResultsPage" method="post">"""
+
+	htmlQueryParam = buildSearchParameters()
+
+	htmlButt ="""<div class="submit">
+			  <input type="submit" value="חפש" id="button-blue" />
+			  <div class="ease"></div>"""
+	
+	htmlCourseList = buildCourseList(course_query)	  
+	
+	
+	htmlend="""	</form> </div></div>
 		
 	  </body>
 	  <script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </html>"""
+	
+	# htmlGit is not in use right now	
 	htmlGit = """<div class="hasgit" align="right">
 			  <label for="hasgit" class="textsmallpad">חפש סטודנט עם חשבון גיט</label>
 			  <input type="checkbox" value="True" name="hasgit" id="hasgit" class="checkbox"> </div>"""
-	html=htmlstart+htmlYear +htmlAvail +htmlButt +htmlbody+ htmlend
+	
+	html=htmlstart+ htmlQueryParam +htmlButt + htmlCourseList + htmlend
 	return html
 
 def buildStudentEditPage(student, course_query):
@@ -549,10 +566,11 @@ def buildStudentEditPage(student, course_query):
 	
 	htmlMail+="""> </div>"""
 	
-	htmlRecOffers = """<br><br><div class="recieveOffers" align="right">
-			  <label for="recieveOffers" class="textsmallpad">מצאתי משרה, אל תשלח לי הודעות בינתיים</label>
-			  <input type="checkbox" value="False" name="recieveOffers" id="recieveOffers" class="checkbox" """
+	htmlRecOffers = """<br><br><div class="receiveOffers" align="right">
+			  <label for="receiveOffers" class="textsmallpad">מצאתי משרה, אל תשלח לי הודעות בינתיים</label>
+			  <input type="checkbox" value="True" name="receiveOffers" id="receiveOffers" class="checkbox" """
 	
+
 	logging.info(student.needs_job)
 	if(student.needs_job == True): 
     
@@ -585,4 +603,50 @@ def buildStudentEditPage(student, course_query):
 	htmlDel = """<div><button type="button" onclick="" id="delButton" class="delButton">הסר פרופיל</button> </div>"""
 
 	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlButt +htmlDlist +htmlEndForm + htmlDel + htmlEnd
+	return html
+
+	
+def buildAdPage(course_query):
+
+	htmlstart="""<!DOCTYPE html>
+	<html>
+		<link rel="stylesheet" type="text/css" href="createAd/style.css">
+	  <body>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/" method="post">
+		
+		<div id="form-main">
+		<div align="right">
+		  <p class="titletext">:בניית משרה</p>
+		</div>
+		<div id="form-div">"""
+	
+	htmlSearchParam = buildSearchParameters()
+	
+	htmlbody = buildCourseList(course_query)
+	
+	htmlAdDesc  = """<div align="right">
+        <p class="text1">:שם המשרה</p>
+        <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="jobId" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:תיאור המשרה</p>
+        <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
+		<br><br><div align="right">
+		  <p class="text1">:פרמטרים לחיפוש</p>
+		</div>"""
+	
+	htmlButt ="""<div class="submit">
+			  <input type="submit" value="חפש" id="button-blue" />
+			  <div class="ease"></div>"""
+			  
+	htmlend="""	</form> </div></div>
+		
+	  </body>
+	  <script type="text/javascript" src="/createAd/script.js"></script>
+	  </html>"""
+	  
+	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlButt +htmlbody + htmlend
 	return html

@@ -165,7 +165,11 @@ class StudentEditHandler(webapp2.RequestHandler):
 		page = buildStudentEditPage(student_query, course_query )
 		self.response.write(page)
 
-
+class companyAdHandler(webapp2.RequestHandler):
+	def get(self):
+		course_query = Course.query()
+		page = buildAdPage(course_query )
+		self.response.write(page)
 
 class Logout(webapp2.RequestHandler):
 	def get(self):
@@ -221,6 +225,7 @@ app = webapp2.WSGIApplication([
 	('/studentEditPage', StudentEditHandler),
 	('/getMyCV', getMyCV),
 	('/getCV', getCV),
+	('/createAd', companyAdHandler),
 	('/', LogInForBarak),
 	#('/doubleLogin', doubleLogin)
 	], debug=True)
