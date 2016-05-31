@@ -70,9 +70,9 @@ function onLogin(googleUser){
 	//document.getElementById("employ_button").hidden=false;
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
-			if (xhr.responseText=="Access Denied, Unauthorized User"){
-				document.write(xhr.responseText);
-				
+			if (xhr.responseText!=""){
+				//document.write(xhr.responseText);
+				window.location="/unauthorized"
 			}	
 			else {
 				

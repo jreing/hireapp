@@ -132,6 +132,12 @@ class WelcomeHandler(webapp2.RequestHandler):
 		f = open("StudentWelcomePage/index.html") 
 		self.response.write(f.read())
 		f.close()
+		
+class UnauthorizedPage(webapp2.RequestHandler):
+	def get(self):
+		f = open("unauthorized.html") 
+		self.response.write(f.read())
+		f.close()
 
 class StudentHandler(webapp2.RequestHandler):
 	def get(self):
@@ -199,6 +205,7 @@ class doubleLogin(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
+	('/unauthorized', UnauthorizedPage),
 	('/validateStudent', ValidateStudent),
 	('/validateCompany', ValidateCompany),
 	#('/dbDelete', dbDelete),
