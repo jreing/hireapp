@@ -209,7 +209,7 @@ def buildStudentInputPage(course_query):
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/dbHandler" method="post" enctype="multipart/form-data">
 		  <div>
 			  <p class="text2" id="element1">:הזן אזור מגורים</p>
- 				<select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
+ 				<select name="residence" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
 				<option value=0>(לא נבחר איזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
@@ -241,7 +241,7 @@ def buildStudentInputPage(course_query):
 			</div>
 			<div>
 			  <p class="text2" id="element1">:שנת לימודים</p>
- 				<select name="year" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
+ 				<select name="year" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
 				<option value=0>(לא נבחר )</option>
 				<option value=1> 'א</option>
 				<option value=2> 'ב</option>
@@ -253,7 +253,7 @@ def buildStudentInputPage(course_query):
 			<br><br><br><br>
 			<div>
 			  <p class="text2" id="element1">:הזן סוג משרה</p>
-			  <select name="availability" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
+			  <select name="availability" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
 				<option value=0>(לא נבחר סוג)</option>
 				<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
