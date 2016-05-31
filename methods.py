@@ -553,8 +553,10 @@ def buildStudentEditPage(student, course_query):
 			  <label for="recieveOffers" class="textsmallpad">מצאתי משרה, אל תשלח לי הודעות בינתיים</label>
 			  <input type="checkbox" value="False" name="recieveOffers" id="recieveOffers" class="checkbox" """
 	
-	#if(student.recieve_offers == True):      #insert name of parameter in db here
-		#htmlRecOffers+="""checked"""
+	logging.info(student.needs_job)
+	if(student.needs_job == True): 
+    
+		htmlRecOffers+="""checked"""
 	
 	htmlRecOffers+="""> </div>"""
 	
