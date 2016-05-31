@@ -568,7 +568,7 @@ def buildStudentEditPage(student, course_query):
 	
 	htmlRecOffers = """<br><br><div class="receiveOffers" align="right">
 			  <label for="receiveOffers" class="textsmallpad">מצאתי משרה, אל תשלח לי הודעות בינתיים</label>
-			  <input type="checkbox" value="False" name="receiveOffers" id="receiveOffers" class="checkbox" """
+			  <input type="checkbox" value="True" name="receiveOffers" id="receiveOffers" class="checkbox" """
 	
 
 	logging.info(student.needs_job)

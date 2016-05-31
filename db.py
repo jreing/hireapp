@@ -418,8 +418,8 @@ class dbHandler(webapp2.RequestHandler):
 		
 		#handle needs_job
 		logging.info("needs_job")
-		logging.info(self.request.get('recieveOffers'))
-		if (self.request.get('recieveOffers')=="True"):
+		logging.info(self.request.get('receiveOffers'))
+		if (self.request.get('receiveOffers')=="True"):
 			st.needs_job=True
 		else:
 			st.needs_job=False
