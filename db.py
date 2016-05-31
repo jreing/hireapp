@@ -310,7 +310,7 @@ class dbBuild(webapp2.RequestHandler):
 		for st in q:
 			if st.year==None: st.year=0
 			if st.availability==None: st.availability=0
-			if st.needs_job=None: st.needs_job=True
+			if st.needs_job==None: st.needs_job=True
 			st.put()
 		
 		#import csv
