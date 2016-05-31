@@ -67,7 +67,7 @@ class tokenSignIn(webapp2.RequestHandler):
 				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 				logging.info("writing student")
 				logging.info(user_id)
-				st= Student(allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0)
+				st= Student(allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0, needs_job=True)
 				st.put()
 			else:
 				user_id=user_query.user_id
