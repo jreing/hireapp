@@ -2,5 +2,5 @@ document.body.innerHTML = '<div id="includedContent"></div>'+document.body.inner
 $(function loadtoolbar(){
 	$("#includedContent").load("/UnauthorizedToolbar/index.html");
 });
-window.onunload = function(){}
+//window.onunload = function(){}
 

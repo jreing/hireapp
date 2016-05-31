@@ -14,6 +14,28 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
+def errorPage(errormsg):
+	html="""
+	<!DOCTYPE html>
+	<html lang="he">
+	<link rel="stylesheet" type="text/css" href="/LogInForBarak/style.css">
+	 
+	<body>
+		<div align="center">
+			<p class="text1">"""
+	html+=errormsg
+	html+=	"""
+		</p>
+		</div>
+	</body>
+	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+	<script type="text/javascript" src="/UnauthorizedToolbar/loadToolbar.js"></script>  
+	</html>	
+	"""
+
+	return html
+
+
 #Methods to build the companyQueryResultsPage and StudentOffersPage
 
 def buildQueryResultsPage(q):
@@ -651,3 +673,5 @@ def buildAdPage(course_query):
 	  
 	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlButt +htmlbody + htmlend
 	return html
+
+	

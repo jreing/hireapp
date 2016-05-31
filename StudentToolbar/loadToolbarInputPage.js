@@ -7,7 +7,7 @@ $(function loadtoolbar(){
 			$("#includedContent").load("/StudentToolbar/indexInputPage.html");
 		}
 		else {
-			document.write("Session timeout");
+			document.write(data);
 		}
 	});
 });

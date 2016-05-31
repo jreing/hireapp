@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import cgi
 import urllib
 import datetime
@@ -116,10 +118,10 @@ class Company(ndb.Model):
 	email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=False)
 	
-	
+
 class minGradeQuery(webapp2.RequestHandler):
 	def errormsg(self):
-		self.response.write("invalid input")
+		self.response.write (errorPage("קלט שגוי לאתר"))
 	
 	#function that check whether student has courses in the relevant cluster
 	def studentHasCType(self,student, ctype):
@@ -320,7 +322,7 @@ class dbBuild(webapp2.RequestHandler):
 		#		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
 		#		c.put()
 		
-		self.response.write('Database built')
+		self.response.write(errorPage('Database built'))
 
 #deletes all courses from DB	
 class dbDelete(webapp2.RequestHandler):
@@ -328,9 +330,22 @@ class dbDelete(webapp2.RequestHandler):
 		passw=self.request.get("passw")
 		if (passw=="weLoveYouGoogle2016"):
 			ndb.delete_multi(Course.query().fetch(keys_only=True))
-			self.response.write('Database deleted')
+			self.response.write(errorPage('Database deleted'))
 		else:
-			self.response.write('Wrong password')
+			self.response.write(errorPage('Wrong password'))
+			
+#deletes user	
+class deleteStudent(webapp2.RequestHandler):
+	def get(self):
+		#validate student
+		id = self.request.cookies.get('id')
+		logging.info(id)
+		st=Student.query(id==Student.user_id).get()
+		if (st!=None):
+			#remove student
+			st.key.delete()	
+		self.response.write(\
+		errorPage("שם המשתמש שלך נמחק, בהצלחה בהמשך הדרך"))
 
 #changes all hash id's in the DB
 class dbUserIdScramble(webapp2.RequestHandler):
@@ -345,19 +360,12 @@ class dbUserIdScramble(webapp2.RequestHandler):
 			for c in q:
 				c.user_id=str(hashlib.sha512(c.google_id + str(time())).hexdigest())
 				c.put()
-			self.response.write('Database scrambled')
+			self.response.write(errorPage('Database scrambled'))
 		else:
-			self.response.write('Wrong password')
-
-
-			
+			self.response.write(errorPage('Wrong password'))
+		
 #adds Student to DB
 class dbHandler(webapp2.RequestHandler):
-	def errormsg(self):
-		#TODO: write prettier error message display
-		#self.response.write(self.request)
-		self.response.write("invalid request to server")
-		return 
 
 	def post(self):
 		cvKey = False
@@ -374,7 +382,7 @@ class dbHandler(webapp2.RequestHandler):
 			#validate the user's file is a REAL PDF.
 			if (self.checkPdfFile(cv)==False):
 				#TODO - more elegent error message
-				self.response.write("erroneos file")
+				self.response.write(("קובץ לא חוקי להעלאה"))
 				return
 			
 			#write user's CV File into blobstore
@@ -387,17 +395,14 @@ class dbHandler(webapp2.RequestHandler):
 		course_names=self.request.get_all('name')
 		grade= self.request.get_all('grade')
 		if (len(course_names)!=len(grade)):
-			#self.response.write ("Error")
-			self.errormsg()
-
-		
-				
+			self.response.write (errorPage("קלט שגוי לאתר"))
+			return
 		s=[]
 		for i in range(0,len(course_names)):
 			if (grade[i].isdigit()==False): continue
 			if (int(grade[i])>100 or int(grade[i])<60) : continue
 			if (len(course_names[i])>50):
-				self.errormsg()
+				self.response.write (errorPage("קלט שגוי לאתר"))
 				return
 			course_query=Course.query (Course.course_name==course_names[i]).get()
 			
@@ -431,7 +436,7 @@ class dbHandler(webapp2.RequestHandler):
 		#residence validation and handling
 		residence = self.request.get('residence')
 		if (residence.isdigit()==False or int(residence)>5 or int(residence)<0):
-			self.errormsg()
+			self.response.write (errorPage("קלט שגוי לאתר"))
 			return
 		st.residence = int(residence)
 		
@@ -439,7 +444,7 @@ class dbHandler(webapp2.RequestHandler):
 		#year validation and handling
 		year = self.request.get('year')
 		if (year.isdigit()==False or int(year)>4 or int(year)<0):
-			self.errormsg()
+			self.response.write (errorPage("קלט שגוי לאתר"))
 			return
 		logging.info(year)
 		st.year = int(year)
@@ -459,7 +464,7 @@ class dbHandler(webapp2.RequestHandler):
 		git = self.request.get('git')
 		logging.info(git)
 		if (git!="" and (len(git)>60 or git.find("git")==-1)):
-			self.errormsg()
+			self.response.write (errorPage("קלט שגוי לאתר"))
 			return
 		st.git = git
 		
@@ -468,7 +473,7 @@ class dbHandler(webapp2.RequestHandler):
 		#average validation
 		new_avg= self.request.get('average')
 		if (new_avg.isdigit()==False or int(new_avg)>100 or int(new_avg)<60):
-			self.errormsg()
+			self.response.write (errorPage("קלט שגוי לאתר"))
 			return
 		st.avg = int(new_avg)
 		

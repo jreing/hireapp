@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python
 import cgi
 import urllib
@@ -26,7 +27,7 @@ class ValidateCompany(webapp2.RequestHandler):
 		if (Company.query(id==Company.user_id).get()!=None):
 			self.response.write(id+"#accepted")
 		else :
-			self.response.write("#rejected")
+			self.response.write(errorPage("זמן החיבור פג"))
 
 class ValidateStudent(webapp2.RequestHandler):
 	def post(self):
@@ -35,17 +36,17 @@ class ValidateStudent(webapp2.RequestHandler):
 		if (Student.query(id==Student.user_id).get()!=None):
 			self.response.write(id+"#accepted")
 		else :
-			self.response.write("#rejected")
+			self.response.write(errorPage("זמן החיבור פג"))
 			
 class CompanyHandler(webapp2.RequestHandler):
 	def get(self):
 		id = self.request.cookies.get('id')
 		logging.info(id)
 		if (Company.query(id==Company.user_id).get()==None):
-			self.response.write("<html> session timeout </html>")
+			self.response.write(errorPage("session timeout"))
 		else:
-			cours_query = Course.query()
-			page = buildCompanyQuery(cours_query)
+			course_query = Course.query()
+			page = buildCompanyQuery(course_query)
 			self.response.write(page)			
 		
 
@@ -85,7 +86,7 @@ class tokenSignIn(webapp2.RequestHandler):
 					cmp= Company(email=email, google_id=google_id, user_id=user_id, name="", city="")
 					cmp.put()
 				else:
-					self.response.write("Access Denied, Unauthorized User")
+					self.response.write(errorPage("אין כניסה, משתמש לא חוקי"))
 					return
 			else:
 				user_id=user_query.user_id
@@ -100,13 +101,9 @@ class tokenSignIn(webapp2.RequestHandler):
 		
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
-		cours_query = Course.query()
-		page = buildStudentInputPage(cours_query)
+		course_query = Course.query()
+		page = buildStudentInputPage(course_query)
 		self.response.write(page)
-		#f = open("studentInputPage/index.html") 
-	#self.response.charset="unicode"
-	#self.response.write(f.read())
-	#f.close()        
 
 class ResultsPage(webapp2.RequestHandler):
 	def get(self):
@@ -146,7 +143,7 @@ class StudentHandler(webapp2.RequestHandler):
 		#logging.info(user_id)
 		st = Student.query(Student.user_id==user_id).get()
 		if (st==None):
-			self.response.write ("""<html> an error has occured, please reload page""")
+			self.response.write (errorPage("אירעה שגיאה, נא לטעון מחדש את האתר"))
 		elif (st.avg == -1):
 			self.response.write ("""<html><script>
 				window.location="/studentInputPage";
@@ -160,10 +157,12 @@ class StudentEditHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		student_query = Student.query(Student.user_id==user_id).get()
-		
-		course_query = Course.query()
-		page = buildStudentEditPage(student_query, course_query )
-		self.response.write(page)
+		if (student_query==None): 
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			course_query = Course.query()
+			page = buildStudentEditPage(student_query, course_query)
+			self.response.write(page)
 
 class companyAdHandler(webapp2.RequestHandler):
 	def get(self):
@@ -203,10 +202,10 @@ class doubleLogin(webapp2.RequestHandler):
 
 
 
-
 app = webapp2.WSGIApplication([
 	('/unauthorized', UnauthorizedPage),
 	('/validateStudent', ValidateStudent),
+	('/deleteStudent', deleteStudent),
 	('/validateCompany', ValidateCompany),
 	#('/dbDelete', dbDelete),
 	('/dbUserIdScramble', dbUserIdScramble),
