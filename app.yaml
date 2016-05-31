@@ -54,6 +54,11 @@ handlers:
   static_dir: StudentToolbar
   secure: always  
   
+- url: /UnauthorizedToolbar
+  static_dir: UnauthorizedToolbar
+  secure: always  
+  
+  
 - url: /CompanyToolbar
   static_dir: CompanyToolbar  
   secure: always

@@ -85,7 +85,10 @@ class tokenSignIn(webapp2.RequestHandler):
 					cmp= Company(email=email, google_id=google_id, user_id=user_id, name="", city="")
 					cmp.put()
 				else:
-					self.response.write("Access Denied, Unauthorized User")
+					f = open("unauthorized.html")
+					self.response.write(f.read())
+					f.close()
+					#self.response.write("Access Denied, Unauthorized User")
 					return
 			else:
 				user_id=user_query.user_id
