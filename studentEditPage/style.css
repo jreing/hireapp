@@ -298,7 +298,7 @@ textarea {
 
 #button-blue {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  float: left;
+  float: right;
   width: 100%;
   border: #fbfbfb solid 4px;
   cursor: pointer;
@@ -315,8 +315,10 @@ textarea {
 }
 
 #button-blue:hover {
+  width: 100%;
   background-color: rgba(0, 0, 0, 0);
   color: #0493bd;
+  background-color: white;
 }
 
 .ease {
@@ -330,9 +332,37 @@ textarea {
   -ms-transition: .3s ease;
   transition: .3s ease;
 }
-
+/*
 .submit:hover .ease {
   width: 100%;
+  background-color: white;
+}
+*/
+
+#delButton {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  float: right;
+  width: 100%;
+  border: #fbfbfb solid 4px;
+  cursor: pointer;
+  background-color: #C0C0C0;
+  color: white;
+  font-size: 24px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  -webkit-transition: .3s ease;
+  -moz-transition: .3s ease;
+  -o-transition: .3s ease;
+  -ms-transition: .3s ease;
+  transition: all 0.3s;
+  margin-top: -4px;
+  font-weight: 700;
+}
+
+#delButton:hover {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  color: #0493bd;
   background-color: white;
 }
 

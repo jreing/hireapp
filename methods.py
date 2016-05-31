@@ -540,16 +540,27 @@ def buildStudentEditPage(student, course_query):
 				<input name="git" type="text" class="git" id="git" placeholder="" value= '""" + str(student.git) + """' />			  
 			</div>"""
 	htmlMail = """<br><br><br><br><div class="getEmailNotification" align="right">
-			  <label for="getEmailNotification" class="textsmallpad">עדכון במייל לגבי הצעת משרה</label>
+			  <label for="getEmailNotification" class="textsmallpad">שלח לי עדכון במייל לגבי הצעות שקיבלתי</label>
 			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" """
-			  
+	
+
 	if(student.allow_emails == True):
 		htmlMail+="""checked"""
 	
 	htmlMail+="""> </div>"""
 	
+	htmlRecOffers = """<br><br><div class="recieveOffers" align="right">
+			  <label for="recieveOffers" class="textsmallpad">מצאתי משרה, אל תשלח לי הודעות בינתיים</label>
+			  <input type="checkbox" value="False" name="recieveOffers" id="recieveOffers" class="checkbox" """
+	
+	#if(student.recieve_offers == True):      #insert name of parameter in db here
+		#htmlRecOffers+="""checked"""
+	
+	htmlRecOffers+="""> </div>"""
+	
+	
 	htmlButt = """<div class="submit">
-          <input type="submit" value="שמור" id="button-blue" />
+          <input type="submit" form="form1" value="שמור" id="button-blue" />
           <div class="ease"> </div>
         </div>"""
 
@@ -561,17 +572,15 @@ def buildStudentEditPage(student, course_query):
 		i=i+1
 		htmlDlist+="""<option data-id="1" > """+  str(course.course_name) + """</option> \n"""
 		
-	htmlend="""</datalist>
-      </form>
-	  
-    </div>
-		
-  </div>
-
-  </body>
-  <script type="text/javascript" src="studentEditPage/script.js"></script>
+	htmlEndForm="""</datalist>
+      </form> 
+    </div>	
+  """
+	htmlEnd = """</div></body> 
+	<script type="text/javascript" src="studentEditPage/script.js"></script>
   </html>"""
-	
+  
+	htmlDel = """<div><button type="button" onclick="" id="delButton" class="delButton">הסר פרופיל</button> </div>"""
 
-	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlButt +htmlDlist +htmlend
+	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlButt +htmlDlist +htmlEndForm + htmlDel + htmlEnd
 	return html
