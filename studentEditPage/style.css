@@ -148,10 +148,6 @@ html {
 
 }
 
-input[type="text"]:-moz-placeholder {
-    text-align: right;
-}
-
 .feedback-input:focus {
   background: #fff;
   border: 3px solid #3498db;
@@ -364,3 +360,20 @@ padding-bottom: 120px;
 }
 #element1 {float:right;}
 #element2 {float:left;}
+
+input[type='text']{
+text-align:right;
+}
+
+input[type='text']:focus{
+text-align:right;
+}
+
+input[type='number']{
+text-align:center;
+}
+
+input[type='number']:focus{
+text-align:right;
+}
+
