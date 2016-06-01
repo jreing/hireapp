@@ -117,8 +117,18 @@ class Company(ndb.Model):
 	name= ndb.StringProperty(indexed=True, required=False)
 	email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=False)
-	
 
+class Query(ndb.Model):
+	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
+	cgrades= ndb.ComputedProperty(lambda self: ",".join(self.getCGrades()))
+	avg= ndb.IntegerProperty(indexed=True, required=True)
+	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
+	ctype_avgs=ndb.StringProperty(indexed=True, required=True, repeated = True)
+	residence=ndb.IntegerProperty(indexed=True, required=True)
+	availability=ndb.IntegerProperty(indexed=True, required=True)
+	year=ndb.IntegerProperty(indexed=True, required=True)
+	hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
+	
 class minGradeQuery(webapp2.RequestHandler):
 	def errormsg(self):
 		self.response.write (errorPage("קלט שגוי לאתר"))
@@ -149,24 +159,9 @@ class minGradeQuery(webapp2.RequestHandler):
 				
 		if (num_points==0): return 0
 		else: return weighted_sum/num_points
+	
+	def getQuery(self, course_names,grades,average,ctypes,ctype_avgs,residence,year,availability,hasgit):
 		
-	def post(self):	 
-		course_names=self.request.get_all('name')
-		grades= self.request.get_all('grade')
-		average=self.request.get('avg')	
-		ctypes=self.request.get_all("ctype")
-		ctype_avgs=self.request.get_all("ctype_avg")
-		residence=self.request.get("residence")
-		year=self.request.get("year")
-		availability=self.request.get("availability")
-		hasgit=self.request.get("hasgit")
-		
-		logging.info("grades " + str(len(grades)))
-		logging.info("course " + str(len(course_names)))
-		logging.info("average " + str(average))
-		logging.info("ctypes " + str(len(ctypes)))
-		logging.info("ctype_avgs " + str(len(ctype_avgs)))
-		logging.info("residence " + str(residence))
 		
 		#server side input validation
 		if len(grades)!=len(course_names): self.errormsg()
@@ -287,7 +282,30 @@ class minGradeQuery(webapp2.RequestHandler):
 			else:
 				if (ctypes[0]!=0):
 					q=filteredRes
+		return q
+
+	
+	def post(self):	 
 		
+		course_names=self.request.get_all('name')
+		grades= self.request.get_all('grade')
+		average=self.request.get('avg')	
+		ctypes=self.request.get_all("ctype")
+		ctype_avgs=self.request.get_all("ctype_avg")
+		residence=self.request.get("residence")
+		year=self.request.get("year")
+		availability=self.request.get("availability")
+		hasgit=self.request.get("hasgit")
+		
+		logging.info("grades " + str(len(grades)))
+		logging.info("course " + str(len(course_names)))
+		logging.info("average " + str(average))
+		logging.info("ctypes " + str(len(ctypes)))
+		logging.info("ctype_avgs " + str(len(ctype_avgs)))
+		logging.info("residence " + str(residence))
+		
+		q = minGradeQuery.getQuery(self,course_names,grades,average,ctypes
+		,ctype_avgs,residence,year,availability,hasgit)
 		#logging.info(q)
 		
 		#/no results
@@ -299,6 +317,12 @@ class minGradeQuery(webapp2.RequestHandler):
 			page = buildQueryResultsPage(q)
 			self.response.write(page)
 
+
+
+		
+		
+			
+			
 #adds all courses to DB from the parsed courses files
 class dbBuild(webapp2.RequestHandler):
 	

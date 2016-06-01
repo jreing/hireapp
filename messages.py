@@ -179,7 +179,26 @@ class MessageReply(webapp2.RequestHandler):
 	def post(self):
 		self.message = Message(cont = self.request.get('mess'))
 
-
+class adHandler(webapp2.RequestHandler):
+	
+	def post(self):	 
+		course_names=self.request.get_all('name')
+		grades= self.request.get_all('grade')
+		average=self.request.get('avg')	
+		ctypes=self.request.get_all("ctype")
+		ctype_avgs=self.request.get_all("ctype_avg")
+		residence=self.request.get("residence")
+		year=self.request.get("year")
+		availability=self.request.get("availability")
+		hasgit=self.request.get("hasgit")
+		ad = self.request.get("note")
+		adName = self.request.get("jobId")
+		
+		self.ad = Ad()
+		self.message = Message(cont = ad)
+		self.message.jobName = adName
+		self.ad = self.message
+		self.ad.put()
 
 # class ConfirmUserSignup(webapp2.RequestHandler):
 #     def post(self):

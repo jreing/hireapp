@@ -662,7 +662,7 @@ def buildAdPage(course_query):
 		</div>"""
 	
 	htmlButt ="""<div class="submit">
-			  <input type="submit" value="חפש" id="button-blue" />
+			  <input type="submit" value="צור מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
 	htmlend="""	</form> </div></div>
