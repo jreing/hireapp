@@ -14,6 +14,8 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
+
+#function that builds an error page given a message
 def errorPage(errormsg):
 	html="""
 	<!DOCTYPE html>

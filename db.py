@@ -119,6 +119,22 @@ class Company(ndb.Model):
 	city =ndb.StringProperty(indexed=True, required=False)
 	
 
+	
+#function that checks student login
+def checkStudentLoginExists(user_id):
+	if (Student.query(user_id==Student.user_id).get()!=None):
+		return True
+	else:
+		return False
+		
+#function that checks login
+def checkCompanyLoginExists(user_id):
+	if (Company.query(user_id==Company.user_id).get()!=None):
+		return True
+	else:
+		return False
+
+	
 class minGradeQuery(webapp2.RequestHandler):
 	def errormsg(self):
 		self.response.write (errorPage("קלט שגוי לאתר"))
@@ -532,17 +548,22 @@ class dbHandler(webapp2.RequestHandler):
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
-		st = Student.query(Student.user_id==user_id).get()
-		self.send_blob(st.cv_blob_key)
+		if (checkStudentLoginExists(user_id)!=True):
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			st = Student.query(Student.user_id==user_id).get()
+			self.send_blob(st.cv_blob_key)
 
 #use this function for companies to see student CVs
 #get the user_id using the hashed version
 class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
 		user_id = self.request.get('user_id')
-		st = Student.query(Student.user_id==user_id).get()
-		
-		if (st!=None):
-			self.send_blob(st.cv_blob_key)
+		if (checkCompanyLoginExists(user_id)!=True):
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			st = Student.query(Student.user_id==user_id).get()
+			if (st!=None):
+				self.send_blob(st.cv_blob_key)
 
 #classes that send pages to user, should check if the duplicates can be reduced

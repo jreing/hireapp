@@ -19,12 +19,14 @@ from messages import *
 #end of DB class definitions
 #
 #
+
+
 #classes for actions:
 class ValidateCompany(webapp2.RequestHandler):
 	def post(self):
 		id = self.request.cookies.get('id')
 		logging.info(id)
-		if (Company.query(id==Company.user_id).get()!=None):
+		if (checkComapnyLoginExists(id)==True):
 			self.response.write(id+"#accepted")
 		else :
 			self.response.write(errorPage("זמן החיבור פג"))
@@ -33,7 +35,7 @@ class ValidateStudent(webapp2.RequestHandler):
 	def post(self):
 		id = self.request.cookies.get('id')
 		logging.info(id)
-		if (Student.query(id==Student.user_id).get()!=None):
+		if (checkStudentLoginExists(id)==True):
 			self.response.write(id+"#accepted")
 		else :
 			self.response.write(errorPage("זמן החיבור פג"))
@@ -48,7 +50,6 @@ class CompanyHandler(webapp2.RequestHandler):
 			course_query = Course.query()
 			page = buildCompanyQuery(course_query)
 			self.response.write(page)			
-		
 
 class tokenSignIn(webapp2.RequestHandler):
 	def post(self):
@@ -57,7 +58,7 @@ class tokenSignIn(webapp2.RequestHandler):
 		google_id=self.request.get('user_id')
 
 		email=self.request.get('email')
-		
+		#TODO: make isStudent server-side
 		isStudent = self.request.get('isStudent')
 		
 		if (isStudent == 'true'):
@@ -106,7 +107,7 @@ class StudentInputHandler(webapp2.RequestHandler):
 		#logging.info(user_id)
 		st = Student.query(Student.user_id==user_id).get()
 		if (st==None):
-			self.response.write (errorPage("זמן החיבור פג"))
+			self.response.write (errorPage("גישה לא חוקית לדף"))
 		else:
 			course_query = Course.query()
 			page = buildStudentInputPage(course_query)
@@ -179,26 +180,24 @@ class companyAdHandler(webapp2.RequestHandler):
 
 class Logout(webapp2.RequestHandler):
 	def get(self):
-		logging.info("SIGN OUT FUNC")
 		user_id = self.request.cookies.get('id')
-		self.response.delete_cookie("id")
-		self.response.write("Logged out")
-		import Cookie
-		# On the production instance, we just remove the session cookie, because
-		# redirecting users.create_logout_url(...) would log out of all Google
-		# (e.g. Gmail, Google Calendar).
-		#
-		# It seems that AppEngine is setting the ACSID cookie for http:// ,
-		# and the SACSID cookie for https:// . We just unset both below.
-		cookie = Cookie.SimpleCookie()
-		cookie['ACSID'] = ''
-		cookie['ACSID']['expires'] = -86400  # In the past, a day ago.
-		self.response.headers.add_header(*cookie.output().split(': ', 1))
-		cookie = Cookie.SimpleCookie()
-		cookie['SACSID'] = ''
-		cookie['SACSID']['expires'] = -86400
-		self.response.headers.add_header(*cookie.output().split(': ', 1))
-		self.redirect("/") 
+		student_query = Student.query(Student.user_id==user_id).get()
+		if (student_query==None): 
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			logging.info("SIGN OUT FUNC")
+			self.response.delete_cookie("id")
+			self.response.write("Logged out")
+			import Cookie
+			cookie = Cookie.SimpleCookie()
+			cookie['ACSID'] = ''
+			cookie['ACSID']['expires'] = -86400  # In the past, a day ago.
+			self.response.headers.add_header(*cookie.output().split(': ', 1))
+			cookie = Cookie.SimpleCookie()
+			cookie['SACSID'] = ''
+			cookie['SACSID']['expires'] = -86400
+			self.response.headers.add_header(*cookie.output().split(': ', 1))
+			self.redirect("/") 
 
 class doubleLogin(webapp2.RequestHandler):
 	def get(self):
