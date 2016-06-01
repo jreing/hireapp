@@ -99,11 +99,18 @@ class tokenSignIn(webapp2.RequestHandler):
 		ac = allowedCompany(email=email)
 		ac.put()
 		
-class MainHandler(webapp2.RequestHandler):
+class StudentInputHandler(webapp2.RequestHandler):
 	def get(self):
-		course_query = Course.query()
-		page = buildStudentInputPage(course_query)
-		self.response.write(page)
+		user_id = self.request.cookies.get('id')
+		#logging.info("reading cookie")
+		#logging.info(user_id)
+		st = Student.query(Student.user_id==user_id).get()
+		if (st==None):
+			self.response.write (errorPage("זמן החיבור פג"))
+		else:
+			course_query = Course.query()
+			page = buildStudentInputPage(course_query)
+			self.response.write(page)
 
 class ResultsPage(webapp2.RequestHandler):
 	def get(self):
@@ -210,7 +217,7 @@ app = webapp2.WSGIApplication([
 	#('/dbDelete', dbDelete),
 	('/dbUserIdScramble', dbUserIdScramble),
 	#('/dbBuild', dbBuild),
-	('/studentInputPage', MainHandler),
+	('/studentInputPage', StudentInputHandler),
 	('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/studenthandler', StudentHandler),
 	('/tokenSignIn', tokenSignIn),
