@@ -182,22 +182,19 @@ class Logout(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		student_query = Student.query(Student.user_id==user_id).get()
-		if (student_query==None): 
-			self.response.write(errorPage("גישה לא חוקית לדף"))
-		else:
-			logging.info("SIGN OUT FUNC")
-			self.response.delete_cookie("id")
-			self.response.write("Logged out")
-			import Cookie
-			cookie = Cookie.SimpleCookie()
-			cookie['ACSID'] = ''
-			cookie['ACSID']['expires'] = -86400  # In the past, a day ago.
-			self.response.headers.add_header(*cookie.output().split(': ', 1))
-			cookie = Cookie.SimpleCookie()
-			cookie['SACSID'] = ''
-			cookie['SACSID']['expires'] = -86400
-			self.response.headers.add_header(*cookie.output().split(': ', 1))
-			self.redirect("/") 
+		logging.info("SIGN OUT FUNC")
+		self.response.delete_cookie("id")
+		self.response.write("Logged out")
+		import Cookie
+		cookie = Cookie.SimpleCookie()
+		cookie['ACSID'] = ''
+		cookie['ACSID']['expires'] = -86400  # In the past, a day ago.
+		self.response.headers.add_header(*cookie.output().split(': ', 1))
+		cookie = Cookie.SimpleCookie()
+		cookie['SACSID'] = ''
+		cookie['SACSID']['expires'] = -86400
+		self.response.headers.add_header(*cookie.output().split(': ', 1))
+		self.redirect("/") 
 
 class doubleLogin(webapp2.RequestHandler):
 	def get(self):
