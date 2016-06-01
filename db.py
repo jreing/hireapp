@@ -558,11 +558,12 @@ class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 #get the user_id using the hashed version
 class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
-		user_id = self.request.get('user_id')
+		cv_id = self.request.get('user_id')
+		user_id = self.request.cookies.get('id')
 		if (checkCompanyLoginExists(user_id)!=True):
 			self.response.write(errorPage("גישה לא חוקית לדף"))
 		else:
-			st = Student.query(Student.user_id==user_id).get()
+			st = Student.query(Student.user_id==cv_id).get()
 			if (st!=None):
 				self.send_blob(st.cv_blob_key)
 
