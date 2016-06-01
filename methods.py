@@ -623,7 +623,7 @@ def buildStudentEditPage(student, course_query):
 	<script type="text/javascript" src="studentEditPage/script.js"></script>
   </html>"""
   
-	htmlDel = """<div><button type="button" onclick="" id="delButton" class="delButton">הסר פרופיל</button> </div>"""
+	htmlDel = """<div><button type="button" onclick="delClick()" id="delButton" class="delButton">הסר פרופיל</button> </div>"""
 
 	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlButt +htmlDlist +htmlEndForm + htmlDel + htmlEnd
 	return html

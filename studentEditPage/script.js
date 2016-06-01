@@ -140,21 +140,20 @@ function setSelect(elem){
 			}
 		}		
 }
-
-//var residence = document.getElementById("element2").value;
-//var select = document.getElementById("element2")
-
-//for (var i=1; i<select.length;i++){
-	//if (select[i].value === residence){
-	//	select.selectedIndex = i;
-	//	}
-	//}
 	
 setSelect("residence")
 setSelect("availability")
 setSelect("year")
 
-
+function delClick(){
+	if (confirm("האם אתה בטוח שברצונך למחוק את הפרופיל שלך?")== true){
+		location.href = 'deleteStudent'
+	}
+	else{
+		return
+	}
+		
+}
 
 
 
