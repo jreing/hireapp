@@ -186,8 +186,9 @@ class MessageReply(webapp2.RequestHandler):
 class adHandler(webapp2.RequestHandler):
 	
 	def post(self):
-
+		ad_id = self.request.get('ad_id')
 		user_id = self.request.cookies.get('id')
+		
 		
 		course_names=self.request.get_all('name')
 		grade = self.request.get_all('grade')
@@ -199,8 +200,15 @@ class adHandler(webapp2.RequestHandler):
 		availability=self.request.get("availability")
 		adCont = self.request.get("note")
 		adName = self.request.get("jobId")
-		
-		self.ad = Ad()
+		 
+		if (int(ad_id)==-1):
+			logging.info("ad id = -1")
+			self.ad = Ad()
+		else:
+			logging.info("this is a mark")
+			adqy = Ad.query(Ad.user_id ==user_id ).fetch()
+			self.ad = adqy[int(ad_id)]
+			logging.info("this is a mark too")
 		
 		dbHandler = db.dbHandler()
 		stdCrs= dbHandler.createStudentCourse(course_names, grade)

@@ -361,7 +361,14 @@ def availTranslate(num):
 		2: "משרה מלאה",
 	} .get(num, "לא הוזן")
 
-def buildSearchParameters():
+def buildSearchParameters(ad_query):
+	
+	dynFlag = 0
+	if (ad_query!=None):
+		dynFlag = 1
+	
+	logging.info(dynFlag)
+	
 	htmlMain = """
 		  
 			<div align="right">
@@ -369,20 +376,56 @@ def buildSearchParameters():
 		  </div>
 			<div class="inputline">
 			  <input type="button" id="buttonadd" value="הוסף קורס" />
-			</div>
-			<div id="cloneme0" class="cloneme">
+			</div>"""
+	htmlbody =""		
+	if (dynFlag==1):
+		j = 0
+		for crs in ad_query.aQuery.student_courses:
+			if (crs!=None):
+				htmlbody+= """
+				<div id="cloneme0" class="cloneme">
+				  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" />
+				  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" value='""" + str(crs.grade) + """' />
+				  <input type="button" id="buttondel""" + str(j) + """" class="buttondel" onclick= "b(this.id)" value="X" />
+				 </div>"""
+				j+=1
+	else:
+		htmlbody+= """<div id="cloneme0" class="cloneme">
 			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name"  />
 			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
 			  <input type="button" id="buttondel0" class="buttondel" value="הסר" />
-			</div>
-			<div align="right" id="bysubject">
+			</div>"""
+	
+	htmlbody+= """<div align="right" id="bysubject">
 			  <p class="text1">:ממוצע מינימלי באשכול</p>
 			</div>
 			<div class="inputline">
 			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
 			</div>
-			<div id="clonemetwo0" class="clonemetwo">
-			  <select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
+			<div id="clonemetwo0" class="clonemetwo">"""
+	
+	if (dynFlag==1):
+		k = 0	
+		for crs in ad_query.aQuery.ctypes:
+			if (crs!=None):
+				htmlbody+="""<select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
+				<option value=""" + str(ad_query.aQuery.ctypes[k]) + """>(לא נבחר אשכול)</option>
+				<option value=1>מתמטיקה</option>
+				<option value=2>תכנות</option>
+				<option value=3>תאוריות מדעי המחשב</option>
+				<option value=4>אבטחת מידע</option>
+				<option value=5>מדעי המידע</option>
+				<option value=6>רשתות</option>
+				<option value=7>ביואינפורמטיקה</option>
+			  </select>
+			  
+			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input6" min="60" max="100" id="ctype_avg" value=""" + str(ad_query.aQuery.ctype_avgs[k]) + """ />
+			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="הסר" />
+			</div>"""
+		k +=1
+		
+	else:
+		htmlbody+= """<select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
 				<option selected="selected"  value=0>(לא נבחר אשכול)</option>
 				<option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
@@ -392,33 +435,49 @@ def buildSearchParameters():
 				<option value=6>רשתות</option>
 				<option value=7>ביואינפורמטיקה</option>
 			  </select>
-
+	
 			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input6" min="60" max="100" id="ctype_avg" placeholder="ממוצע" />
 			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="הסר" />
-			</div>
-		
-			<div align="right" id=avgentry>
+			</div>"""
+			
+	htmlbody+=	"""<div align="right" id=avgentry>
 			  <p class="text1">:ממוצע תואר מינימלי</p>
-			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="60" max="100" placeholder="ממוצע" id="avg" />
-			</div>
+			  <input name="avg" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" min="60" max="100" id="avg" """
+	
+	if (dynFlag==1):
+		htmlbody+="""value='""" + str(ad_query.aQuery.avg) + """'"""
+	else:
+		htmlbody+="""placeholder="ממוצע" """
+		
+	htmlbody+="""/>	</div>
 
 		<div align="right">
 
 			<p class="text1">:איזור מגורים</p>
-		  <select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />
-				<option value=0> כל האזורים</option>
-				<option value=1> תל אביב</option>
+		  <select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />"""
+		  
+	if(dynFlag==1):	
+		htmlbody+="""<option value=""" + str(ad_query.aQuery.residence) + """> כל האזורים</option>"""
+	else:
+		htmlbody+="""<option value=0> כל האזורים</option>"""
+	
+	htmlbody+="""<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
 				<option value=3> מרכז גוש דן</option>
 				<option value=4> דרום גוש דן</option>
 				<option value=5> אשדוד</option>
 			  </select></div>"""
 	
+		
 	htmlYear = """<br><br><div align="right" >
 			  <p class="text1" id="element1">:שנת לימודים</p>
- 				<select name="year" id="yearElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">
-				<option value=0>(לא נבחר)</option>
-				<option value=1> א</option>
+ 				<select name="year" id="yearElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">"""
+	if(dynFlag==1):	
+		htmlYear+="""<option value=""" + str(ad_query.aQuery.year) + """>(לא נבחר)</option>"""
+	else:
+		htmlYear+="""<option value=0>(לא נבחר)</option>"""
+		
+	htmlYear+="""<option value=1> א</option>
 				<option value=2> ב</option>
 				<option value=3> ג</option>
 				<option value=4> ד</option>
@@ -428,16 +487,20 @@ def buildSearchParameters():
 	htmlAvail = """<br><br>
 			<div align="right" >
 			  <p class="text1" id="element1">:סוג משרה</p>
-			  <select name="availability" id="availElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">
-				<option value=0>(לא נבחר סוג)</option>
-				<option value=1> חצי משרה</option>
+			  <select name="availability" id="availElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">"""
+	if(dynFlag==1):	
+		htmlAvail+="""<option value=""" + str(ad_query.aQuery.availability) + """>(לא נבחר סוג)</option>"""
+	else:
+		htmlAvail+="""<option value=0>(לא נבחר סוג)</option>"""	\
+
+	htmlAvail+="""<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
 				
 			  </select>
 			</div>"""
 			
 	
-	return htmlMain + htmlYear +htmlAvail
+	return htmlMain +htmlbody+ htmlYear +htmlAvail
 
 def buildCourseList(course_query):
 	i = 0
@@ -467,7 +530,7 @@ def buildCompanyQuery(course_query):
 		<div id="form-div">
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/companyQueryResultsPage" method="post">"""
 
-	htmlQueryParam = buildSearchParameters()
+	htmlQueryParam = buildSearchParameters(None)
 
 	htmlButt ="""<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
@@ -639,7 +702,7 @@ def buildAdPage(course_query):
 	  <body>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
-		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd" method="post">
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd?ad_id=-1" method="post">
 		
 		<div id="form-main">
 		<div align="right">
@@ -647,7 +710,7 @@ def buildAdPage(course_query):
 		</div>
 		<div id="form-div">"""
 	
-	htmlSearchParam = buildSearchParameters()
+	htmlSearchParam = buildSearchParameters(None)
 	
 	htmlbody = buildCourseList(course_query)
 	
@@ -676,6 +739,50 @@ def buildAdPage(course_query):
 	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlButt +htmlbody + htmlend
 	return html
 
+def EditAdPage(course_query,ad_query,ad_id):
+
+	htmlstart="""<!DOCTYPE html>
+	<html>
+		<link rel="stylesheet" type="text/css" href="editAd/style.css">
+	  <body>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd?ad_id="""+ad_id+"""" method="post">
+	
+		<div id="form-main">
+		<div align="right">
+		  <p class="titletext">:בניית משרה</p>
+		</div>
+		<div id="form-div">"""
+	
+	htmlSearchParam = buildSearchParameters(ad_query)
+	
+	htmlbody = buildCourseList(course_query)
+	
+	htmlAdDesc  = """<div align="right">
+        <p class="text1">:שם המשרה</p>
+        <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" value='""" + ad_query.message.jobName + """' id="jobId" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:תיאור המשרה</p>
+        <textarea class="scrollabletextbox" name="note" dir="rtl">"""+ ad_query.message.cont +"""</textarea>
+		<br><br><div align="right">
+		  <p class="text1">:פרמטרים לחיפוש</p>
+		</div>"""
+	
+	htmlButt ="""<div class="submit">
+			  <input type="submit" value="צור מודעה" id="button-blue" />
+			  <div class="ease"></div>"""
+			  
+	htmlend="""	</form> </div></div>
+		
+	  </body>
+	  <script type="text/javascript" src="/createAd/script.js"></script>
+	  </html>"""
+	  
+	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlbody +htmlButt + htmlend
+	return html
 
 def buildCurrentAdsPage(ad_query):
 	logging.info("entered buildCurrentAdsPage")
@@ -685,14 +792,28 @@ def buildCurrentAdsPage(ad_query):
 	  <body>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
-		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd" method="post">
-		
 		<div id="form-main">
 		<div align="right">
 		  <p class="titletext">:בניית משרה</p>
 		</div>
 		<div id="form-div">"""
-		
+	
+	htmlbody="""<div class="form-element" ; align="right">"""
+	
+	i = 0 
+	for ad in ad_query:
+		htmlbody+="""<p class="text">:כותרת</p>
+			<p class="text" >"""+str(ad.message.jobName) + """</p>
+			<p class="text">:תוכן</p>
+			<p class="text" >"""+str(ad.message.cont)+"""</p>
+			<button type="button" onclick="" id="showRes" class="showRes">הצג תוצאות</button>
+			<button type="button" onclick="location.href='editAd?ad_id="""+str(i)+ """'" " id="editAd" class="editAd">ערוך משרה</button>	
+			</div>"""
+		i+=1
+			
+
+
+	
 	htmlAdDesc  = """<div align="right">
         <p class="text1">:שם המשרה</p>
         <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="jobId" />
@@ -705,13 +826,13 @@ def buildCurrentAdsPage(ad_query):
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""
 		
-	htmlend="""	</form> </div></div>
+	htmlend="""</div></div>
 		
 	  </body>
-	  <script type="text/javascript" src="/createAd/script.js"></script>
+	  <script type="text/javascript" src="/editAd/script.js"></script>
 	  </html>"""
 	  
-	html=htmlstart+htmlAdDesc + htmlend
+	html=htmlstart+htmlbody + htmlend
 	return html
 
 
