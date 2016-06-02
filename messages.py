@@ -107,26 +107,13 @@ class MessageSend(webapp2.RequestHandler):
 		recList = self.request.get_all('studentselect') 
 		destAdd = self.request.get('recv') + "@example.com"
 		#destId = users.User(destAdd)
-		logging.info(len(recList))
+		#logging.info(len(recList))
 		#destIdKey = destId.put()
 		#destIdVal = destIdKey.get()
 		#self.key = appUser(usr=destId).put()
 		#self.rec = self.key.get()
 		
 		for rec in recList:
-			
-			student=Student.query(Student.user_id==rec).get()
-			if student.allow_emails==True:
-				user_address=student.email
-				
-				if not mail.is_email_valid(user_address):
-					self.response.write("Error: student email address is not valid!")
-				else:
-					sender_address = "TauHireTeam@gmail.com"
-					subject = "TauHire team - New Message Notification"
-					body = """ Dear Sir/Madam, \n \n You have a new Job Offer in TauHire website, \n \n Please visit our site to view your messages, \n \n Best regards, \n \n TauHire team"""
-					mail.send_mail(sender_address, user_address, subject, body)
-					#self.response.write("mail was good")
 			self.conversation = Conversation()
 			self.message = Message(cont = self.request.get('note'))
 			self.message.receiver = Author(identity = rec)
@@ -147,6 +134,27 @@ class MessageSend(webapp2.RequestHandler):
 			#conNum.put()
 			self.conversation.put()
 			self.message.put()
+
+			student=Student.query(Student.user_id==rec).get()
+			if student.allow_emails==True:
+				user_address=student.email
+				
+				if not mail.is_email_valid(user_address):
+					self.response.write("Error: student email address is not valid!")
+				else:
+					sender_address = "TauHireTeam@gmail.com"
+					subject = "TauHire team - New Message Notification"
+					# body = """ Dear Sir/Madam, \n \n 
+					# You have a new Job Offer in TauHire website, \n \n 
+					# Please visit our site to view your messages, \n \n 
+					# Best regards, \n \n TauHire team"""
+					body = "Dear Sir/Madam,\n\n"+"You have a new message in TauHire website: \n \n" + \
+					"From: "+ self.message.compName + "\n\n"+"Company mail: "+ self.message.compMail+"\n\n"+\
+					"Job name: "+ self.message.jobName+ "\n\n"+"Message content: "+ self.message.cont+"\n\n"+\
+					"Best regards"+"\n\n"+"TauHireTeam"
+
+					mail.send_mail(sender_address, user_address, subject, body)
+					#self.response.write("mail was good")
 
 		#self.response.write("""<html><body> <b> message send successfully! </b> </body></html>""")
 		cours_query = Course.query()
