@@ -639,7 +639,7 @@ def buildAdPage(course_query):
 	  <body>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
-		<form class="form" id="form1" onsubmit="return validateForm()" action="/" method="post">
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd" method="post">
 		
 		<div id="form-main">
 		<div align="right">
@@ -675,5 +675,44 @@ def buildAdPage(course_query):
 	  
 	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlButt +htmlbody + htmlend
 	return html
+
+
+def buildCurrentAdsPage(ad_query):
+	logging.info("entered buildCurrentAdsPage")
+	htmlstart="""<!DOCTYPE html>
+	<html>
+		<link rel="stylesheet" type="text/css" href="createAd/style.css">
+	  <body>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd" method="post">
+		
+		<div id="form-main">
+		<div align="right">
+		  <p class="titletext">:בניית משרה</p>
+		</div>
+		<div id="form-div">"""
+		
+	htmlAdDesc  = """<div align="right">
+        <p class="text1">:שם המשרה</p>
+        <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="jobId" />
+      </div>
+
+      <div align="right">
+        <p class="text1">:תיאור המשרה</p>
+        <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
+		<br><br><div align="right">
+		  <p class="text1">:פרמטרים לחיפוש</p>
+		</div>"""
+		
+	htmlend="""	</form> </div></div>
+		
+	  </body>
+	  <script type="text/javascript" src="/createAd/script.js"></script>
+	  </html>"""
+	  
+	html=htmlstart+htmlAdDesc + htmlend
+	return html
+
 
 	

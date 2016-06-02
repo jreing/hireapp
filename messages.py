@@ -11,6 +11,8 @@ from google.appengine.api import mail
 import webapp2
 import logging
 
+import db 
+
 from main import *
 from db import *
 from methods import *
@@ -57,8 +59,10 @@ class Conversation(ndb.Model):
 	#parameters	
 
 class Ad(ndb.Model):
+	user_id = ndb.StringProperty(indexed=True, required=True)
 	id = ndb.IntegerProperty(repeated=True)
 	message = ndb.StructuredProperty(Message)
+	aQuery = ndb.StructuredProperty(adQuery) 
 	
 class MessageHandler(webapp2.RequestHandler):
     def get(self):
@@ -181,23 +185,52 @@ class MessageReply(webapp2.RequestHandler):
 
 class adHandler(webapp2.RequestHandler):
 	
-	def post(self):	 
+	def post(self):
+
+		user_id = self.request.cookies.get('id')
+		
 		course_names=self.request.get_all('name')
-		grades= self.request.get_all('grade')
+		grade = self.request.get_all('grade')
 		average=self.request.get('avg')	
-		ctypes=self.request.get_all("ctype")
-		ctype_avgs=self.request.get_all("ctype_avg")
+		crstypes=self.request.get_all("ctype")
+		crstype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
 		year=self.request.get("year")
 		availability=self.request.get("availability")
-		hasgit=self.request.get("hasgit")
-		ad = self.request.get("note")
+		adCont = self.request.get("note")
 		adName = self.request.get("jobId")
 		
 		self.ad = Ad()
-		self.message = Message(cont = ad)
+		
+		dbHandler = db.dbHandler()
+		stdCrs= dbHandler.createStudentCourse(course_names, grade)
+		
+		self.qry = adQuery()
+		self.qry.student_courses=stdCrs
+		self.qry.cgrades = grade
+		self.qry.avg= int(average)
+		self.qry.ctypes = crstypes 
+		self.qry.ctype_avgs=crstype_avgs
+		self.qry.residence= int(residence)
+		self.qry.availability= int(availability)
+		self.qry.year= int(year)
+		
+		student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
+		cgrades= ndb.ComputedProperty(lambda self: ",".join(Student.getCGrades()))
+		avg= ndb.IntegerProperty(indexed=True, required=True)
+		ctypes = ndb.ComputedProperty(lambda self: ",".join(Student.getCTypes()))
+		ctype_avgs=ndb.StringProperty(indexed=True,repeated = True)
+		residence=ndb.IntegerProperty(indexed=True, required=True)
+		availability=ndb.IntegerProperty(indexed=True, required=True)
+		year=ndb.IntegerProperty(indexed=True, required=True)
+		hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
+		
+		self.message = Message(cont = adCont)
 		self.message.jobName = adName
-		self.ad = self.message
+		
+		self.ad.user_id = user_id
+		self.ad.message = self.message
+		self.ad.aQuery = self.qry 
 		self.ad.put()
 
 # class ConfirmUserSignup(webapp2.RequestHandler):

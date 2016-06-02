@@ -119,16 +119,16 @@ class Company(ndb.Model):
 	city =ndb.StringProperty(indexed=True, required=False)
 
 
-class Query(ndb.Model):
+class adQuery(ndb.Model):
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
-	cgrades= ndb.ComputedProperty(lambda self: ",".join(self.getCGrades()))
+	cgrades= ndb.StringProperty(indexed=True,repeated = True)
 	avg= ndb.IntegerProperty(indexed=True, required=True)
-	ctypes = ndb.ComputedProperty(lambda self: ",".join(self.getCTypes()))
-	ctype_avgs=ndb.StringProperty(indexed=True, required=True, repeated = True)
+	ctypes = ndb.StringProperty(indexed=True,repeated = True)
+	ctype_avgs=ndb.StringProperty(indexed=True,repeated = True)
 	residence=ndb.IntegerProperty(indexed=True, required=True)
 	availability=ndb.IntegerProperty(indexed=True, required=True)
 	year=ndb.IntegerProperty(indexed=True, required=True)
-	hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
+	hasgit = ndb.BooleanProperty(indexed=False, required=True)
 
 #function that checks student login
 def checkStudentLoginExists(user_id):
@@ -406,6 +406,26 @@ class dbUserIdScramble(webapp2.RequestHandler):
 #adds Student to DB
 class dbHandler(webapp2.RequestHandler):
 
+	def createStudentCourse(self, course_names, grade):
+		if (len(course_names)!=len(grade)):
+			self.response.write (errorPage("קלט שגוי לאתר"))
+			return
+		s=[]
+		for i in range(0,len(course_names)):
+			if (grade[i].isdigit()==False): continue
+			if (int(grade[i])>100 or int(grade[i])<60) : continue
+			if (len(course_names[i])>50):
+				self.response.write (errorPage("קלט שגוי לאתר"))
+				return
+			course_query=Course.query (Course.course_name==course_names[i]).get()
+			
+			if course_query==None : continue
+			
+			#logging.info (course_query)
+			s.append(Student_Course(grade=int(grade[i]), course=course_query))
+		return s
+		
+
 	def post(self):
 		cvKey = False
 		#get userid from cookie
@@ -433,24 +453,8 @@ class dbHandler(webapp2.RequestHandler):
 		#add courses and grades
 		course_names=self.request.get_all('name')
 		grade= self.request.get_all('grade')
-		if (len(course_names)!=len(grade)):
-			self.response.write (errorPage("קלט שגוי לאתר"))
-			return
-		s=[]
-		for i in range(0,len(course_names)):
-			if (grade[i].isdigit()==False): continue
-			if (int(grade[i])>100 or int(grade[i])<60) : continue
-			if (len(course_names[i])>50):
-				self.response.write (errorPage("קלט שגוי לאתר"))
-				return
-			course_query=Course.query (Course.course_name==course_names[i]).get()
-			
-			if course_query==None : continue
-			
-			#logging.info (course_query)
-			s.append(Student_Course(grade=int(grade[i]), course=course_query))
 		
-		st.student_courses=s
+		st.student_courses= dbHandler.createStudentCourse(self, course_names, grade)
 		
 		st.name = "demo"
 		#logging.info(self.request.get('getEmailNotification'))

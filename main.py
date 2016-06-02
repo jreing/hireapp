@@ -178,6 +178,13 @@ class companyAdHandler(webapp2.RequestHandler):
 		page = buildAdPage(course_query )
 		self.response.write(page)
 
+class companyCurrAdHandler(webapp2.RequestHandler):
+	def get(self):
+		user_id = self.request.cookies.get('id')
+		ad_query = Ad.query()
+		page = buildCurrentAdsPage(ad_query)
+		self.response.write(page)
+
 class Logout(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
@@ -228,6 +235,8 @@ app = webapp2.WSGIApplication([
 	('/getMyCV', getMyCV),
 	('/getCV', getCV),
 	('/createAd', companyAdHandler),
+	('/currentAds', companyCurrAdHandler),
+	('/processAd', adHandler),
 	('/', LogInForBarak),
 	#('/doubleLogin', doubleLogin)
 	], debug=True)

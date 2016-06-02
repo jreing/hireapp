@@ -66,6 +66,12 @@ handlers:
 - url: /createAd
   static_dir: createAd  
   secure: always
+   
+
+- url: /currentAds
+  static_dir: currentAds  
+  secure: always
+  
   
 - url: /jquery
   static_dir: jquery
