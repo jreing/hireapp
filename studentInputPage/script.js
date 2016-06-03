@@ -111,9 +111,9 @@ function validateForm() {
 		return false }
 	
 	
-	if (git!="" && !git.startsWith("www.github.com/")){
-		alert("please enter github.com/(YOUR ACCOUNT)");
-		return false
+	if (git!="" && git.substring(0,"github.com/".length) !== "github.com/"){
+		alert("please enter github.com/(YOUR ACCOUNT) or leave the field empty");
+		return false;
 	}
 	
 	if (!iscvvalid){
