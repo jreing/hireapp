@@ -261,7 +261,7 @@ textarea {
   padding-top: 0px;
   margin-top: 0px;
   padding-bottom: 0px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   font-weight: 700;
 }
 #buttonadd {
@@ -379,15 +379,32 @@ padding-top: 60px;
 padding-bottom: 60px;
 }
 
-#file {
+/*.Cvbutton {
+    text-align: right;
+}
+
+.cv_button {
+    position: auto;
+    top: 50%;
+}*/
+
+/*#file {
 padding-top: 900px;
 
-}
+}*/
 
 #avgEntry {
 padding-top: 80px;
 padding-bottom: 120px;
 }
+#elementCV {
+  float:right;
+}
+
+p.Cvbutton {
+    margin-top: 2cm;
+}
+
 #element1 {float:right;}
 #element2 {float:left;}
 
