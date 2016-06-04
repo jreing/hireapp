@@ -26,7 +26,7 @@ class ValidateCompany(webapp2.RequestHandler):
 	def post(self):
 		id = self.request.cookies.get('id')
 		logging.info(id)
-		if (checkComapnyLoginExists(id)==True):
+		if (checkCompanyLoginExists(id)==True):
 			self.response.write(id+"#accepted")
 		else :
 			self.response.write(errorPage("זמן החיבור פג"))
@@ -174,31 +174,72 @@ class StudentEditHandler(webapp2.RequestHandler):
 
 class companyAdHandler(webapp2.RequestHandler):
 	def get(self):
-		course_query = Course.query()
-		page = buildAdPage(course_query )
-		self.response.write(page)
+		id = self.request.cookies.get('id')
+		logging.info(id)
+		if (Company.query(id==Company.user_id).get()==None):
+			self.response.write(errorPage("session timeout"))
+		else:
+			course_query = Course.query()
+			page = buildAdPage(course_query )
+			self.response.write(page)
 
 class companyCurrAdHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
-		ad_query = Ad.query(Ad.user_id ==user_id )
-		page = buildCurrentAdsPage(ad_query)
-		self.response.write(page)
+		if (Company.query(user_id==Company.user_id).get()==None):
+			self.response.write(errorPage("session timeout"))
+		else:
+			ad_query = Ad.query(Ad.user_id ==user_id )
+			page = buildCurrentAdsPage(ad_query)
+			self.response.write(page)
 		
 class companyEditAdHandler(webapp2.RequestHandler):
 	def get(self):
+		user_id = self.request.cookies.get('id')
+		if (Company.query(user_id==Company.user_id).get()==None):
+			self.response.write(errorPage("session timeout"))
+		else:
+			ad_id = self.request.get('ad_id')
+			
+			lim= int(ad_id) + 1
+			
+			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			course_query = Course.query() 
+			page = EditAdPage(course_query,ad_query[int(ad_id)],ad_id)
+			self.response.write(page)
+
+class companyAdResultsHandler(webapp2.RequestHandler):
+	def get(self):
 		
-		ad_id = self.request.get('ad_id')
+		
 		user_id = self.request.cookies.get('id')
 		
-		lim= int(ad_id) + 1
-		
-		ad_query = Ad.query(Ad.user_id ==user_id).fetch()
-		course_query = Course.query() 
-		page = EditAdPage(course_query,ad_query[int(ad_id)],ad_id)
-		self.response.write(page)
-		
-		
+		if (Company.query(user_id==Company.user_id).get()==None):
+			self.response.write(errorPage("session timeout"))
+		else:
+			ad_id = self.request.get('ad_id')
+			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			ad = ad_query[int(ad_id)]
+			course_query = Course.query()
+			minGradeQ = db.minGradeQuery()
+			
+			course_names = []
+			
+			for crs in ad.aQuery.student_courses:
+				course_names.append(crs.course.course_name)
+			#course_names = ad.aQuery.student_courses.course
+			
+			q = minGradeQ.getQuery(course_names,ad.aQuery.cgrades,str(ad.aQuery.avg)
+			,ad.aQuery.ctypes,ad.aQuery.ctype_avgs,str(ad.aQuery.residence),str(ad.aQuery.year),str(ad.aQuery.availability),"False")		
+			
+			if (q==[]):
+				f = open("no_results_page.html")
+				self.response.write(f.read())
+				f.close()
+			else: #build result page
+				page = buildQueryResultsPage(q,ad_id,ad)
+				self.response.write(page)
+			
 class Logout(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
@@ -251,6 +292,7 @@ app = webapp2.WSGIApplication([
 	('/createAd', companyAdHandler),
 	('/currentAds', companyCurrAdHandler),
 	('/editAd', companyEditAdHandler),
+	('/showAdResults', companyAdResultsHandler),
 	('/processAd', adHandler),
 	('/', LogInForBarak),
 	#('/doubleLogin', doubleLogin)

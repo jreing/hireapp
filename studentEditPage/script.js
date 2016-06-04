@@ -29,7 +29,6 @@ function b(id) {
 
 
 
-
 $('#buttonadd').click(function ab() {
   elems++;
   newNum = new Number(newNum + 1); // the numeric ID of the new input field being added
@@ -129,18 +128,16 @@ function validateForm() {
 }
 
 function setSelect(elem){
-
-	var residence = document.getElementById(elem).value;
-	
+	var chValue = document.getElementById(elem).value;
 	var select = document.getElementById(elem)
 	//alert(elem + " len " + select.length)
 	for (var i=1; i<select.length;i++){
-		if (select[i].value === residence){
+		if (select[i].value === chValue){
 			select.selectedIndex = i;
 			}
 		}		
 }
-	
+
 setSelect("residence")
 setSelect("availability")
 setSelect("year")

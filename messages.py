@@ -60,7 +60,7 @@ class Conversation(ndb.Model):
 
 class Ad(ndb.Model):
 	user_id = ndb.StringProperty(indexed=True, required=True)
-	id = ndb.IntegerProperty(repeated=True)
+	sentId = ndb.StringProperty(repeated=True)
 	message = ndb.StructuredProperty(Message)
 	aQuery = ndb.StructuredProperty(adQuery) 
 	
@@ -103,7 +103,15 @@ class MessageSend(webapp2.RequestHandler):
 	def post(self):
 		#self.conNum = threadNum(num=0)
 		#self.conNum.put()
-
+		ad_id = self.request.get('ad_id')
+		
+		if (ad_id!=-1):
+			user_id = self.request.cookies.get('id')
+			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			self.ad = ad_query[int(ad_id)]
+			
+		
+		
 		recList = self.request.get_all('studentselect') 
 		destAdd = self.request.get('recv') + "@example.com"
 		#destId = users.User(destAdd)
@@ -123,6 +131,11 @@ class MessageSend(webapp2.RequestHandler):
 			self.message.date = datetime.datetime.now()
 			userid = self.request.cookies.get('id')
 			self.message.sender = Author(identity = userid)
+			
+			if (ad_id!=-1):
+				self.ad.sentId.append(rec)
+				self.ad.put()
+				
 			#if users.get_current_user():
 				#self.message.sender = Author(identity=users.get_current_user().user_id())
 			
@@ -200,7 +213,9 @@ class adHandler(webapp2.RequestHandler):
 		
 		course_names=self.request.get_all('name')
 		grade = self.request.get_all('grade')
-		average=self.request.get('avg')	
+		average=self.request.get('avg')
+		if(average==""):
+			average = 0
 		crstypes=self.request.get_all("ctype")
 		crstype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
@@ -212,11 +227,10 @@ class adHandler(webapp2.RequestHandler):
 		if (int(ad_id)==-1):
 			logging.info("ad id = -1")
 			self.ad = Ad()
+			self.ad.sentId = []
 		else:
-			logging.info("this is a mark")
 			adqy = Ad.query(Ad.user_id ==user_id ).fetch()
 			self.ad = adqy[int(ad_id)]
-			logging.info("this is a mark too")
 		
 		dbHandler = db.dbHandler()
 		stdCrs= dbHandler.createStudentCourse(course_names, grade)
@@ -230,24 +244,30 @@ class adHandler(webapp2.RequestHandler):
 		self.qry.residence= int(residence)
 		self.qry.availability= int(availability)
 		self.qry.year= int(year)
-		
-		student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
-		cgrades= ndb.ComputedProperty(lambda self: ",".join(Student.getCGrades()))
-		avg= ndb.IntegerProperty(indexed=True, required=True)
-		ctypes = ndb.ComputedProperty(lambda self: ",".join(Student.getCTypes()))
-		ctype_avgs=ndb.StringProperty(indexed=True,repeated = True)
-		residence=ndb.IntegerProperty(indexed=True, required=True)
-		availability=ndb.IntegerProperty(indexed=True, required=True)
-		year=ndb.IntegerProperty(indexed=True, required=True)
-		hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
+		self.qry.hasGit= "False"
+
+		#student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
+		#cgrades= ndb.ComputedProperty(lambda self: ",".join(Student.getCGrades()))
+		#avg= ndb.IntegerProperty(indexed=True, required=True)
+		#ctypes = ndb.ComputedProperty(lambda self: ",".join(Student.getCTypes()))
+		#ctype_avgs=ndb.StringProperty(indexed=True,repeated = True)
+		#residence=ndb.IntegerProperty(indexed=True, required=True)
+		#availability=ndb.IntegerProperty(indexed=True, required=True)
+		#year=ndb.IntegerProperty(indexed=True, required=True)
+		#hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
 		
 		self.message = Message(cont = adCont)
 		self.message.jobName = adName
+		
 		
 		self.ad.user_id = user_id
 		self.ad.message = self.message
 		self.ad.aQuery = self.qry 
 		self.ad.put()
+		
+		self.response.write ("""<html><script>
+				window.location="/currentAds";
+				</script></html>""")
 
 # class ConfirmUserSignup(webapp2.RequestHandler):
 #     def post(self):

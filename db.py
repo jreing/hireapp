@@ -52,7 +52,7 @@ class Student_Course(ndb.Model):
 	grade = ndb.IntegerProperty(indexed=True, required=True)
 	#weight = ndb.IntegerProperty(indexed=False, required=True)
 	#semester = ndb.StringProperty(indexed=False, required=True)
-	course= ndb.StructuredProperty (Course, required=True)
+	course = ndb.StructuredProperty (Course, required=True)
 	course_id= ndb.ComputedProperty(lambda self:self.course.course_id)
 	#course_type=ndb.ComputedProperty(lambda self: self.course.course_type)
 	#hashed_id = ndb.IntegerProperty(indexed=False)
@@ -128,7 +128,7 @@ class adQuery(ndb.Model):
 	residence=ndb.IntegerProperty(indexed=True, required=True)
 	availability=ndb.IntegerProperty(indexed=True, required=True)
 	year=ndb.IntegerProperty(indexed=True, required=True)
-	hasgit = ndb.BooleanProperty(indexed=False, required=True)
+	hasgit = ndb.BooleanProperty(indexed=False, required=True, default=False)
 
 #function that checks student login
 def checkStudentLoginExists(user_id):
@@ -329,7 +329,7 @@ class minGradeQuery(webapp2.RequestHandler):
 			self.response.write(f.read())
 			f.close()
 		else: #build result page
-			page = buildQueryResultsPage(q)
+			page = buildQueryResultsPage(q,None,None)
 			self.response.write(page)
 
 

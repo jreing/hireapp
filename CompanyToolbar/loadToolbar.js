@@ -1,8 +1,7 @@
 document.body.innerHTML = '<div id="includedContent"></div>'+document.body.innerHTML;
+
 $(function loadtoolbar(){
-	//alert("HI");
-	$.post("/validateCompany", function(data){
-		
+	$.post("/validateCompany", function(data){	
 		if (data.split("#")[1]=="accepted"){
 			$("#includedContent").load("/CompanyToolbar/index.html");
 		}

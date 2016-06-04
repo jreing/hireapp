@@ -40,8 +40,13 @@ def errorPage(errormsg):
 
 #Methods to build the companyQueryResultsPage and StudentOffersPage
 
-def buildQueryResultsPage(q):
+def buildQueryResultsPage(q,ad_id,ad):
 	i=0
+	adFlag = 0
+	
+	if (ad_id!=None):
+		adFlag = 1
+	
 	
 	htmlstart= """<!DOCTYPE html>
 	<html>
@@ -50,13 +55,17 @@ def buildQueryResultsPage(q):
 	
   <div align="right">
     <p class="titletext">:שליחת משרה</p>
-  </div>
-
-  <div id="form-div">
+  </div>"""
+	if (adFlag == 0):
+		htmlstart+=	"""<div id="form-div">
     <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
-    <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend" method="post">
-
-      <div align="right">
+    <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend?ad_id=-1" method="post">"""
+	else:
+		htmlstart+=	"""<div id="form-div">
+    <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
+    <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend?ad_id="""+ad_id+"""" method="post">"""
+		
+	htmlstart+="""  <div align="right">
         <p class="text1">:שם החברה</p>
         <input name="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם" id="companyName" />
       </div>
@@ -89,9 +98,15 @@ def buildQueryResultsPage(q):
 		hasCv=False
 		if (student.cv_blob_key != None) :
 			hasCv=True
+		
+		if(adFlag!=0):
+			if(student.user_id in ad.sentId):
+				htmlbody+="""<div class="form-element2" align="right">"""
+			else:
+				htmlbody+="""<div class="form-element" align="right">"""
+		else:
+			htmlbody+="""<div class="form-element" align="right">"""
 			
-		htmlbody+="""
-			<div class="form-element" align="right">"""
 			
 		if (hasCv) :
 			htmlbody+="""
@@ -364,7 +379,11 @@ def availTranslate(num):
 def buildSearchParameters(ad_query):
 	
 	dynFlag = 0
-	if (ad_query!=None):
+	if (ad_query==None):
+		logging.info("dynamic not recognized")
+		dynFlag = 0
+	else:
+		logging.info("dynamic recognized")
 		dynFlag = 1
 	
 	logging.info(dynFlag)
@@ -383,7 +402,7 @@ def buildSearchParameters(ad_query):
 		for crs in ad_query.aQuery.student_courses:
 			if (crs!=None):
 				htmlbody+= """
-				<div id="cloneme0" class="cloneme">
+				  <div id="cloneme""" + str(j) + """" class="cloneme">
 				  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" value='""" + str(crs.course.course_name) + """' id="name" />
 				  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" value='""" + str(crs.grade) + """' />
 				  <input type="button" id="buttondel""" + str(j) + """" class="buttondel" onclick= "b(this.id)" value="X" />
@@ -393,7 +412,7 @@ def buildSearchParameters(ad_query):
 		htmlbody+= """<div id="cloneme0" class="cloneme">
 			  <input name="name" type="text" list="courses" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="שם קורס" id="name"  />
 			  <input name="grade" type="number" class="validate[required,custom[email]] feedback-input2" min="60" max="100" id="grade" placeholder="ציון" />
-			  <input type="button" id="buttondel0" class="buttondel" value="הסר" />
+			  <input type="button" id="buttondel0" class="buttondel" onclick= "b(this.id)" value="הסר" />
 			</div>"""
 	
 	htmlbody+= """<div align="right" id="bysubject">
@@ -401,14 +420,15 @@ def buildSearchParameters(ad_query):
 			</div>
 			<div class="inputline">
 			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
-			</div>
-			<div id="clonemetwo0" class="clonemetwo">"""
+			</div>"""
+			
 	
 	if (dynFlag==1):
 		k = 0	
 		for crs in ad_query.aQuery.ctypes:
 			if (crs!=None):
-				htmlbody+="""<select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
+				htmlbody+="""<div id="clonemetwo""" + str(k) + """" class="clonemetwo">
+				<select name="ctype" id="ctype""" + str(k) + """"  class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
 				<option value=""" + str(ad_query.aQuery.ctypes[k]) + """>(לא נבחר אשכול)</option>
 				<option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
@@ -420,12 +440,13 @@ def buildSearchParameters(ad_query):
 			  </select>
 			  
 			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input6" min="60" max="100" id="ctype_avg" value=""" + str(ad_query.aQuery.ctype_avgs[k]) + """ />
-			  <input type="button" id="buttondeltwo0" class="buttondeltwo" value="הסר" />
+			  <input type="button" id="buttondeltwo""" + str(k) + """" class="buttondeltwo" onclick= "btwo(this.id)" value="הסר" />
 			</div>"""
-		k +=1
+				k +=1
 		
 	else:
-		htmlbody+= """<select name="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
+		htmlbody+= """<div id="clonemetwo0" class="clonemetwo">
+				<select name="ctype" id="ctype" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input5"  id="ctype">
 				<option selected="selected"  value=0>(לא נבחר אשכול)</option>
 				<option value=1>מתמטיקה</option>
 				<option value=2>תכנות</option>
@@ -454,7 +475,7 @@ def buildSearchParameters(ad_query):
 		<div align="right">
 
 			<p class="text1">:איזור מגורים</p>
-		  <select name="residence" id="element2" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />"""
+		  <select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />"""
 		  
 	if(dynFlag==1):	
 		htmlbody+="""<option value=""" + str(ad_query.aQuery.residence) + """> כל האזורים</option>"""
@@ -471,7 +492,7 @@ def buildSearchParameters(ad_query):
 		
 	htmlYear = """<br><br><div align="right" >
 			  <p class="text1" id="element1">:שנת לימודים</p>
- 				<select name="year" id="yearElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">"""
+ 				<select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="year">"""
 	if(dynFlag==1):	
 		htmlYear+="""<option value=""" + str(ad_query.aQuery.year) + """>(לא נבחר)</option>"""
 	else:
@@ -487,11 +508,11 @@ def buildSearchParameters(ad_query):
 	htmlAvail = """<br><br>
 			<div align="right" >
 			  <p class="text1" id="element1">:סוג משרה</p>
-			  <select name="availability" id="availElem" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">"""
+			  <select name="availability" id="availability" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" id="availability">"""
 	if(dynFlag==1):	
 		htmlAvail+="""<option value=""" + str(ad_query.aQuery.availability) + """>(לא נבחר סוג)</option>"""
 	else:
-		htmlAvail+="""<option value=0>(לא נבחר סוג)</option>"""	\
+		htmlAvail+="""<option value=0>(לא נבחר סוג)</option>"""	
 
 	htmlAvail+="""<option value=1> חצי משרה</option>
 				<option value=2> משרה מלאה</option>
@@ -725,6 +746,14 @@ def buildAdPage(course_query):
 		<br><br><div align="right">
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""
+	htmlFreq = """<div>
+			  <p class="text1" id="element1">:תדירות עדכון</p>
+ 				<select name="freq" id="freq" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" dir="rtl" >
+				<option value=0">(לא נבחר )</option>
+				<option value=1> 24 שעות</option>
+				
+			  </select>
+		  </div>"""
 	
 	htmlButt ="""<div class="submit">
 			  <input type="submit" value="צור מודעה" id="button-blue" />
@@ -772,13 +801,13 @@ def EditAdPage(course_query,ad_query,ad_id):
 		</div>"""
 	
 	htmlButt ="""<div class="submit">
-			  <input type="submit" value="צור מודעה" id="button-blue" />
+			  <input type="submit" value="ערוך מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
 	htmlend="""	</form> </div></div>
 		
 	  </body>
-	  <script type="text/javascript" src="/createAd/script.js"></script>
+	  <script type="text/javascript" src="/editAd/script.js"></script>
 	  </html>"""
 	  
 	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlbody +htmlButt + htmlend
@@ -788,48 +817,33 @@ def buildCurrentAdsPage(ad_query):
 	logging.info("entered buildCurrentAdsPage")
 	htmlstart="""<!DOCTYPE html>
 	<html>
-		<link rel="stylesheet" type="text/css" href="createAd/style.css">
+		<link rel="stylesheet" type="text/css" href="currentAds/style.css">
 	  <body>
 		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		<div id="form-main">
 		<div align="right">
-		  <p class="titletext">:בניית משרה</p>
+		  <p class="titletext">:המשרות שלי</p>
 		</div>
 		<div id="form-div">"""
 	
-	htmlbody="""<div class="form-element" ; align="right">"""
+	htmlbody=""
 	
 	i = 0 
 	for ad in ad_query:
-		htmlbody+="""<p class="text">:כותרת</p>
-			<p class="text" >"""+str(ad.message.jobName) + """</p>
-			<p class="text">:תוכן</p>
-			<p class="text" >"""+str(ad.message.cont)+"""</p>
-			<button type="button" onclick="" id="showRes" class="showRes">הצג תוצאות</button>
-			<button type="button" onclick="location.href='editAd?ad_id="""+str(i)+ """'" " id="editAd" class="editAd">ערוך משרה</button>	
-			</div>"""
+		htmlbody+="""<div class="form-element" align="right">
+			<p class="text1">"""+str(ad.message.jobName) + """</p>
+			<br><br><p class="text2" >"""+str(ad.message.cont)+"""</p></div>
+			<br><br><div><button type="button" id="button" onclick="location.href='editAd?ad_id="""+str(i)+ """'" " id="editAd" class="editAd">ערוך משרה</button></div>
+			<button type="button" id="button" onclick="location.href='showAdResults?ad_id="""+str(i)+ """'" id="showRes" class="showRes">הצג תוצאות</button>			
+			<br><br>"""
 		i+=1
 			
-
-
-	
-	htmlAdDesc  = """<div align="right">
-        <p class="text1">:שם המשרה</p>
-        <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="jobId" />
-      </div>
-
-      <div align="right">
-        <p class="text1">:תיאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
-		<br><br><div align="right">
-		  <p class="text1">:פרמטרים לחיפוש</p>
-		</div>"""
 		
-	htmlend="""</div></div>
+	htmlend="""</div>
 		
 	  </body>
-	  <script type="text/javascript" src="/editAd/script.js"></script>
+	  <script type="text/javascript" src="/currentAds/script.js"></script>
 	  </html>"""
 	  
 	html=htmlstart+htmlbody + htmlend

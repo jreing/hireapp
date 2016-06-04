@@ -1,13 +1,23 @@
-var newNum = 0;
-var elems = 1;
-var newNumtwo = 0;
-var elemstwo = 1;
+var newNum = $('.cloneme').length -1;
+var elems = $('.cloneme').length;
+
+
+var newNumtwo = $('.clonemetwo').length -1;
+var elemstwo = $('.clonemetwo').length;
+
+
 var courses = $("#courses option").map(function () {
     return this.value;
 }).get();
 
-function b() {
-  var num = this.id.substring(9);
+if (elems == 1){
+	var inputs = document.getElementsByClassName("buttondel");
+	inputs[0].disabled = true;
+}
+
+function b(id) {
+  num = id.substring(9);
+  
   elems--;
 
   $('#cloneme' + num).remove(); // remove the correct element
@@ -21,8 +31,13 @@ function b() {
   }
 }
 
-function btwo() {
-  var numtwo = this.id.substring(12);
+if (elemstwo == 1){
+	var inputs = document.getElementsByClassName("buttondel");
+	inputs[0].disabled = true;
+}
+
+function btwo(id) {
+  numtwo = id.substring(12);
   elemstwo--;
 
   $('#clonemetwo' + numtwo).remove(); // remove the correct element
@@ -50,7 +65,7 @@ $('#buttonadd').click(function ab() {
   newElem.children().eq(1).val('');
   newElem.children().eq(2).attr('id', 'buttondel' + newNum).attr('class', 'buttondel');
  
-  newElem.children().eq(2)[ 0 ].onclick= b;
+  //newElem.children().eq(2)[ 0 ].onclick= b;
  
   // insert the new element after the last "duplicatable" input field
   //$('#cloneme' + (newNum-1)).after(newElem);
@@ -65,6 +80,8 @@ $('#buttonadd').click(function ab() {
 
 });
 
+
+
 $('#buttonaddtwo').click(function abtwo() {
   elemstwo++;
   newNumtwo = new Number(newNumtwo + 1); // the numeric ID of the new input field being added
@@ -76,7 +93,7 @@ $('#buttonaddtwo').click(function abtwo() {
   newElemtwo.children().eq(1).val('');
   newElemtwo.children().eq(2).attr('id', 'buttondeltwo' + newNumtwo).attr('class', 'buttondeltwo');
 
-  newElemtwo.children().eq(2)[ 0 ].onclick= btwo;
+  //newElemtwo.children().eq(2)[ 0 ].onclick= btwo;
  
   // insert the new element after the last "duplicatable" input field
   //$('#cloneme' + (newNum-1)).after(newElem);
@@ -91,12 +108,35 @@ $('#buttonaddtwo').click(function abtwo() {
 
 });
 
- 
+/*
 $('.buttondel')[ 0 ].onclick= b;
 $('.buttondel').attr('disabled', 'disabled');
 $('.buttondeltwo')[ 0 ].onclick= btwo;
 $('.buttondeltwo').attr('disabled', 'disabled');
+*/
+function setSelect(elem){
+	var chValue = document.getElementById(elem).value;
+	var select = document.getElementById(elem)
+	//alert(elem + " len " + select.length)
+	for (var i=1; i<select.length;i++){
+		if (select[i].value === chValue){
+			select.selectedIndex = i;
+			}
+		}		
+}
 
+setSelect("year")
+setSelect("availability")
+setSelect("residence")
+
+
+k=0
+ct = "ctype" + k
+while(document.getElementById(ct)!=null){
+	setSelect(ct)
+	k+=1
+	ct = "ctype" +k
+}
 
 
 
@@ -127,7 +167,7 @@ function validateForm() {
 		//alert("category, grade are"+(category!=0)+" , "+(grade === ""));
         return category!=0 && grade === "";
     }).length !== 0;
-	
+		
     if (gradeWithoutCourse) {
 		alert("Exists a grade with a missing course name.\nPlease enter a valid course name");
 		return false }
