@@ -183,6 +183,22 @@ class companyAdHandler(webapp2.RequestHandler):
 			page = buildAdPage(course_query )
 			self.response.write(page)
 
+class companyAdRemover(webapp2.RequestHandler):
+	def get(self):
+		user_id = self.request.cookies.get('id')
+		if (Company.query(user_id==Company.user_id).get()==None):
+			self.response.write(errorPage("session timeout"))
+		else:
+			ad_id = self.request.get('ad_id')
+			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			ad_query[int(ad_id)].key.delete()
+			#ad_query.put()
+			self.response.write ("""<html><script>
+				window.location="/currentAds";
+				</script></html>""")
+			#ad = ad_query[int(ad_id)]
+			#ad.delete()
+			
 class companyCurrAdHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
@@ -200,8 +216,6 @@ class companyEditAdHandler(webapp2.RequestHandler):
 			self.response.write(errorPage("session timeout"))
 		else:
 			ad_id = self.request.get('ad_id')
-			
-			lim= int(ad_id) + 1
 			
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			course_query = Course.query() 
@@ -293,6 +307,7 @@ app = webapp2.WSGIApplication([
 	('/currentAds', companyCurrAdHandler),
 	('/editAd', companyEditAdHandler),
 	('/showAdResults', companyAdResultsHandler),
+	('/deleteAd', companyAdRemover),
 	('/processAd', adHandler),
 	('/', LogInForBarak),
 	#('/doubleLogin', doubleLogin)

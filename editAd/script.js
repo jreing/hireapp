@@ -122,7 +122,8 @@ function setSelect(elem){
 		if (select[i].value === chValue){
 			select.selectedIndex = i;
 			}
-		}		
+		}
+	select[0].value = 0
 }
 
 setSelect("year")

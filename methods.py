@@ -834,7 +834,8 @@ def buildCurrentAdsPage(ad_query):
 		htmlbody+="""<div class="form-element" align="right">
 			<p class="text1">"""+str(ad.message.jobName) + """</p>
 			<br><br><p class="text2" >"""+str(ad.message.cont)+"""</p></div>
-			<br><br><div><button type="button" id="button" onclick="location.href='editAd?ad_id="""+str(i)+ """'" " id="editAd" class="editAd">ערוך משרה</button></div>
+			<br><br><div><button type="button2" id="button2" onclick="location.href='deleteAd?ad_id="""+str(i)+ """'" id="showRes" class="showRes">מחק</button>
+			<button type="button" id="button" onclick="location.href='editAd?ad_id="""+str(i)+ """'" " id="editAd" class="editAd">ערוך משרה</button></div>
 			<button type="button" id="button" onclick="location.href='showAdResults?ad_id="""+str(i)+ """'" id="showRes" class="showRes">הצג תוצאות</button>			
 			<br><br>"""
 		i+=1
