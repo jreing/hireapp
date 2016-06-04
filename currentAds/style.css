@@ -30,14 +30,6 @@ html {
   -webkit-border-radius: 7px;
 }
 
-
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    direction: rtl;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ but I'm not sure about working */
-    direction: rtl;
-}
-
 .titletext {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -135,3 +127,18 @@ html {
   color: white;
 }
 
+input[type='text']{
+text-align:right;
+}
+
+input[type='text']:focus{
+text-align:right;
+}
+
+input[type='number']{
+text-align:center;
+}
+
+input[type='number']:focus{
+text-align:right;
+}

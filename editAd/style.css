@@ -142,10 +142,6 @@ html {
   border: 3px solid rgba(0, 0, 0, 0);
 }
 
-input[type="text"]:-moz-placeholder {
-    text-align: right;
-}
-
 .feedback-input select option {
   text-align:right;
 }
@@ -200,13 +196,6 @@ textarea {
 
 #avgentry textarea {
     text-align: right;
-}
-
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    direction: rtl;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ but I'm not sure about working */
-    direction: rtl;
 }
 
 .titletext {
@@ -405,3 +394,18 @@ textarea {
   color: white;
 }
 
+input[type='text']{
+text-align:right;
+}
+
+input[type='text']:focus{
+text-align:right;
+}
+
+input[type='number']{
+text-align:center;
+}
+
+input[type='number']:focus{
+text-align:right;
+}
