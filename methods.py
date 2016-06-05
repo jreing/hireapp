@@ -81,7 +81,7 @@ def buildQueryResultsPage(q,ad_id,ad):
       </div>
 
       <div align="right">
-        <p class="text1">:תיאור המשרה</p>
+        <p class="text1">:תאור המשרה</p>
         <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
         
            
@@ -130,7 +130,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 			<p class="text" >"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""</p>
 			<p class="text">:שנה</p>
 			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:איזור</p>
+			<p class="text">:אזור</p>
 			<p class="text" >"""+ student.git.decode('utf-8', 'ignore')+"""</p>
 			<p class="text">:גיט</p>
 			</div>"""	
@@ -249,7 +249,7 @@ def buildStudentInputPage(course_query):
 		  <div>
 			  <p class="text2" id="element1">:הזן אזור מגורים</p>
  				<select name="residence" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
-				<option value=0>(לא נבחר איזור)</option>
+				<option value=0>(לא נבחר אזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
 				<option value=3> מרכז גוש דן</option>
@@ -474,7 +474,7 @@ def buildSearchParameters(ad_query):
 
 		<div align="right">
 
-			<p class="text1">:איזור מגורים</p>
+			<p class="text1">:אזור מגורים</p>
 		  <select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />"""
 		  
 	if(dynFlag==1):	
@@ -594,7 +594,7 @@ def buildStudentEditPage(student, course_query):
       </div>
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
-				<option value=""" + str(student.residence) + """>(לא נבחר איזור)</option>
+				<option value=""" + str(student.residence) + """>(לא נבחר אזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
 				<option value=3> מרכז גוש דן</option>
@@ -741,7 +741,7 @@ def buildAdPage(course_query):
       </div>
 
       <div align="right">
-        <p class="text1">:תיאור המשרה</p>
+        <p class="text1">:תאור המשרה</p>
         <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
 		<br><br><div align="right">
 		  <p class="text1">:פרמטרים לחיפוש</p>
@@ -794,7 +794,7 @@ def EditAdPage(course_query,ad_query,ad_id):
       </div>
 
       <div align="right">
-        <p class="text1">:תיאור המשרה</p>
+        <p class="text1">:תאור המשרה</p>
         <textarea class="scrollabletextbox" name="note" dir="rtl">"""+ ad_query.message.cont +"""</textarea>
 		<br><br><div align="right">
 		  <p class="text1">:פרמטרים לחיפוש</p>
