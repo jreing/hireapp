@@ -26,7 +26,7 @@ function ForceLogin() {
 		window.location="/studenthandler";
 	}
 	else{
-		window.location="/companyQueryFormPage";
+		window.location="/createAd";
 	}
 } 
 
