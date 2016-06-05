@@ -200,6 +200,10 @@ class minGradeQuery(webapp2.RequestHandler):
 
 		#get only students who want to be found
 		q=Student.query(Student.needs_job==True)
+		
+		#filter out unfinished signups
+		q.filter(Student.avg!=-1)
+		
 		q=q.fetch(100)
 		
 		logging.info(q)
@@ -593,5 +597,6 @@ class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 			st = Student.query(Student.user_id==cv_id).get()
 			if (st!=None):
 				self.send_blob(st.cv_blob_key)
+				
 
 #classes that send pages to user, should check if the duplicates can be reduced
