@@ -630,7 +630,7 @@ def buildStudentEditPage(student, course_query):
 		</div>"""
 		
 	if(hasCv):	
-		htmlcv += """<div><button type="button" onclick="location.href='getMyCV'" id="Cvbutton" class="Cvbutton">הצג</button>
+		htmlcv += """<div><button type="button" onclick="window.open('getMyCV')" id="Cvbutton" class="Cvbutton">הצג</button>
          </div>"""
 
 	htmlAvg = """<div align="right" id="avgEntry" >
