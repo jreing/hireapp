@@ -257,8 +257,8 @@ textarea {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: white;
-  font-size: 34px;
-  padding-top: 0px;
+  font-size: 35px;
+  padding-top: 15px;
   margin-top: 0px;
   padding-bottom: 0px;
   margin-bottom: 0px;
@@ -401,12 +401,19 @@ padding-bottom: 120px;
   float:right;
 }
 
-p.Cvbutton {
-    margin-top: 2cm;
+#Cvbutton {
+    font-size: 20px;
+    float: center;
+    margin-bottom: 200px;
 }
 
-#element1 {float:right;}
-#element2 {float:left;}
+#element1 {
+  float:right;
+}
+
+#element2 {
+  float:left;
+}
 
 input[type='text']{
 text-align:right;
