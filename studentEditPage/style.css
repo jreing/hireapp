@@ -257,13 +257,27 @@ textarea {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: white;
-  font-size: 35px;
+  font-size: 28px;
   padding-top: 15px;
   margin-top: 0px;
   padding-bottom: 0px;
   margin-bottom: 0px;
   font-weight: 700;
 }
+
+.text4 {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: white;
+  font-size: 30px;
+  padding-top: 35px;
+  margin-top: 45px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-align: right;
+}
+
 #buttonadd {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   float: right;
@@ -379,6 +393,10 @@ padding-top: 60px;
 padding-bottom: 60px;
 }
 
+#id{
+  padding-left: 20px;
+}
+
 /*.Cvbutton {
     text-align: right;
 }
@@ -402,9 +420,10 @@ padding-bottom: 120px;
 }
 
 #Cvbutton {
-    font-size: 20px;
-    float: center;
-    margin-bottom: 200px;
+    font-size: 27px;
+    float: left;
+    margin-bottom: 100px;
+    padding-top: :50px;
 }
 
 #element1 {
