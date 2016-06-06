@@ -32,7 +32,7 @@ function b(id) {
 }
 
 if (elemstwo == 1){
-	var inputs = document.getElementsByClassName("buttondel");
+	var inputs = document.getElementsByClassName("buttondeltwo");
 	inputs[0].disabled = true;
 }
 

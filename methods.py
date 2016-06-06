@@ -67,25 +67,52 @@ def buildQueryResultsPage(q,ad_id,ad):
 		
 	htmlstart+="""  <div align="right">
         <p class="text1">:שם החברה</p>
-        <input name="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם" id="companyName" />
-      </div>
+        <input name="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+      
+	if (adFlag == 0):
+		htmlstart+="""placeholder="שם" """
+	else:
+		htmlstart+= """value=" """ + ad.message.compName + "\""  
+	  
+	htmlstart+= """id="companyName" /></div>"""
 
-      <div align="right">
+	htmlstart+=  """<div align="right">
         <p class="text1">:מייל החברה</p>
-        <input name="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" id="name" />
-      </div>
+        <input name="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """
+	
+	if (adFlag == 0):
+		htmlstart+="""placeholder="מייל" """
+	else:
+		htmlstart+= """value=" """ + ad.message.compMail + "\""
+		
 
-      <div align="right">
+	htmlstart+= """id="name" /> </div>"""
+
+	htmlstart+= """<div align="right">
         <p class="text1">:שם המשרה</p>
-        <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="jobId" />
-      </div>
+        <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+		
+	if (adFlag == 0):
+		htmlstart+="""placeholder="משרה" """
+	else:
+		htmlstart+= """value=" """ + ad.message.jobName + "\""
+		
+		
+	htmlstart+=""" id="jobId" /></div>"""
 
-      <div align="right">
+	htmlstart+="""<div align="right">
         <p class="text1">:תאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
+        <textarea class="scrollabletextbox" name="note" dir="rtl" """
+
+	if (adFlag == 0):
+		htmlstart+="""placeholder="פרטים על המשרה..">"""
+	else:
+		htmlstart+= """>""" + ad.message.cont 
+
+	htmlstart+= """</textarea>"""
         
            
-      </div>
+	htmlstart+="""  </div>
 	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים</p> </div>
 
       <div id="scroll" style="overflow-y: scroll; height:600px;">"""
@@ -131,7 +158,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 			<p class="text">:שנה</p>
 			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
 			<p class="text">:אזור</p>
-			<p class="text" >"""+ student.git.decode('utf-8', 'ignore')+"""</p>
+			<br><p class="text"> <a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a></p>
 			<p class="text">:גיט</p>
 			</div>"""	
 			  	

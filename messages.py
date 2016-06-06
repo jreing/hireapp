@@ -104,8 +104,8 @@ class MessageSend(webapp2.RequestHandler):
 		#self.conNum = threadNum(num=0)
 		#self.conNum.put()
 		ad_id = self.request.get('ad_id')
-		
-		if (ad_id!=-1):
+		logging.info(ad_id)
+		if (int(ad_id)!=-1):
 			user_id = self.request.cookies.get('id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			self.ad = ad_query[int(ad_id)]
@@ -132,7 +132,7 @@ class MessageSend(webapp2.RequestHandler):
 			userid = self.request.cookies.get('id')
 			self.message.sender = Author(identity = userid)
 			
-			if (ad_id!=-1):
+			if (int(ad_id)!=-1):
 				self.ad.sentId.append(rec)
 				self.ad.put()
 				
@@ -209,7 +209,7 @@ class adHandler(webapp2.RequestHandler):
 	def post(self):
 		ad_id = self.request.get('ad_id')
 		user_id = self.request.cookies.get('id')
-		
+		comp_query = Company.query(Company.user_id ==user_id).get()
 		
 		course_names=self.request.get_all('name')
 		grade = self.request.get_all('grade')
@@ -258,7 +258,8 @@ class adHandler(webapp2.RequestHandler):
 		
 		self.message = Message(cont = adCont)
 		self.message.jobName = adName
-		
+		self.message.compMail = comp_query.email
+		self.message.compName = comp_query.name
 		
 		self.ad.user_id = user_id
 		self.ad.message = self.message
