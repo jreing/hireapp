@@ -624,19 +624,19 @@ def buildStudentEditPage(student, course_query):
       <div align="right">
         <p class="text1">:אזור מגורים</p>
       </div>
-	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
-	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
+	  <form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+	  <select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
 				<option value=""" + str(student.residence) + """>(לא נבחר אזור)</option>
 				<option value=1> תל אביב</option>
 				<option value=2> השרון</option>
 				<option value=3> מרכז גוש דן</option>
 				<option value=4> דרום גוש דן</option>
 				<option value=5> אשדוד</option>
-			  </select>
-      <div align="right">"""
+	  </select>"""
 
-	htmlbody = """<p class="text1">:הקורסים שלי</p>
-      </div>
+	htmlbody = """<div align="right"> 
+					<p class="text1">:הקורסים שלי</p>
+      			  </div>
 		<div class="inputline">
           <input type="button" id="buttonadd" value="הוסף קורס" />
         </div>"""
@@ -654,34 +654,38 @@ def buildStudentEditPage(student, course_query):
 
 	if (student.cv_blob_key != None) :
 			hasCv=True
-	htmlcv = """<br><br><div align="right" id=cventry>
-				<p class="text3" id="element1" >:קורות חיים שהזנת</p>
-        
-		<div >
-		<input name="cv" type="file"  class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
-		</div>"""
+
+	if(hasCv):
+		htmlcv = """<div align="right" id=cventry>
+					<p class="text3" id="element1" >:קורות החיים שהזנת</p>"""
 		
-	if(hasCv):	
-		htmlcv += """<div><button type="button" onclick="window.open('getMyCV')" id="Cvbutton" class="Cvbutton">הצג</button>
-         </div>"""
+		htmlcv += """<button type="button" onclick="location.href='getMyCV'" id="Cvbutton" class="Cvbutton">הצג</button>"""
+		
+		htmlcv += """<div>
+    				<p class="text4">:החלפת קורות חיים</p>
+    				<input name="cv" type="file"  class="file" accept=".pdf,.doc,.txt,.docx" id="cv"/>
+    			 </div>"""
+	else:
+    				htmlcv = """<div>
+    				<p class="text4">:הזנת קורות חיים</p>
+    				<input name="cv" type="file"  class="file" accept=".pdf,.doc,.txt,.docx" id="cv"/>"""
 
 	htmlAvg = """<div align="right" id="avgEntry" >
-				<p class="text2" id="element1">:ממוצע כללי </p> 
-
-				<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" value='""" + str(student.avg) + """' />			  
-			</div>"""
+					<p class="text2" id="element1">:ממוצע כללי </p> 
+					<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" value='""" + str(student.avg) + """' />			  
+				 </div>"""
 	htmlYear = """<div>
-			  <p class="text2" id="element1">:שנת לימודים</p>
- 				<select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" dir="rtl" >
-				<option value=""" + str(student.year) + """>(לא נבחר )</option>
-				<option value=1> א'</option>
-				<option value=2> ב'</option>
-				<option value=3> ג'</option>
-				<option value=4> ד'</option>
-			  </select>
-		  </div>"""
+					<p class="text2" id="element1">:שנת לימודים</p>
+ 				    <select name="year" id="year" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" dir="rtl" >
+						<option value=""" + str(student.year) + """>(לא נבחר )</option>
+						<option value=1> א'</option>
+						<option value=2> ב'</option>
+						<option value=3> ג'</option>
+						<option value=4> ד'</option>
+			  		</select>
+		  		  </div>"""
 	
-	htmlAvail = """<br><br><br><br>
+	htmlAvail = """<br>
 			<div>
 			  <p class="text2" id="element1">:סוג משרה</p>
 			  <select name="availability" id="availability" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input5" dir="rtl">
@@ -692,12 +696,12 @@ def buildStudentEditPage(student, course_query):
 			  </select>
 			</div>"""
 
-	htmlGit = """<br><br><br><br><div id="gitEntry" >
-				<p class="text2" id="element1">:חשבון גיט</p><br><br>
-				<input name="git" type="text" class="git" id="git" placeholder="" value= '""" + str(student.git) + """' />			  
-			</div>"""
+	htmlGit = """<div id="gitEntry" >
+					<br><br><p class="text2" id="element1">:חשבון גיט</p>
+					<input name="git" type="text" class="git" id="git" placeholder="" value= '""" + str(student.git) + """' />			  
+				 </div>"""
 	htmlMail = """<br><br><br><br><div class="getEmailNotification" align="right">
-			  <label for="getEmailNotification" class="textsmallpad">שלח לי עדכון במייל לגבי הצעות שקיבלתי</label>
+			  		<label for="getEmailNotification" class="textsmallpad">שלח לי עדכון במייל לגבי הצעות שקיבלתי</label>
 			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" """
 	
 
@@ -722,7 +726,7 @@ def buildStudentEditPage(student, course_query):
 	
 	htmlButt = """<div class="submit">
           <input type="submit" form="form1" value="שמור" id="button-blue" />
-          <div class="ease"> </div>
+          <div class="ease"> <br> <br></div>
         </div>"""
 
 	
@@ -743,7 +747,7 @@ def buildStudentEditPage(student, course_query):
   
 	htmlDel = """<div><button type="button" onclick="delClick()" id="delButton" class="delButton">הסר פרופיל</button> </div>"""
 
-	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlButt +htmlDlist +htmlEndForm + htmlDel + htmlEnd
+	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlButt +"<br>"+"<br>"+htmlDlist +htmlEndForm + htmlDel + htmlEnd
 	return html
 
 	
