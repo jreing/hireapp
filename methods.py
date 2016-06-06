@@ -157,10 +157,15 @@ def buildQueryResultsPage(q,ad_id,ad):
 			<p class="text" >"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""</p>
 			<p class="text">:שנה</p>
 			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:אזור</p>
-			<br><p class="text"> <a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a></p>
+			<p class="text">:אזור</p>"""
+		if (student.git!=""):	
+			htmlbody+="""<br><p class="text"> <a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a></p>
 			<p class="text">:גיט</p>
-			</div>"""	
+			</div>"""
+		else:
+			htmlbody+="""<br><p class="text">לא הוזן</p>
+			<p class="text">:גיט</p>
+			</div>"""
 			  	
 	
 	htmlend="""
