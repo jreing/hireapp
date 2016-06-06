@@ -623,9 +623,9 @@ def buildStudentEditPage(student, course_query):
 	if (student.cv_blob_key != None) :
 			hasCv=True
 	htmlcv = """<br><br><div align="right" id=cventry>
-				<p class="text3" id="element1" >:קורות חיים</p>
+				<p class="text3" id="element1" >:קורות חיים שהזנת</p>
         
-		<div align="right">
+		<div >
 		<input name="cv" type="file"  class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 		</div>"""
 		
