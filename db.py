@@ -176,7 +176,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		else: return weighted_sum/num_points
 	
 	def getQuery(self, course_names,grades,average,ctypes,ctype_avgs,residence,year,availability,hasgit):
-		
+		logging.info ("GET QUERY")
 		
 		#server side input validation
 		if len(grades)!=len(course_names): self.errormsg()
@@ -202,8 +202,8 @@ class minGradeQuery(webapp2.RequestHandler):
 		q=Student.query(Student.needs_job==True)
 		
 		#filter out unfinished signups
-		q.filter(Student.avg!=-1)
 		
+		q.filter(Student.avg!=-1)
 		q=q.fetch(100)
 		
 		logging.info(q)

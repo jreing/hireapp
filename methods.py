@@ -140,7 +140,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
-			  <button type="button" onclick="location.href='getCV?user_id="""+str(student.user_id)+ """'" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+			  <button type="button" onclick="window.open('getCV?user_id="""+str(student.user_id)+ """')" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
 			  <p class="textbigpad">:קורות חיים</p>"""
 			  
 		else :
@@ -650,14 +650,14 @@ def buildStudentEditPage(student, course_query):
 	if (student.cv_blob_key != None) :
 			hasCv=True
 	htmlcv = """<br><br><div align="right" id=cventry>
-				<p class="text3" id="element1" >:קורות חיים</p>
+				<p class="text3" id="element1" >:קורות חיים שהזנת</p>
         
-		<div align="right">
+		<div >
 		<input name="cv" type="file"  class="file" accept=".pdf,.doc,.txt,.docx" id="cv" />
 		</div>"""
 		
 	if(hasCv):	
-		htmlcv += """<div><button type="button" onclick="location.href='getMyCV'" id="Cvbutton" class="Cvbutton">הצג</button>
+		htmlcv += """<div><button type="button" onclick="window.open('getMyCV')" id="Cvbutton" class="Cvbutton">הצג</button>
          </div>"""
 
 	htmlAvg = """<div align="right" id="avgEntry" >
