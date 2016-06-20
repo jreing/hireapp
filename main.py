@@ -306,9 +306,9 @@ class adSchedHandler(webapp2.RequestHandler):
 							logging.info(ad.message.compMail)
 							mail.send_mail(sender_address, ad.message.compMail, subject, body)
 							break
-						else:
-							self.response.write(errorPage("no new student detected"))
-							break
+						#else:
+							#self.response.write(errorPage("no new student detected"))
+							#break
 			
 			self.response.write(errorPage("scheduler ran successfully"))	
 
