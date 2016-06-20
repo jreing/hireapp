@@ -180,7 +180,7 @@ class companyAdHandler(webapp2.RequestHandler):
 			self.response.write(errorPage("session timeout"))
 		else:
 			course_query = Course.query()
-			page = buildAdPage(course_query )
+			page = buildAdPage(course_query)
 			self.response.write(page)
 
 class companyAdRemover(webapp2.RequestHandler):
@@ -223,6 +223,21 @@ class companyEditAdHandler(webapp2.RequestHandler):
 			self.response.write(page)
 
 class companyAdResultsHandler(webapp2.RequestHandler):
+	
+	def fetchQuery(self,adv):
+		course_query = Course.query()
+		minGradeQ = db.minGradeQuery()
+		course_names = []
+			
+		for crs in adv.aQuery.student_courses:
+			course_names.append(crs.course.course_name)
+		ctypesBack = list(adv.aQuery.ctypes)	
+		q = minGradeQ.getQuery(course_names,adv.aQuery.cgrades,str(adv.aQuery.avg)
+			,adv.aQuery.ctypes,adv.aQuery.ctype_avgs,str(adv.aQuery.residence),str(adv.aQuery.year),str(adv.aQuery.availability),"False")	
+		adv.aQuery.ctypes = ctypesBack
+		adv.put()
+		return q
+		
 	def get(self):
 		
 		
@@ -234,26 +249,70 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 			ad_id = self.request.get('ad_id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			ad = ad_query[int(ad_id)]
-			course_query = Course.query()
-			minGradeQ = db.minGradeQuery()
 			
-			course_names = []
+			#course_query = Course.query()
+			#minGradeQ = db.minGradeQuery()
 			
-			for crs in ad.aQuery.student_courses:
-				course_names.append(crs.course.course_name)
+			#course_names = []
+			
+			#for crs in ad.aQuery.student_courses:
+				#course_names.append(crs.course.course_name)
+				
 			#course_names = ad.aQuery.student_courses.course
 			
-			q = minGradeQ.getQuery(course_names,ad.aQuery.cgrades,str(ad.aQuery.avg)
-			,ad.aQuery.ctypes,ad.aQuery.ctype_avgs,str(ad.aQuery.residence),str(ad.aQuery.year),str(ad.aQuery.availability),"False")		
+			#q = minGradeQ.getQuery(course_names,ad.aQuery.cgrades,str(ad.aQuery.avg)
+			#,ad.aQuery.ctypes,ad.aQuery.ctype_avgs,str(ad.aQuery.residence),str(ad.aQuery.year),str(ad.aQuery.availability),"False")		
+			
+			q = companyAdResultsHandler.fetchQuery(self,ad)
+			logging.info(ad)
 			
 			if (q==[]):
 				f = open("no_results_page.html")
 				self.response.write(f.read())
 				f.close()
 			else: #build result page
+				ad.studNum = str(len(q))
+				ad.put()
 				page = buildQueryResultsPage(q,ad_id,ad)
 				self.response.write(page)
+
+class adSchedHandler(webapp2.RequestHandler):
+	def get(self):
+		user_id = self.request.cookies.get('id')
+		if (Company.query(user_id==Company.user_id).get()==None):
+			self.response.write(errorPage("session timeout"))
+		else:
+			ad_query = Ad.query()
+			cmpAdHandler = companyAdResultsHandler()
+			for ad in ad_query:
 			
+				if (ad.aQuery.scheduler == False):
+					continue
+					
+				
+				q = cmpAdHandler.fetchQuery(ad)
+				logging.info("len q " + str(len(q)) + " studNum " + ad.studNum) 
+				if (len(q) > int(ad.studNum)):
+					for student in q:
+						if(student.user_id not in ad.sentId):
+							logging.info("student detected")
+							#self.response.write(errorPage("new student detected"))
+							
+							sender_address = "TauHireTeam@gmail.com"
+							subject = "TauHire team - new candidates are waiting for you"
+							body = "Dear Sir/Madam,\n\n"+"Your Ad" + ad.message.jobName + " have a new candidates in TauHire website: \n \n"+\
+							"Best regards"+"\n\n"+"TauHireTeam"
+							
+							logging.info(ad.message.compMail)
+							mail.send_mail(sender_address, ad.message.compMail, subject, body)
+							break
+						else:
+							self.response.write(errorPage("no new student detected"))
+							break
+			
+			self.response.write(errorPage("scheduler ran successfully"))	
+
+				
 class Logout(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
@@ -309,6 +368,7 @@ app = webapp2.WSGIApplication([
 	('/showAdResults', companyAdResultsHandler),
 	('/deleteAd', companyAdRemover),
 	('/processAd', adHandler),
+	('/adScheduler', adSchedHandler),
 	('/', LogInForBarak),
 	#('/doubleLogin', doubleLogin)
 	], debug=True)

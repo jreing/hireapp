@@ -129,6 +129,7 @@ class adQuery(ndb.Model):
 	availability=ndb.IntegerProperty(indexed=True, required=True)
 	year=ndb.IntegerProperty(indexed=True, required=True)
 	hasgit = ndb.BooleanProperty(indexed=False, required=True, default=False)
+	scheduler = ndb.BooleanProperty(indexed=False, required=True, default=False)
 
 #function that checks student login
 def checkStudentLoginExists(user_id):

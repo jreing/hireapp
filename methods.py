@@ -411,7 +411,9 @@ def availTranslate(num):
 def buildSearchParameters(ad_query):
 	
 	dynFlag = 0
-	if (ad_query==None):
+	if (ad_query==1):
+		dynFlag = 2
+	elif(ad_query==None):
 		logging.info("dynamic not recognized")
 		dynFlag = 0
 	else:
@@ -551,9 +553,19 @@ def buildSearchParameters(ad_query):
 				
 			  </select>
 			</div>"""
-			
+	htmlEmail = ""
+	if (dynFlag>0):
+		htmlEmail+= """<div class="getEmailNotification" align="right">
+			  <label for="getEmailNotification" class="textsmallpad">שלח לי עדכון כאשר יש מועמדים חדשים למשרה</label>
+			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" """
+		
+		if(dynFlag==1):
+			if(ad_query.aQuery.scheduler == True):
+				htmlEmail+= """checked"""
+		
+		htmlEmail+= """> </div>"""		
 	
-	return htmlMain +htmlbody+ htmlYear +htmlAvail
+	return htmlMain +htmlbody+ htmlYear +htmlAvail + htmlEmail
 
 def buildCourseList(course_query):
 	i = 0
@@ -767,7 +779,7 @@ def buildAdPage(course_query):
 		</div>
 		<div id="form-div">"""
 	
-	htmlSearchParam = buildSearchParameters(None)
+	htmlSearchParam = buildSearchParameters(1)
 	
 	htmlbody = buildCourseList(course_query)
 	

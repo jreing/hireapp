@@ -1,0 +1,4 @@
+cron:
+- description: "check if an ad has new applicants"
+  url: /adScheduler
+  schedule: every 24 hours

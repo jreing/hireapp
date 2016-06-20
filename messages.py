@@ -61,6 +61,7 @@ class Conversation(ndb.Model):
 class Ad(ndb.Model):
 	user_id = ndb.StringProperty(indexed=True, required=True)
 	sentId = ndb.StringProperty(repeated=True)
+	studNum = ndb.StringProperty(indexed=True, required=False)
 	message = ndb.StructuredProperty(Message)
 	aQuery = ndb.StructuredProperty(adQuery) 
 	
@@ -99,7 +100,8 @@ class MessageSend(webapp2.RequestHandler):
 	# 	logging.info("getEmailResult:"+email)
 	# 	self.response.write('getEmailResult is:' + email+'\n')
 	# 	return email
-
+	
+	
 	def post(self):
 		#self.conNum = threadNum(num=0)
 		#self.conNum.put()
@@ -223,7 +225,7 @@ class adHandler(webapp2.RequestHandler):
 		availability=self.request.get("availability")
 		adCont = self.request.get("note")
 		adName = self.request.get("jobId")
-		 
+		
 		if (int(ad_id)==-1):
 			logging.info("ad id = -1")
 			self.ad = Ad()
@@ -245,6 +247,12 @@ class adHandler(webapp2.RequestHandler):
 		self.qry.availability= int(availability)
 		self.qry.year= int(year)
 		self.qry.hasGit= "False"
+		
+		if (self.request.get('getEmailNotification')=="True"):
+			self.qry.scheduler=True
+		else:
+			self.qry.scheduler=False
+		
 
 		#student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
 		#cgrades= ndb.ComputedProperty(lambda self: ",".join(Student.getCGrades()))
@@ -263,7 +271,10 @@ class adHandler(webapp2.RequestHandler):
 		
 		self.ad.user_id = user_id
 		self.ad.message = self.message
-		self.ad.aQuery = self.qry 
+		self.ad.aQuery = self.qry
+		
+		if (int(ad_id)==-1):
+			self.ad.studNum = "0" 		
 		self.ad.put()
 		
 		self.response.write ("""<html><script>
