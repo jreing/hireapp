@@ -69,30 +69,41 @@ class tokenSignIn(webapp2.RequestHandler):
 				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 				logging.info("writing student")
 				logging.info(user_id)
-				st= Student(allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0, needs_job=True)
+				st= Student(cnt=0, allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0, needs_job=True)
 				st.put()
-			else:
-				user_id=user_query.user_id
-
+			#else:
+			#	user_id=user_query.user_id
+				
 		elif(isStudent == 'false'):
 			user_query = Company.query(Company.google_id==google_id).get()
 			#if company is logging up for the first time
 			if (user_query == None):
 				#allow company user to be created only if the email
 				#is on the allowedCompany list
-				if allowedCompany.query(allowedCompany.email==email).get()!=None:
+				aComp=allowedCompany.query(allowedCompany.email==email).get()
+				if (aComp!=None):
+					#aComp.cnt=aComp.cnt+1
 					user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 					logging.info("writing company")
 					logging.info(user_id)
-					cmp= Company(email=email, google_id=google_id, user_id=user_id, name="", city="")
+					cmp= Company(cnt=0, email=email, google_id=google_id, user_id=user_id, name="", city="")
 					cmp.put()
 				else:
 					self.response.write(errorPage("אין כניסה, משתמש לא חוקי"))
 					return
-			else:
-				user_id=user_query.user_id
+			#else:
+			#	user_id=user_query.user_id
+				
+				
+				
 		#logging.info("writing cookie")
 		#logging.info(user_id)
+		user_id=user_query.user_id
+		
+		#increment counter of visits
+		user_query.cnt=user_query.cnt + 1
+		user_query.put()
+		
 		self.response.set_cookie("id", user_id)
 	
 	#use this function to add an AllowedCompany
@@ -288,7 +299,6 @@ class adSchedHandler(webapp2.RequestHandler):
 			
 				if (ad.aQuery.scheduler == False):
 					continue
-					
 				
 				q = cmpAdHandler.fetchQuery(ad)
 				logging.info("len q " + str(len(q)) + " studNum " + ad.studNum) 
@@ -331,12 +341,12 @@ class Logout(webapp2.RequestHandler):
 		self.response.headers.add_header(*cookie.output().split(': ', 1))
 		self.redirect("/") 
 
-class doubleLogin(webapp2.RequestHandler):
-	def get(self):
-		logging.info('LogInForBarak START')
-		f = open("doublelogin.html")
-		self.response.write(f.read())
-		f.close()
+#class doubleLogin(webapp2.RequestHandler):
+#	def get(self):
+#		logging.info('LogInForBarak START')
+#		f = open("doublelogin.html")
+#		self.response.write(f.read())
+#		f.close()
 
 
 

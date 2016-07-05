@@ -1,4 +1,8 @@
 cron:
 - description: "check if an ad has new applicants"
   url: /adScheduler
-  schedule: every 24 hours
+  schedule: every day 10:00
+  
+- description: "scramble user-ids"
+  url: /dbUserIdScramble?passw=weLoveYouGoogle2016
+  schedule: every day 04:00
