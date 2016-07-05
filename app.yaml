@@ -49,10 +49,19 @@ handlers:
 - url: /studentEditPage
   static_dir: studentEditPage
   secure: always
+  
 
 - url: /StudentToolbar
   static_dir: StudentToolbar
   secure: always  
+
+- url: /HelpToolbar
+  static_dir: HelpToolbar
+  secure: always  
+
+- url: /ToFirstPageToolbar
+  static_dir: ToFirstPageToolbar
+  secure: always 
   
 - url: /UnauthorizedToolbar
   static_dir: UnauthorizedToolbar
@@ -61,6 +70,10 @@ handlers:
   
 - url: /CompanyToolbar
   static_dir: CompanyToolbar  
+  secure: always
+
+- url: /HelpPage
+  static_dir: HelpPage
   secure: always
  
 - url: /createAd

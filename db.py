@@ -89,7 +89,8 @@ class Student(ndb.Model):
 	
 	def hasGit(self):
 		return self.git!=""
-		
+	
+	
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True)
@@ -107,9 +108,11 @@ class Student(ndb.Model):
 	hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
 	cgrades= ndb.ComputedProperty(lambda self: ",".join(self.getCGrades()))
 	needs_job=ndb.BooleanProperty(indexed=True, required=True)
+	cnt= ndb.IntegerProperty(indexed=False, required=True)
 	
 class allowedCompany(ndb.Model):
 	email =ndb.StringProperty(indexed=True, required=True)
+	
 	
 class Company(ndb.Model):
 	google_id = ndb.StringProperty(indexed=True, required=True)
@@ -117,7 +120,7 @@ class Company(ndb.Model):
 	name= ndb.StringProperty(indexed=True, required=False)
 	email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=False)
-
+	cnt= ndb.IntegerProperty(indexed=False, required=True)
 
 class adQuery(ndb.Model):
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
@@ -357,14 +360,15 @@ class dbBuild(webapp2.RequestHandler):
 			if st.year==None: st.year=0
 			if st.availability==None: st.availability=0
 			if st.needs_job==None: st.needs_job=True
+			if st.cnt==None: st.cnt=0
 			st.put()
 		
-		#import csv
-		#with open('courses3.csv', 'rb') as csvfile:
-		#	spamreader = csv.reader(csvfile, delimiter=',')
-		#	for row in spamreader:
-		#		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
-		#		c.put()
+		import csv
+		with open('courses3.csv', 'rb') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter=',')
+			for row in spamreader:
+				c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
+				c.put()
 		
 		self.response.write(errorPage('Database built'))
 

@@ -45,7 +45,7 @@ class CompanyHandler(webapp2.RequestHandler):
 		id = self.request.cookies.get('id')
 		logging.info(id)
 		if (Company.query(id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			course_query = Course.query()
 			page = buildCompanyQuery(course_query)
@@ -69,30 +69,41 @@ class tokenSignIn(webapp2.RequestHandler):
 				user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 				logging.info("writing student")
 				logging.info(user_id)
-				st= Student(allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0, needs_job=True)
+				st= Student(cnt=0, allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0, needs_job=True)
 				st.put()
-			else:
-				user_id=user_query.user_id
-
+			#else:
+			#	user_id=user_query.user_id
+				
 		elif(isStudent == 'false'):
 			user_query = Company.query(Company.google_id==google_id).get()
 			#if company is logging up for the first time
 			if (user_query == None):
 				#allow company user to be created only if the email
 				#is on the allowedCompany list
-				if allowedCompany.query(allowedCompany.email==email).get()!=None:
+				aComp=allowedCompany.query(allowedCompany.email==email).get()
+				if (aComp!=None):
+					#aComp.cnt=aComp.cnt+1
 					user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 					logging.info("writing company")
 					logging.info(user_id)
-					cmp= Company(email=email, google_id=google_id, user_id=user_id, name="", city="")
+					cmp= Company(cnt=0, email=email, google_id=google_id, user_id=user_id, name="", city="")
 					cmp.put()
 				else:
 					self.response.write(errorPage("אין כניסה, משתמש לא חוקי"))
 					return
-			else:
-				user_id=user_query.user_id
+			#else:
+			#	user_id=user_query.user_id
+				
+				
+				
 		#logging.info("writing cookie")
 		#logging.info(user_id)
+		user_id=user_query.user_id
+		
+		#increment counter of visits
+		user_query.cnt=user_query.cnt + 1
+		user_query.put()
+		
 		self.response.set_cookie("id", user_id)
 	
 	#use this function to add an AllowedCompany
@@ -116,6 +127,12 @@ class StudentInputHandler(webapp2.RequestHandler):
 class ResultsPage(webapp2.RequestHandler):
 	def get(self):
 		f = open("companyQueryResultsPage/index.html")
+		self.response.write(f.read())
+		f.close()
+				
+class HelpHandler(webapp2.RequestHandler):
+	def get(self):
+		f = open("HelpPage/index.html")
 		self.response.write(f.read())
 		f.close()
 		
@@ -177,7 +194,7 @@ class companyAdHandler(webapp2.RequestHandler):
 		id = self.request.cookies.get('id')
 		logging.info(id)
 		if (Company.query(id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			course_query = Course.query()
 			page = buildAdPage(course_query)
@@ -187,7 +204,7 @@ class companyAdRemover(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
@@ -203,7 +220,7 @@ class companyCurrAdHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_query = Ad.query(Ad.user_id ==user_id )
 			page = buildCurrentAdsPage(ad_query)
@@ -213,7 +230,7 @@ class companyEditAdHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
 			
@@ -244,7 +261,7 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 		user_id = self.request.cookies.get('id')
 		
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
@@ -288,7 +305,6 @@ class adSchedHandler(webapp2.RequestHandler):
 			
 				if (ad.aQuery.scheduler == False):
 					continue
-					
 				
 				q = cmpAdHandler.fetchQuery(ad)
 				logging.info("len q " + str(len(q)) + " studNum " + ad.studNum) 
@@ -356,12 +372,12 @@ class Logout(webapp2.RequestHandler):
 		self.response.headers.add_header(*cookie.output().split(': ', 1))
 		self.redirect("/") 
 
-class doubleLogin(webapp2.RequestHandler):
-	def get(self):
-		logging.info('LogInForBarak START')
-		f = open("doublelogin.html")
-		self.response.write(f.read())
-		f.close()
+#class doubleLogin(webapp2.RequestHandler):
+#	def get(self):
+#		logging.info('LogInForBarak START')
+#		f = open("doublelogin.html")
+#		self.response.write(f.read())
+#		f.close()
 
 
 
@@ -370,8 +386,8 @@ app = webapp2.WSGIApplication([
 	('/validateStudent', ValidateStudent),
 	('/deleteStudent', deleteStudent),
 	('/validateCompany', ValidateCompany),
-	#('/dbDelete', dbDelete),
 	('/dbUserIdScramble', dbUserIdScramble),
+	#('/dbDelete', dbDelete),
 	#('/dbBuild', dbBuild),
 	('/studentInputPage', StudentInputHandler),
 	('/StudentWelcomePage/index.html', WelcomeHandler),	
@@ -397,6 +413,7 @@ app = webapp2.WSGIApplication([
 	('/companySignUp', compSignUpHandler),
 	('/signUpHandler', signUpHandler),
 	('/', LogInForBarak),
+	('/HelpPage', HelpHandler),
 	#('/doubleLogin', doubleLogin)
 	], debug=True)
 
