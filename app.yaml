@@ -59,6 +59,10 @@ handlers:
   static_dir: HelpToolbar
   secure: always  
 
+- url: /signUpToolbar
+  static_dir: signUpToolbar
+  secure: always  
+
 - url: /ToFirstPageToolbar
   static_dir: ToFirstPageToolbar
   secure: always 
@@ -85,6 +89,10 @@ handlers:
 
 - url: /editAd
   static_dir: editAd  
+  secure: always
+
+- url: /companySignUp
+  static_dir: companySignUp  
   secure: always
   
 - url: /jquery
