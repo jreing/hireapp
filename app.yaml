@@ -66,8 +66,7 @@ handlers:
 - url: /UnauthorizedToolbar
   static_dir: UnauthorizedToolbar
   secure: always  
-  
-  
+    
 - url: /CompanyToolbar
   static_dir: CompanyToolbar  
   secure: always
@@ -80,7 +79,6 @@ handlers:
   static_dir: createAd  
   secure: always
    
-
 - url: /currentAds
   static_dir: currentAds  
   secure: always 

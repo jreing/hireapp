@@ -381,9 +381,9 @@ app = webapp2.WSGIApplication([
 	('/deleteAd', companyAdRemover),
 	('/processAd', adHandler),
 	('/adScheduler', adSchedHandler),
-	('/', LogInForBarak),
 	('/HelpPage', HelpHandler),
 	#('/doubleLogin', doubleLogin)
+	('/', LogInForBarak)
 	], debug=True)
 
 
