@@ -908,7 +908,7 @@ def buildCompanySignUp():
 
 	  <body>
 		<script type="text/javascript" src="companySignUp/jquery-2.2.3.js"></script>
-	  	<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
+	  	<script type="text/javascript" src="/signUpToolbar/loadToolbar.js"></script>
 		
 
 		<div id="form-main">
@@ -940,7 +940,7 @@ def buildCompanySignUp():
 
 
 	htmlButt ="""<div class="submit">
-			  <input type="submit" value="צור מודעה" id="button-blue" />
+			  <input type="submit" value="הרשם" id="button-blue" />
 			  <div class="ease"></div>"""
 
 	htmlEnd = """</div></div></form> </body>

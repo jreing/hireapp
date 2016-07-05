@@ -59,6 +59,10 @@ handlers:
   static_dir: HelpToolbar
   secure: always  
 
+- url: /signUpToolbar
+  static_dir: signUpToolbar
+  secure: always  
+
 - url: /ToFirstPageToolbar
   static_dir: ToFirstPageToolbar
   secure: always 
