@@ -385,6 +385,8 @@ def buildStudentInputPage(course_query):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
+
+
 def residenceTranslate(num):
 	return{
 		1: "תל אביב",
@@ -807,7 +809,7 @@ def buildAdPage(course_query):
 			  <input type="submit" value="צור מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
-	htmlend="""	</form> </div></div>
+	htmlend="""	</fodrm> </div></div>
 		
 	  </body>
 	  <script type="text/javascript" src="/createAd/script.js"></script>
@@ -831,7 +833,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 		  <p class="titletext">:בניית משרה</p>
 		</div>
 		<div id="form-div">"""
-	
+	d
 	htmlSearchParam = buildSearchParameters(ad_query)
 	
 	htmlbody = buildCourseList(course_query)
@@ -897,6 +899,58 @@ def buildCurrentAdsPage(ad_query):
 	  
 	html=htmlstart+htmlbody + htmlend
 	return html
+
+def buildCompanySignUp():
+	html="""<!DOCTYPE html>
+	<html lang="he">
+		<link rel="stylesheet" type="text/css" href="companySignUp/style.css">
+		
+
+	  <body>
+		<script type="text/javascript" src="companySignUp/jquery-2.2.3.js"></script>
+	  	<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
+		
+
+		<div id="form-main">
+	
+		<div id="form-div">
+
+		<div align="right"> <p class="text1"> TauHire - ברוכים הבאים ל</p><br><br></div>
+		<div align="right"> <p class="text2">מטרת האתר היא לסייע לקשר בין מעסיקים לסטודנטים למדעי המחשב מאוניברסיטת תל אביב. האתר מאפשר לסטודנטים להעלות לאתר את הקורסים שלמדו וקורות חיים ומאפשר למעסיקים לחפש את הסטודנטים שמתאימים למשרות שברצונם להציע   </p><br></div>
+
+		<div align="right"> <p class="text2">על מנת להשתמש באתר כמעסיק יש צורך בתהליך הרשמה קצר. לצורך תהליך ההרשמה יש צורך באימייל של gmail שבו יעשה שימוש על מנת להתחבר לאתר, בנוסף יש לציין את שם החברה ואת תפקידך בה. בסיום תהליך ההרשמה הבקשה תשלח לתהליך אישור קצר שבסיומו יהיה ניתן להתחבר לאתר ולהתחיל לחפש סטודנטים </p></div>
+	
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/signUpHandler" method="post" enctype="multipart/form-data">
+
+<div align="right" id="role" >
+				<p class="text1" id="element1">:תפקיד</p><br><br>
+
+				<input name="role" type="text" class="role" id="git" placeholder="" /> </div>
+
+<div align="right" id="compName" >
+				<p class="text1" id="element1">:שם חברה</p><br><br>
+
+				<input name="compName" type="text" class="compName" id="compName" placeholder="" /></div>
+
+<div align="right" id="mailAdd" >
+				<p class="text1" id="element1">:מייל</p><br><br>
+
+				<input name="mailAdd" type="text" class="mailAdd" id="mailAdd" placeholder="" /></div>"""
+
+
+
+	htmlButt ="""<div class="submit">
+			  <input type="submit" value="צור מודעה" id="button-blue" />
+			  <div class="ease"></div>"""
+
+	htmlEnd = """</div></div></form> </body>
+				<script type="text/javascript" src="/companySignUp/script.js"></script></html>"""
+	
+	return html + htmlButt + htmlEnd
+
+
+
+
 
 
 	

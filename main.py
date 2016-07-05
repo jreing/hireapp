@@ -312,6 +312,31 @@ class adSchedHandler(webapp2.RequestHandler):
 			
 			self.response.write(errorPage("scheduler ran successfully"))	
 
+
+class compSignUpHandler(webapp2.RequestHandler):
+	def get(self): 
+		page = buildCompanySignUp()
+		self.response.write(page)
+
+class signUpHandler(webapp2.RequestHandler):
+	def post(self): 
+		role = self.request.get('role')
+		company = self.request.get('compName')
+		compMail = self.request.get('mailAdd')
+
+		tau_address = "TauHireTeam@gmail.com"
+		subject = "New Company Want To Sign Up"
+		body = role + " from " + company + " want to sign up for the site \n \n"+ "their mail address is: " + compMail
+
+		mail.send_mail(compMail, tau_address, subject, body)
+		
+		subjectComp = "TauHire team - thank you for signing up"
+		bodyComp = "Dear Sir/Madam,\n\n"+ "we recieved your request and we are currently processing it.  we will notify you by mail after the process is complete. after that you will be able to log in into the site using the gmail address you signed up with. \n \n" + "Best regards"+"\n\n"+"TauHireTeam"      
+
+		mail.send_mail(tau_address, compMail, subjectComp, bodyComp)
+		self.response.write(errorPage("this will be the sign up handler"))
+
+
 				
 class Logout(webapp2.RequestHandler):
 	def get(self):
@@ -369,6 +394,8 @@ app = webapp2.WSGIApplication([
 	('/deleteAd', companyAdRemover),
 	('/processAd', adHandler),
 	('/adScheduler', adSchedHandler),
+	('/companySignUp', compSignUpHandler),
+	('/signUpHandler', signUpHandler),
 	('/', LogInForBarak),
 	#('/doubleLogin', doubleLogin)
 	], debug=True)
