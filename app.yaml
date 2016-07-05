@@ -97,6 +97,10 @@ handlers:
   static_dir: companySignUp  
   secure: always
   
+- url: /HelpPictures
+  static_dir: HelpPictures
+  secure: always
+  
 - url: /jquery
   static_dir: jquery
   secure: always
