@@ -134,6 +134,9 @@ class adQuery(ndb.Model):
 	hasgit = ndb.BooleanProperty(indexed=False, required=True, default=False)
 	scheduler = ndb.BooleanProperty(indexed=False, required=True, default=False)
 
+#end of DB class definitions
+
+	
 #function that checks student login
 def checkStudentLoginExists(user_id):
 	if (Student.query(user_id==Student.user_id).get()!=None):
@@ -309,7 +312,7 @@ class minGradeQuery(webapp2.RequestHandler):
 
 	
 	def post(self):	 
-		
+		#get fields from request
 		course_names=self.request.get_all('name')
 		grades= self.request.get_all('grade')
 		average=self.request.get('avg')	
@@ -339,11 +342,6 @@ class minGradeQuery(webapp2.RequestHandler):
 		else: #build result page
 			page = buildQueryResultsPage(q,None,None)
 			self.response.write(page)
-
-
-
-		
-		
 			
 			
 #adds all courses to DB from the parsed courses files
@@ -354,6 +352,7 @@ class dbBuild(webapp2.RequestHandler):
 		ac = allowedCompany(email="tauhireteam@gmail.com")
 		ac.put()
 		
+		
 		q=Student.query()
 		q=q.fetch(1000)
 		for st in q:
@@ -363,12 +362,12 @@ class dbBuild(webapp2.RequestHandler):
 			if st.cnt==None: st.cnt=0
 			st.put()
 		
-		import csv
-		with open('courses3.csv', 'rb') as csvfile:
-			spamreader = csv.reader(csvfile, delimiter=',')
-			for row in spamreader:
-				c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
-				c.put()
+		#import csv
+		#with open('courses3.csv', 'rb') as csvfile:
+		#	spamreader = csv.reader(csvfile, delimiter=',')
+		#	for row in spamreader:
+		#		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
+		#		c.put()
 		
 		self.response.write(errorPage('Database built'))
 
@@ -395,15 +394,19 @@ class deleteStudent(webapp2.RequestHandler):
 		self.response.write(\
 		errorPage("שם המשתמש שלך נמחק, בהצלחה בהמשך הדרך"))
 
-#changes all hash id's in the DB
+
 class dbUserIdScramble(webapp2.RequestHandler):
+	#changes all hash id's in the DB
+	#the function is called using cron.yaml once a day for security reasons
 	def get(self):
 		passw=self.request.get("passw")
 		if (passw=="weLoveYouGoogle2016"):
+			#change student ids
 			q=Student.query()
 			for s in q:
 				s.user_id=str(hashlib.sha512(s.google_id + str(time())).hexdigest())
 				s.put()
+			#change company ids
 			q=Company.query()
 			for c in q:
 				c.user_id=str(hashlib.sha512(c.google_id + str(time())).hexdigest())
@@ -534,7 +537,6 @@ class dbHandler(webapp2.RequestHandler):
 		elif(cvKey!= True):
 			st.cv_blob_key=None
 		
-		
 		#logging.info(st)
 		st.put()
 		
@@ -547,10 +549,10 @@ class dbHandler(webapp2.RequestHandler):
 				window.location="/StudentOffersPage";
 				</script></html>""")
 	
+	#server side validation that uploaded file is a pdf with text in it
 	def checkPdfFile (self,file):
 		logging.info ("check cv")
 		cvFile= StringIO(file)
-		
 		try:
 			doc = pyPdf.PdfFileReader(cvFile)
 			logging.info ("cv check passed")
@@ -565,11 +567,11 @@ class dbHandler(webapp2.RequestHandler):
 		Returns:
 			The corresponding string blobkey for this GCS file.
 		"""
-		#saving the file in the blob store using the users google id
+		#saving the file in the blob store using the user's google id
 		#then a blobstore key is generated from that (not visible to user)
 		# Create a GCS file with GCS client.
 		#write user's CV File into blobstore
-		write_retry_params = gcs.RetryParams(backoff_factor=1.1)
+		write_retry_params = gcs.RetryParams(backoff_factor=1.1) 
 		bucket_name = os.environ.get('BUCKET_NAME',app_identity.get_default_gcs_bucket_name())
 		bucket = '/' + bucket_name
 		filename = bucket + '/'+user_id + '.cv'
@@ -580,7 +582,7 @@ class dbHandler(webapp2.RequestHandler):
 		return blobstore.create_gs_key(blobstore_filename)
 		
 
-#use this function to get user's own CV
+#use this function for student to get his/her own CV
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
@@ -603,5 +605,3 @@ class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 			if (st!=None):
 				self.send_blob(st.cv_blob_key)
 				
-
-#classes that send pages to user, should check if the duplicates can be reduced

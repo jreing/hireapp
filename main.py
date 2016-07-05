@@ -15,14 +15,9 @@ logging.getLogger().setLevel(logging.INFO)
 
 from messages import *
 
-
-#end of DB class definitions
-#
-#
-
-
 #classes for actions:
 class ValidateCompany(webapp2.RequestHandler):
+	#this class validates that a request was sent from a valid logged in company
 	def post(self):
 		id = self.request.cookies.get('id')
 		logging.info(id)
@@ -32,6 +27,7 @@ class ValidateCompany(webapp2.RequestHandler):
 			self.response.write(errorPage("זמן החיבור פג"))
 
 class ValidateStudent(webapp2.RequestHandler):
+	#this class validates that a request was sent from a valid logged in student
 	def post(self):
 		id = self.request.cookies.get('id')
 		logging.info(id)
@@ -40,18 +36,10 @@ class ValidateStudent(webapp2.RequestHandler):
 		else :
 			self.response.write(errorPage("זמן החיבור פג"))
 			
-class CompanyHandler(webapp2.RequestHandler):
-	def get(self):
-		id = self.request.cookies.get('id')
-		logging.info(id)
-		if (Company.query(id==Company.user_id).get()==None):
-			self.response.write(errorPage("זמן החיבור פג"))
-		else:
-			course_query = Course.query()
-			page = buildCompanyQuery(course_query)
-			self.response.write(page)			
 
 class tokenSignIn(webapp2.RequestHandler):
+	#this class performs the server-side user login
+	
 	def post(self):
 		#logging.info("enter token sign in")
 		
@@ -71,8 +59,6 @@ class tokenSignIn(webapp2.RequestHandler):
 				logging.info(user_id)
 				st= Student(cnt=0, allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0, needs_job=True)
 				st.put()
-			#else:
-			#	user_id=user_query.user_id
 				
 		elif(isStudent == 'false'):
 			user_query = Company.query(Company.google_id==google_id).get()
@@ -80,9 +66,7 @@ class tokenSignIn(webapp2.RequestHandler):
 			if (user_query == None):
 				#allow company user to be created only if the email
 				#is on the allowedCompany list
-				aComp=allowedCompany.query(allowedCompany.email==email).get()
-				if (aComp!=None):
-					#aComp.cnt=aComp.cnt+1
+				if (allowedCompany.query(allowedCompany.email==email).get()!=None):
 					user_id=str(hashlib.sha512(google_id + str(time())).hexdigest())
 					logging.info("writing company")
 					logging.info(user_id)
@@ -91,9 +75,6 @@ class tokenSignIn(webapp2.RequestHandler):
 				else:
 					self.response.write(errorPage("אין כניסה, משתמש לא חוקי"))
 					return
-			#else:
-			#	user_id=user_query.user_id
-				
 				
 				
 		#logging.info("writing cookie")
@@ -110,6 +91,20 @@ class tokenSignIn(webapp2.RequestHandler):
 	def addAllowedCompany(email):
 		ac = allowedCompany(email=email)
 		ac.put()
+
+
+###Page loading handlers
+		
+class CompanyHandler(webapp2.RequestHandler):
+	def get(self):
+		id = self.request.cookies.get('id')
+		logging.info(id)
+		if (Company.query(id==Company.user_id).get()==None):
+			self.response.write(errorPage("זמן החיבור פג"))
+		else:
+			course_query = Course.query()
+			page = buildCompanyQuery(course_query)
+			self.response.write(page)		
 		
 class StudentInputHandler(webapp2.RequestHandler):
 	def get(self):
@@ -355,6 +350,7 @@ class signUpHandler(webapp2.RequestHandler):
 
 				
 class Logout(webapp2.RequestHandler):
+	#class that handles logout and cookie removal
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		student_query = Student.query(Student.user_id==user_id).get()
