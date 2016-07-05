@@ -129,6 +129,12 @@ class ResultsPage(webapp2.RequestHandler):
 		f = open("companyQueryResultsPage/index.html")
 		self.response.write(f.read())
 		f.close()
+				
+class HelpHandler(webapp2.RequestHandler):
+	def get(self):
+		f = open("HelpPage/index.html")
+		self.response.write(f.read())
+		f.close()
 		
 class LogInForBarak(webapp2.RequestHandler):
 	def get(self):
@@ -380,6 +386,7 @@ app = webapp2.WSGIApplication([
 	('/processAd', adHandler),
 	('/adScheduler', adSchedHandler),
 	('/', LogInForBarak),
+	('/HelpPage', HelpHandler),
 	#('/doubleLogin', doubleLogin)
 	], debug=True)
 
