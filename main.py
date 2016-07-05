@@ -45,7 +45,7 @@ class CompanyHandler(webapp2.RequestHandler):
 		id = self.request.cookies.get('id')
 		logging.info(id)
 		if (Company.query(id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			course_query = Course.query()
 			page = buildCompanyQuery(course_query)
@@ -194,7 +194,7 @@ class companyAdHandler(webapp2.RequestHandler):
 		id = self.request.cookies.get('id')
 		logging.info(id)
 		if (Company.query(id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			course_query = Course.query()
 			page = buildAdPage(course_query)
@@ -204,7 +204,7 @@ class companyAdRemover(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
@@ -220,7 +220,7 @@ class companyCurrAdHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_query = Ad.query(Ad.user_id ==user_id )
 			page = buildCurrentAdsPage(ad_query)
@@ -230,7 +230,7 @@ class companyEditAdHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
 			
@@ -261,7 +261,7 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 		user_id = self.request.cookies.get('id')
 		
 		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
+			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
@@ -361,8 +361,8 @@ app = webapp2.WSGIApplication([
 	('/validateStudent', ValidateStudent),
 	('/deleteStudent', deleteStudent),
 	('/validateCompany', ValidateCompany),
-	#('/dbDelete', dbDelete),
 	('/dbUserIdScramble', dbUserIdScramble),
+	#('/dbDelete', dbDelete),
 	#('/dbBuild', dbBuild),
 	('/studentInputPage', StudentInputHandler),
 	('/StudentWelcomePage/index.html', WelcomeHandler),	
