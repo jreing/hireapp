@@ -14,7 +14,6 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-
 #function that builds an error page given a message
 def errorPage(errormsg):
 	html="""
@@ -36,7 +35,6 @@ def errorPage(errormsg):
 	"""
 
 	return html
-
 
 #Methods to build the companyQueryResultsPage and StudentOffersPage
 
@@ -141,7 +139,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
 			  <button type="button" onclick="window.open('getCV?user_id="""+str(student.user_id)+ """')" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
-			  <p class="textbigpad">:קורות חיים</p>"""
+			  <p class="textbigpad"><b>:קורות חיים</b></p>"""
 			  
 		else :
 			htmlbody+="""
@@ -149,22 +147,22 @@ def buildQueryResultsPage(q,ad_id,ad):
 			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			  value="""+str(student.user_id)+""">
 			  <p class="textbigasCvButton">לא צורף</p>
-			  <p class="textbigpad">:קורות חיים</p>"""
+			  <p class="textbigpad"><b>:קורות חיים</b></p>"""
 			  
 		htmlbody+="""
 			<p class="text" >"""+availTranslate(student.availability).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:זמינות</p>
+			<p class="text"><b>:זמינות</b></p>
 			<p class="text" >"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:שנה</p>
+			<p class="text"><b>:שנה</b></p>
 			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:אזור</p>"""
+			<p class="text"><b>:אזור</b></p>"""
 		if (student.git!=""):	
 			htmlbody+="""<br><p class="text"> <a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a></p>
-			<p class="text">:גיט</p>
+			<p class="text"><b>:גיט</b></p>
 			</div>"""
 		else:
 			htmlbody+="""<br><p class="text">לא הוזן</p>
-			<p class="text">:גיט</p>
+			<p class="text"><b>:גיט</b></p>
 			</div>"""
 			  	
 	
@@ -423,7 +421,6 @@ def buildSearchParameters(ad_query):
 	logging.info(dynFlag)
 	
 	htmlMain = """
-		  
 			<div align="right">
 			<p class="text1">:ציון מינימלי בקורס</p>
 		  </div>
