@@ -119,15 +119,15 @@ class StudentInputHandler(webapp2.RequestHandler):
 			page = buildStudentInputPage(course_query)
 			self.response.write(page)
 
-class ResultsPage(webapp2.RequestHandler):
-	def get(self):
-		f = open("companyQueryResultsPage/index.html")
-		self.response.write(f.read())
-		f.close()
+#class ResultsPage(webapp2.RequestHandler):
+#	def get(self):
+#		f = open("companyQueryResultsPage/index.html")
+#		self.response.write(f.read())
+#		f.close()
 				
 class HelpHandler(webapp2.RequestHandler):
 	def get(self):
-		f = open("HelpPage/index.html")
+		f = open('helpPage.html')
 		self.response.write(f.read())
 		f.close()
 		
@@ -144,11 +144,11 @@ class FirstPage(webapp2.RequestHandler):
 			window.location="chooseEmployOrStudentPage/index.html";
 			</script></html>""")
 
-class WelcomeHandler(webapp2.RequestHandler):
-	def get(self):
-		f = open("StudentWelcomePage/index.html") 
-		self.response.write(f.read())
-		f.close()
+#class WelcomeHandler(webapp2.RequestHandler):
+#	def get(self):
+#		f = open("StudentWelcomePage/index.html") 
+#		self.response.write(f.read())
+#		f.close()
 		
 class UnauthorizedPage(webapp2.RequestHandler):
 	def get(self):
@@ -335,7 +335,7 @@ class signUpHandler(webapp2.RequestHandler):
 		company = self.request.get('compName')
 		compMail = self.request.get('mailAdd')
 
-		tau_address = "TauHireTeam@gmail.com"
+		tau_address = "tauhireteam@gmail.com"
 		subject = "New Company Want To Sign Up"
 		body = role + " from " + company + " want to sign up for the site \n \n"+ "their mail address is: " + compMail
 
@@ -344,7 +344,7 @@ class signUpHandler(webapp2.RequestHandler):
 		subjectComp = "TauHire team - thank you for signing up"
 		bodyComp = "Dear Sir/Madam,\n\n"+ "we recieved your request and we are currently processing it.  we will notify you by mail after the process is complete. after that you will be able to log in into the site using the gmail address you signed up with. \n \n" + "Best regards"+"\n\n"+"TauHireTeam"      
 
-		mail.send_mail(tau_address, compMail, subjectComp, bodyComp)
+		mail.send_mail(tau_address, tau_address, subjectComp, bodyComp)
 		self.response.write(errorPage("this will be the sign up handler"))
 
 
@@ -386,7 +386,7 @@ app = webapp2.WSGIApplication([
 	#('/dbDelete', dbDelete),
 	#('/dbBuild', dbBuild),
 	('/studentInputPage', StudentInputHandler),
-	('/StudentWelcomePage/index.html', WelcomeHandler),	
+	#('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/studenthandler', StudentHandler),
 	('/tokenSignIn', tokenSignIn),
 	('/StudentLogout', Logout),
@@ -406,15 +406,12 @@ app = webapp2.WSGIApplication([
 	('/deleteAd', companyAdRemover),
 	('/processAd', adHandler),
 	('/adScheduler', adSchedHandler),
-<<<<<<< HEAD
-=======
-	('/companySignUp', compSignUpHandler),
-	('/signUpHandler', signUpHandler),
-	('/', LogInForBarak),
->>>>>>> aec0146688bab5967ac96d22836e9db25e42219c
 	('/HelpPage', HelpHandler),
 	#('/doubleLogin', doubleLogin)
+	('/companySignUp', compSignUpHandler),
+	('/signUpHandler', signUpHandler),
 	('/', LogInForBarak)
+	
 	], debug=True)
 
 
