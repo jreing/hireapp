@@ -175,6 +175,34 @@ textarea {
   font-weight: 700;
 }
 
+.pink{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: pink;
+  font-size: 30px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.cyan{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: cyan;
+  font-size: 30px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
 #buttonadd {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   float: right;
