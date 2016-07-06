@@ -42,16 +42,20 @@ class ValidateStudent(webapp2.RequestHandler):
 class tokenSignIn(webapp2.RequestHandler):
 	#this class performs the server-side user login
 	
+	
 	def post(self):
 		#logging.info("enter token sign in")
 		
 		google_id=self.request.get('user_id')
 
 		email=self.request.get('email')
-		#TODO: make isStudent server-side
-		isStudent = self.request.get('isStudent')
 		
-		if (isStudent == 'true'):
+		#server side check if it's a student or a company mail
+		isStudent=email.endswith("tau.ac.il")
+		
+		#isStudent = self.request.get('isStudent')
+		
+		if (isStudent == True):
 			user_query = Student.query(Student.google_id==google_id).get()
 			#if student is logging up for the first time
 			if (user_query == None):
@@ -63,7 +67,7 @@ class tokenSignIn(webapp2.RequestHandler):
 				st.put()
 				user_query=st
 				
-		elif(isStudent == 'false'):
+		elif(isStudent == False):
 			user_query = Company.query(Company.google_id==google_id).get()
 			#if company is logging up for the first time
 			if (user_query == None):
@@ -338,6 +342,18 @@ class signUpHandler(webapp2.RequestHandler):
 		company = self.request.get('compName')
 		compMail = self.request.get('mailAdd')
 
+		if (len(role)>70) or (len(company)>70) or (len(compMail)>70):
+			self.response.write(errorPage("שגיאה במילוי הטופס"))
+			return
+		
+		if (len(role)==0) or (len(company)==0) or (len(compMail)==0):
+			self.response.write(errorPage("שגיאה במילוי הטופס"))
+			return
+		
+		if ("@" not in compMail) or (" " in compMail):
+			self.response.write(errorPage("שגיאה במילוי הטופס"))
+			return
+		
 		tau_address = "tauhireteam@gmail.com"
 		subject = "New Company Wants To Sign Up"
 		body = role + " from " + company + " want to sign up for the site \n \n"+ "their mail address is: " + compMail
@@ -345,7 +361,11 @@ class signUpHandler(webapp2.RequestHandler):
 		mail.send_mail(tau_address, tau_address, subject, body)
 		
 		subjectComp = "TauHire team - thank you for signing up"
-		bodyComp = "Dear Sir/Madam,\n\n"+ "we recieved your request and we are currently processing it.  we will notify you by mail after the process is complete. after that you will be able to log in into the site using the gmail address you signed up with. \n \n" + "Best regards"+"\n\n"+"TauHireTeam"      
+		bodyComp = """Dear Sir/Madam,\n\n We recieved your request and it is being
+		processed at the moment. You will be notified upon completion. 
+		Afterwards, you will be able to log in to the site using the
+		Gmail address you've signed up with. \n \n 
+		Best regards\n\nTauHireTeam"""    
 
 		mail.send_mail(tau_address, compMail, subjectComp, bodyComp)
 		self.response.write(errorPage("תודה רבה על פנייתכם. יישלח אליכם מייל מיד עם אישור חשבון המשתמש"))
