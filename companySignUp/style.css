@@ -245,7 +245,7 @@ textarea {
   color: white;
   font-size: 24px;
   padding-top: 22px;
-  padding-bottom: 22px;
+  padding-bottom: 50px;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
@@ -276,4 +276,12 @@ textarea {
 }
 
 
+input {
+    width: 400px;
+    height: 30px;
+}
+
+input,
+input::-webkit-input-placeholder {
+    font-size: 20px;
 }
