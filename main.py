@@ -134,9 +134,21 @@ class StudentInputHandler(webapp2.RequestHandler):
 				
 class HelpHandler(webapp2.RequestHandler):
 	def get(self):
-		f = open('helpPage.html')
-		self.response.write(f.read())
-		f.close()
+		user_id = self.request.cookies.get('id')
+		isCompany=False
+		isStudent=False
+		if (user_id==None):
+			isStudent=True
+			isCompany=True
+		elif (Student.query(Student.user_id==user_id).get()!=None):
+			isStudent=True
+		elif (Company.query(user_id==Company.user_id).get()!=None):
+			isCompany=True
+		logging.info(user_id)
+		self.response.write(buildHelpPage(isStudent,isCompany))
+		#f = open('helpPage.html')
+		#self.response.write(f.read())
+		#f.close()
 		
 class LogInForBarak(webapp2.RequestHandler):
 	def get(self):
@@ -145,18 +157,12 @@ class LogInForBarak(webapp2.RequestHandler):
 		self.response.write(f.read())
 		f.close()
 
-class FirstPage(webapp2.RequestHandler):
-	def get(self):
-		self.response.write ("""<html><script>
-			window.location="chooseEmployOrStudentPage/index.html";
-			</script></html>""")
-
-#class WelcomeHandler(webapp2.RequestHandler):
+#class FirstPage(webapp2.RequestHandler):
 #	def get(self):
-#		f = open("StudentWelcomePage/index.html") 
-#		self.response.write(f.read())
-#		f.close()
-		
+#		self.response.write ("""<html><script>
+#			window.location="chooseEmployOrStudentPage/index.html";
+#			</script></html>""")
+
 class UnauthorizedPage(webapp2.RequestHandler):
 	def get(self):
 		f = open("unauthorized.html") 

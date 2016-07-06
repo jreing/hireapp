@@ -954,9 +954,63 @@ def buildCompanySignUp():
 	
 	return html + htmlButt + htmlEnd
 
-
-
-
-
-
+def buildHelpPage(isStudent, isCompany):
 	
+	html="""
+	<!DOCTYPE html>
+	<html lang="he">
+		<link rel="stylesheet" type="text/css" href="/HelpPage/style.css">
+	 <body>
+		<div id="form-main">
+			<div id="form-div">
+			<div align="right">
+	"""
+	if (isStudent and isCompany):
+		html+="""
+		<p class="student"> :אם הינך סטודנט</p>
+		"""
+	if (isStudent): 
+		html+="""
+		<p class="red" dir="rtl">
+		1. הזן פרטים 
+		<img src="/HelpPictures/HelpPic1.png" height="600" width="500" vspace="10">
+		<br>
+		2. המתן לקבלת הצעה
+		<img src="/HelpPictures/HelpPic2.png" height="300" width="500" vspace="10">
+		<br>
+		3. הצעות עבודה חדשות יופיעו באתר כך
+		(תוכל לבחור לקבל עדכונים על כך במייל)
+		<img src="/HelpPictures/HelpPic3.png" height="300" width="500" vspace="10">
+		<br>
+		</div>
+		"""
+	html+="""<div align="right">"""
+	
+	if (isCompany==True and isStudent==True):
+		html+="""
+		
+		<p class="company"> :אם הינך מעסיק</p>
+		"""
+	if (isCompany):
+		html+="""
+		<p class="red" dir="rtl">
+		1. בנה משרה
+		<img src="/HelpPictures/HelpPic4.png" height="350" width="500" vspace="10">
+		<br>
+		2. באפשרותך לצפות בסטודנטים מתאימים למשרה או לערוך אותה
+		<img src="/HelpPictures/HelpPic5.png" height="150" width="500" vspace="10">
+		<br>
+		3. בחר מועמדים מרשימת המועמדים המתאימים ושלח להם את המשרה
+		<br>
+		(תוכל לבחור לקבל עדכונים למייל כאשר נרשמים לאתר סטודנטים חדשים המתאימים למשרה)
+		<img src="/HelpPictures/HelpPic6.png" height="300" width="500" vspace="10">
+		</div>
+		"""
+		
+	html+="""</div>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/HelpPage/decideToolbar.js"></script>
+		</body>
+		</html>
+		"""
+	return html
