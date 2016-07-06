@@ -45,6 +45,62 @@ html {
   font-weight: 700;
 }
 
+.student{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: yellow;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.company{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: orange;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.red{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: red;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.white{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: white;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
 #g-signin2 {
   width: 100px;
   height: 100px;
