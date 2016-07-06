@@ -922,25 +922,24 @@ def buildCompanySignUp():
 	
 		<div id="form-div">
 
-		<div align="right"> <p class="text1"> TauHire - ברוכים הבאים ל</p><br><br></div>
-		<div align="right"> <p class="text2">מטרת האתר היא לסייע לקשר בין מעסיקים לסטודנטים למדעי המחשב מאוניברסיטת תל אביב. האתר מאפשר לסטודנטים להעלות לאתר את הקורסים שלמדו וקורות חיים ומאפשר למעסיקים לחפש את הסטודנטים שמתאימים למשרות שברצונם להציע   </p><br></div>
+		<div align="right"> <p class="pink">מטרת האתר היא לסייע לקשר בין מעסיקים לסטודנטים למדעי המחשב מאוניברסיטת תל אביב. האתר מאפשר לסטודנטים להעלות לאתר את הקורסים שלמדו וקורות חיים ומאפשר למעסיקים לחפש את הסטודנטים שמתאימים למשרות שברצונם להציע   </p><br></div>
 
-		<div align="right"> <p class="text2">על מנת להשתמש באתר כמעסיק יש צורך בתהליך הרשמה קצר. לצורך תהליך ההרשמה יש צורך באימייל של gmail שבו יעשה שימוש על מנת להתחבר לאתר, בנוסף יש לציין את שם החברה ואת תפקידך בה. בסיום תהליך ההרשמה הבקשה תשלח לתהליך אישור קצר שבסיומו יהיה ניתן להתחבר לאתר ולהתחיל לחפש סטודנטים </p></div>
+		<div align="right"> <p class="cyan">על מנת להשתמש באתר כמעסיק יש צורך בתהליך הרשמה קצר. נא מלא את השדות שלמטה ולאחר מכן לחץ על "הרשם". בסיום תהליך ההרשמה הבקשה תשלח לתהליך אישור קצר שבסיומו יהיה ניתן להתחבר לאתר ולהתחיל לחפש סטודנטים </p></div>
 	
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/signUpHandler" method="post" enctype="multipart/form-data">
 
 <div align="right" id="role" >
-				<p class="text1" id="element1">:תפקיד</p><br><br>
+				<p class="text1" id="element1">תפקיד</p><br><br>
 
 				<input name="role" type="text" class="role" id="git" placeholder="" /> </div>
 
 <div align="right" id="compName" >
-				<p class="text1" id="element1">:שם חברה</p><br><br>
+				<p class="text1" id="element1">שם חברה/מעסיק</p><br><br>
 
 				<input name="compName" type="text" class="compName" id="compName" placeholder="" /></div>
 
 <div align="right" id="mailAdd" >
-				<p class="text1" id="element1">:מייל</p><br><br>
+				<p class="text1" id="element1">מייל לשם כניסה לאתר (עם סיומת (@gmail.com</p><br><br>
 
 				<input name="mailAdd" type="text" class="mailAdd" id="mailAdd" placeholder="" /></div>"""
 
