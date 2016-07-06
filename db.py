@@ -207,12 +207,12 @@ class minGradeQuery(webapp2.RequestHandler):
 
 		#get only students who want to be found
 		q=Student.query(Student.needs_job==True)
-		
-		#filter out unfinished signups
-		
-		q.filter(Student.avg!=-1)
 		q=q.fetch(100)
 		
+		#filter out unfinished signups
+		p=Student.query(Student.avg>0)
+		q = [val for val in p if val in q]
+						
 		logging.info(q)
 		
 		#filter by availability

@@ -32,7 +32,9 @@ class ValidateStudent(webapp2.RequestHandler):
 		id = self.request.cookies.get('id')
 		logging.info(id)
 		if (checkStudentLoginExists(id)==True):
+			logging.info ("accepted")
 			self.response.write(id+"#accepted")
+			
 		else :
 			self.response.write(errorPage("זמן החיבור פג"))
 			
@@ -59,6 +61,7 @@ class tokenSignIn(webapp2.RequestHandler):
 				logging.info(user_id)
 				st= Student(cnt=0, allow_emails=False, email=email, student_courses=s,google_id=google_id, name="", city="",avg=-1, user_id=user_id, year=0, availability=0, git="", residence=0, needs_job=True)
 				st.put()
+				user_query=st
 				
 		elif(isStudent == 'false'):
 			user_query = Company.query(Company.google_id==google_id).get()
@@ -336,16 +339,16 @@ class signUpHandler(webapp2.RequestHandler):
 		compMail = self.request.get('mailAdd')
 
 		tau_address = "tauhireteam@gmail.com"
-		subject = "New Company Want To Sign Up"
+		subject = "New Company Wants To Sign Up"
 		body = role + " from " + company + " want to sign up for the site \n \n"+ "their mail address is: " + compMail
 
-		mail.send_mail(compMail, tau_address, subject, body)
+		mail.send_mail(tau_address, tau_address, subject, body)
 		
 		subjectComp = "TauHire team - thank you for signing up"
 		bodyComp = "Dear Sir/Madam,\n\n"+ "we recieved your request and we are currently processing it.  we will notify you by mail after the process is complete. after that you will be able to log in into the site using the gmail address you signed up with. \n \n" + "Best regards"+"\n\n"+"TauHireTeam"      
 
-		mail.send_mail(tau_address, tau_address, subjectComp, bodyComp)
-		self.response.write(errorPage("this will be the sign up handler"))
+		mail.send_mail(tau_address, compMail, subjectComp, bodyComp)
+		self.response.write(errorPage("תודה רבה על פנייתכם. יישלח אליכם מייל מיד עם אישור חשבון המשתמש"))
 
 
 				

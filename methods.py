@@ -48,6 +48,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 	
 	htmlstart= """<!DOCTYPE html>
 	<html>
+	
 	<link rel="stylesheet" type="text/css" href="companyQueryResultsPage/style.css">
 	<body>
 	
@@ -130,45 +131,54 @@ def buildQueryResultsPage(q,ad_id,ad):
 			else:
 				htmlbody+="""<div class="form-element" align="right">"""
 		else:
-			htmlbody+="""<div class="form-element" align="right">"""
+			htmlbody+="""<div class="form-element" align="right" >"""
 			
 			
+		
+		htmlbody+="""
+			<table dir="rtl" style="width:100%">
+			<tr>
+			<td><b>זמינות: </b></td>
+			<td><b>שנה:</b> </td>
+			<td><b>אזור: </b></td>
+			<td><b>קורות חיים:</b></td>
+			<td><b>גיט: </b></td>
+			<td><b>בחר: </b></td>
+			</tr>
+			<td>
+			"""+availTranslate(student.availability).decode('utf-8', 'ignore')+"""
+			</td>
+			<td>
+			"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""
+			</td>
+			<td>
+			"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""
+			</td>
+			<td>
+			"""
 		if (hasCv) :
 			htmlbody+="""
-			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
-			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
-			  value="""+str(student.user_id)+""">
 			  <button type="button" onclick="window.open('getCV?user_id="""+str(student.user_id)+ """')" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
-			  <p class="textbigpad"><b>:קורות חיים</b></p>"""
+			  </td><td>"""
 			  
 		else :
-			htmlbody+="""
-			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
-			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
-			  value="""+str(student.user_id)+""">
-			  <p class="textbigasCvButton">לא צורף</p>
-			  <p class="textbigpad"><b>:קורות חיים</b></p>"""
+			htmlbody+="""לא צורף</td><td>"""  
 			  
-		htmlbody+="""
-			<p class="text" >"""+availTranslate(student.availability).decode('utf-8', 'ignore')+"""</p>
-			<p class="text"><b>:זמינות</b></p>
-			<p class="text" >"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""</p>
-			<p class="text"><b>:שנה</b></p>
-			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			<p class="text"><b>:אזור</b></p>"""
 		if (student.git!=""):	
-			htmlbody+="""<br><p class="text"> <a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a></p>
-			<p class="text"><b>:גיט</b></p>
-			</div>"""
+			htmlbody+="""
+			<a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a>
+			"""
 		else:
-			htmlbody+="""<br><p class="text">לא הוזן</p>
-			<p class="text"><b>:גיט</b></p>
-			</div>"""
-			  	
+			htmlbody+="""לא הוזן"""
+		
+		htmlbody+="""</td><td>
+			<input type="checkbox" id="studentselect" """+str(i)+""" class="checkbox" 
+			value="""+str(student.user_id)+"""></td>
+		</tr></table></div>"""
 	
 	htmlend="""
       </div>
-
+		
       <label for="select-all" class="textsmallpad">בחר הכל</label>
       <input type="checkbox" name="select-all" id="select-all" />
       <div class="submit">

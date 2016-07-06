@@ -18,6 +18,11 @@ indexes:
 
 - kind: Student
   properties:
+  - name: needs_job
+  - name: avg
+
+- kind: Student
+  properties:
   - name: student_courses.course.course_id
   - name: student_courses.grade
 
