@@ -931,7 +931,7 @@ def buildCompanySignUp():
 <div align="right">
 				<p class="text1" id="element1">תפקיד</p><br><br>
 
-				<input name="role" type="text" class="role" id="roleName" placeholder="" /> </div>
+				<input name="role" type="text" class="role" id="role" placeholder="" /> </div>
 
 <div align="right">
 				<p class="text1" id="element1">שם חברה/מעסיק</p><br><br>
