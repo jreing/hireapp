@@ -928,17 +928,17 @@ def buildCompanySignUp():
 	
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/signUpHandler" method="post" enctype="multipart/form-data">
 
-<div align="right" id="role" >
+<div align="right">
 				<p class="text1" id="element1">תפקיד</p><br><br>
 
 				<input name="role" type="text" class="role" id="roleName" placeholder="" /> </div>
 
-<div align="right" id="compName" >
+<div align="right">
 				<p class="text1" id="element1">שם חברה/מעסיק</p><br><br>
 
 				<input name="compName" type="text" class="compName" id="compName" placeholder="" /></div>
 
-<div align="right" id="mailAdd" >
+<div align="right">
 				<p class="text1" id="element1">מייל לשם כניסה לאתר (עם סיומת (@gmail.com</p><br><br>
 
 				<input name="mailAdd" type="text" class="mailAdd" id="mailAdd" placeholder="" /></div>"""
@@ -950,8 +950,9 @@ def buildCompanySignUp():
 			  <div class="ease"></div>"""
 
 	htmlEnd = """</div></div></form> </body>
-				<script type="text/javascript" src="/companySignUp/script.js"></script></html>"""
-	
+	<script type="text/javascript" src="/companySignUp/script.js"></script></html>
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">"""
+
 	return html + htmlButt + htmlEnd
 
 def buildHelpPage(isStudent, isCompany):
