@@ -413,7 +413,7 @@ app = webapp2.WSGIApplication([
 	('/validateCompany', ValidateCompany),
 	('/dbUserIdScramble', dbUserIdScramble),
 	#('/dbDelete', dbDelete),
-	#('/dbBuild', dbBuild),
+	('/dbBuild', dbBuild),
 	('/studentInputPage', StudentInputHandler),
 	#('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/studenthandler', StudentHandler),
