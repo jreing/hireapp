@@ -240,7 +240,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		logging.info(q)
 		
 		#filter by residence
-		if (int(residence)>0 and int(residence)<6):
+		if (int(residence)>0 and int(residence)<17):
 			p=Student.query(Student.residence==int(residence))
 			p=p.fetch(100)
 			q = [val for val in p if val in q]
@@ -490,7 +490,7 @@ class dbHandler(webapp2.RequestHandler):
 		logging.info("residence added")
 		#residence validation and handling
 		residence = self.request.get('residence')
-		if (residence.isdigit()==False or int(residence)>5 or int(residence)<0):
+		if (residence.isdigit()==False or int(residence)>16 or int(residence)<0):
 			self.response.write (errorPage("קלט שגוי לאתר"))
 			return
 		st.residence = int(residence)

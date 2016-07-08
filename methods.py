@@ -297,10 +297,22 @@ def buildStudentInputPage(course_query):
  				<select name="residence" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
 				<option value=0>(לא נבחר אזור)</option>
 				<option value=1> תל אביב</option>
-				<option value=2> השרון</option>
-				<option value=3> מרכז גוש דן</option>
-				<option value=4> דרום גוש דן</option>
+				<option value=2> הרצליה-רמת השרון</option>
+				<option value=3> ר"ג-גבעתיים</option>
+				<option value=4> ראשל"צ-חולון-בת ים</option>
 				<option value=5> אשדוד</option>
+				<option value=6> רחובות-נס ציונה</option>
+				<option value=7> פתח תקווה והסביבה</option>
+				<option value=8> רעננה-כפ"ס-הוד השרון</option>
+				<option value=9> ראש העין והסביבה</option>
+				<option value=10> בקעת אונו</option>
+				<option value=11> בני ברק-גבעת שמואל</option>
+				<option value=12> שוהם והסביבה</option>
+				<option value=13> רמלה-לוד</option>
+				<option value=14> מודיעין והסביבה</option>
+				<option value=15> נתניה והסביבה</option>
+				<option value=16> השרון</option>
+				
 			  </select>
 		  </div>
 		  
@@ -399,15 +411,24 @@ def buildStudentInputPage(course_query):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
-
-
 def residenceTranslate(num):
 	return{
 		1: "תל אביב",
-		2: "השרון",
-		3: "מרכז גוש דן",
-		4: "דרום גוש דן",
-		5: "אשדוד"
+		2: "הרצליה-רמת השרון",
+		3: 'ר"ג-גבעתיים',
+		4: 'ראשל"צ-חולון-בת ים',
+		5: "אשדוד והסביבה",
+		6: "רחובות-נס ציונה",
+		8: 'רעננה-כפ"ס-הוד השרון',
+		7: "פתח תקווה והסביבה",
+		9: "ראש העין והסביבה",
+		10: "בקעת אונו",
+		11: "בני ברק-גבעת שמואל",
+		12: "שוהם והסביבה",
+		13: "רמלה-לוד",
+		14: "מודיעין והסביבה",
+		15: "נתניה והסביבה",
+		16: "השרון"
 	} .get(num, "לא הוזן")
 	
 def yearTranslate(num):
@@ -531,12 +552,24 @@ def buildSearchParameters(ad_query):
 	else:
 		htmlbody+="""<option value=0> כל האזורים</option>"""
 	
-	htmlbody+="""<option value=1> תל אביב</option>
-				<option value=2> השרון</option>
-				<option value=3> מרכז גוש דן</option>
-				<option value=4> דרום גוש דן</option>
-				<option value=5> אשדוד</option>
-			  </select></div>"""
+	htmlbody+="""
+		<option value=1> תל אביב</option>
+		<option value=2> הרצליה-רמת השרון</option>
+		<option value=3> ר"ג-גבעתיים</option>
+		<option value=4> ראשל"צ-חולון-בת ים</option>
+		<option value=5> אשדוד</option>
+		<option value=6> רחובות-נס ציונה</option>
+		<option value=7> פתח תקווה והסביבה</option>
+		<option value=8> רעננה-כפ"ס-הוד השרון</option>
+		<option value=9> ראש העין והסביבה</option>
+		<option value=10> בקעת אונו</option>
+		<option value=11> בני ברק-גבעת שמואל</option>
+		<option value=12> שוהם והסביבה</option>
+		<option value=13> רמלה-לוד</option>
+		<option value=14> מודיעין והסביבה</option>
+		<option value=15> נתניה והסביבה</option>
+		<option value=16> השרון</option>
+		</select></div>"""
 	
 		
 	htmlYear = """<br><br><div align="right" >
@@ -655,10 +688,21 @@ def buildStudentEditPage(student, course_query):
 	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
 		<option value=""" + str(student.residence) + """>(לא נבחר אזור)</option>
 		<option value=1> תל אביב</option>
-		<option value=2> השרון</option>
-		<option value=3> מרכז גוש דן</option>
-		<option value=4> דרום גוש דן</option>
+		<option value=2> הרצליה-רמת השרון</option>
+		<option value=3> ר"ג-גבעתיים</option>
+		<option value=4> ראשל"צ-חולון-בת ים</option>
 		<option value=5> אשדוד</option>
+		<option value=6> רחובות-נס ציונה</option>
+		<option value=7> פתח תקווה והסביבה</option>
+		<option value=8> רעננה-כפ"ס-הוד השרון</option>
+		<option value=9> ראש העין והסביבה</option>
+		<option value=10> בקעת אונו</option>
+		<option value=11> בני ברק-גבעת שמואל</option>
+		<option value=12> שוהם והסביבה</option>
+		<option value=13> רמלה-לוד</option>
+		<option value=14> מודיעין והסביבה</option>
+		<option value=15> נתניה והסביבה</option>
+		<option value=16> השרון</option>
 	</select>"""
 
 	htmlbody = """<div align="right"> 
@@ -961,6 +1005,10 @@ def buildCompanySignUp():
 
 	return html + htmlButt + htmlEnd
 
+	
+#function that dynamically builds help page depending on
+#type of user and login state
+
 def buildHelpPage(isStudent, isCompany):
 	
 	html="""
@@ -1022,8 +1070,8 @@ def buildHelpPage(isStudent, isCompany):
 		"""
 	return html
 	
+#function that builds gradesheet page given student id
 def buildGradeSheetPage(student):
-	
 	hasCv=False
 	
 	htmlstart="""﻿<!DOCTYPE html>
@@ -1092,13 +1140,10 @@ def buildGradeSheetPage(student):
 			"> חשבון גיט</a>
 		</p></div>"""
 	
-	htmlEndForm="""</div>"""
-	htmlEnd = """</div></body> 
+	htmlEnd = """</div></div></body> 
 	</html>"""
   
-	html=htmlstart + htmlbody   \
-	+"<br>"+"<br>" +htmlEndForm  \
-	+ htmlEnd
+	html=htmlstart + htmlbody+"<br>"+"<br>"  + htmlEnd
 	
 	return html
 
