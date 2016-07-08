@@ -604,4 +604,17 @@ class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 			st = Student.query(Student.user_id==cv_id).get()
 			if (st!=None):
 				self.send_blob(st.cv_blob_key)
-				
+
+class GradeSheetHandler(webapp2.RequestHandler):
+	def get(self):
+		s_id = self.request.get('user_id')
+		user_id = self.request.cookies.get('id')
+		if (checkCompanyLoginExists(user_id)!=True):
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			st=Student.query(Student.user_id==s_id).get()
+			if (st!=None):
+				page = buildGradeSheetPage(st)
+				self.response.write(page)
+			else:
+				self.response.write(errorPage("גישה לא חוקית לדף"))

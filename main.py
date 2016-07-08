@@ -197,6 +197,8 @@ class StudentEditHandler(webapp2.RequestHandler):
 			page = buildStudentEditPage(student_query, course_query)
 			self.response.write(page)
 
+
+			
 class companyAdHandler(webapp2.RequestHandler):
 	def get(self):
 		id = self.request.cookies.get('id')
@@ -415,6 +417,7 @@ app = webapp2.WSGIApplication([
 	#('/dbDelete', dbDelete),
 	#('/dbBuild', dbBuild),
 	('/studentInputPage', StudentInputHandler),
+	('/gradeSheet', GradeSheetHandler),
 	#('/StudentWelcomePage/index.html', WelcomeHandler),	
 	('/studenthandler', StudentHandler),
 	('/tokenSignIn', tokenSignIn),

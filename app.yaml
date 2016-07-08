@@ -99,6 +99,10 @@ handlers:
   static_dir: HelpPictures
   secure: always
   
+- url: /gradeSheet
+  static_dir: gradeSheet
+  secure: always
+  
 - url: /jquery
   static_dir: jquery
   secure: always
