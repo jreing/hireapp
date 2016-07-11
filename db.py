@@ -13,6 +13,7 @@ from time import time
 from google.appengine.ext import blobstore
 from google.appengine.ext.blobstore import BlobKey
 from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import search
 
 #required for Google Cloud Storage
 import os
@@ -28,6 +29,14 @@ gcs.set_default_retry_params(my_default_retry_params)
 
 ##to validate pdf files
 import pyPdf
+
+import PyPDF2
+
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
+from pdfminer.pdfpage import PDFPage
+
 from StringIO import StringIO
 
 from google.appengine.api import users
@@ -37,6 +46,9 @@ import webapp2
 
 #for debugging
 import logging
+
+INDEX_NAME = 'cv'
+
 
 #DB class definitions:
 
@@ -429,8 +441,46 @@ class dbHandler(webapp2.RequestHandler):
 			#logging.info (course_query)
 			s.append(Student_Course(grade=int(grade[i]), course=course_query))
 		return s
-		
+	
+	def convert_pdf_to_txt(self, StIO):
+		rsrcmgr = PDFResourceManager()
+		retstr = StringIO()
+		codec = 'utf-8'
+		laparams = LAParams()
+		device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+		#fp = file(path, 'rb')
+		interpreter = PDFPageInterpreter(rsrcmgr, device)
+		password = ""
+		maxpages = 0
+		caching = True
+		pagenos=set()
 
+		for page in PDFPage.get_pages(StIO, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
+			interpreter.process_page(page)
+
+		text = retstr.getvalue()
+
+		#fp.close()
+		device.close()
+		retstr.close()
+		return text
+
+	def reverseString(self,str):
+		rev = ''
+		temp = ''
+		for i in range(0,len(str)):
+			if (ord(str[i])>=128):
+				temp+=str[i]
+			else:
+				temp = temp.decode('utf-8')
+				temp = temp[::-1]
+				temp = temp.encode('utf-8')
+					
+				rev+= temp
+				rev+= str[i]
+				temp=''
+		return rev
+	
 	def post(self):
 		cvKey = False
 		#get userid from cookie
@@ -451,6 +501,39 @@ class dbHandler(webapp2.RequestHandler):
 			
 			#write user's CV File into blobstore
 			cv_blob_key=self.CreateFile(st.google_id,cv)
+			
+			
+			#cvContent = ''
+			#cvStr = cv.decode('utf-8', errors='ignore').encode('utf-8')
+			
+			cvPdf= StringIO(cv)
+			cvContent = dbHandler.convert_pdf_to_txt(self, cvPdf)
+			cvContentRev = dbHandler.reverseString(self,cvContent)
+		
+			#logging.info("whole cv: ")
+			#logging.info(cvContent)
+			#self.response.write (errorPage(cvContentd))
+			
+			srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
+			
+			doc = search.Document(fields=srcFields)
+			try:
+				add_result = search.Index(name=INDEX_NAME).put(doc)
+			except search.Error:
+				logging.info("indexing result for search has failed")
+			#logging.info("indexed cv")
+			
+			#trying to search
+			#query = 'Linux'			
+			#try:
+				#index = search.Index(INDEX_NAME)
+				#search_results = index.search(query)
+				#logging.info("completed search")
+				#for res in search_results:
+					#logging.info("result: ")
+					#logging.info(res)
+			#except search.Error:
+				#logging.info("search error")
 		elif(st.cv_blob_key!=None):
 			cvKey = True
 		
