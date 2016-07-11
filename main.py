@@ -269,8 +269,6 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 		return q
 		
 	def get(self):
-		
-		
 		user_id = self.request.cookies.get('id')
 		
 		if (Company.query(user_id==Company.user_id).get()==None):

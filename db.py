@@ -151,7 +151,6 @@ def checkCompanyLoginExists(user_id):
 	else:
 		return False
 	
-	
 def getQuery(course_names,grades,average,ctypes,ctype_avgs,residence,year,availability,hasgit):
 	logging.info ("GET QUERY")
 	
