@@ -101,7 +101,8 @@ class Student(ndb.Model):
 	
 	def hasGit(self):
 		return self.git!=""
-		
+	
+	
 	google_id = ndb.StringProperty(indexed=True, required=True)
 	name= ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True)
@@ -119,9 +120,11 @@ class Student(ndb.Model):
 	hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
 	cgrades= ndb.ComputedProperty(lambda self: ",".join(self.getCGrades()))
 	needs_job=ndb.BooleanProperty(indexed=True, required=True)
+	cnt= ndb.IntegerProperty(indexed=False, required=True)
 	
 class allowedCompany(ndb.Model):
 	email =ndb.StringProperty(indexed=True, required=True)
+	
 	
 class Company(ndb.Model):
 	google_id = ndb.StringProperty(indexed=True, required=True)
@@ -129,7 +132,7 @@ class Company(ndb.Model):
 	name= ndb.StringProperty(indexed=True, required=False)
 	email = ndb.StringProperty(indexed=True, required=True)
 	city =ndb.StringProperty(indexed=True, required=False)
-
+	cnt= ndb.IntegerProperty(indexed=False, required=True)
 
 class adQuery(ndb.Model):
 	student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
@@ -143,6 +146,9 @@ class adQuery(ndb.Model):
 	hasgit = ndb.BooleanProperty(indexed=False, required=True, default=False)
 	scheduler = ndb.BooleanProperty(indexed=False, required=True, default=False)
 
+#end of DB class definitions
+
+	
 #function that checks student login
 def checkStudentLoginExists(user_id):
 	if (Student.query(user_id==Student.user_id).get()!=None):
@@ -213,12 +219,12 @@ class minGradeQuery(webapp2.RequestHandler):
 
 		#get only students who want to be found
 		q=Student.query(Student.needs_job==True)
-		
-		#filter out unfinished signups
-		
-		q.filter(Student.avg!=-1)
 		q=q.fetch(100)
 		
+		#filter out unfinished signups
+		p=Student.query(Student.avg>0)
+		q = [val for val in p if val in q]
+						
 		logging.info(q)
 		
 		#filter by availability
@@ -246,7 +252,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		logging.info(q)
 		
 		#filter by residence
-		if (int(residence)>0 and int(residence)<6):
+		if (int(residence)>0 and int(residence)<17):
 			p=Student.query(Student.residence==int(residence))
 			p=p.fetch(100)
 			q = [val for val in p if val in q]
@@ -318,7 +324,7 @@ class minGradeQuery(webapp2.RequestHandler):
 
 	
 	def post(self):	 
-		
+		#get fields from request
 		course_names=self.request.get_all('name')
 		grades= self.request.get_all('grade')
 		average=self.request.get('avg')	
@@ -348,11 +354,6 @@ class minGradeQuery(webapp2.RequestHandler):
 		else: #build result page
 			page = buildQueryResultsPage(q,None,None)
 			self.response.write(page)
-
-
-
-		
-		
 			
 			
 #adds all courses to DB from the parsed courses files
@@ -362,21 +363,30 @@ class dbBuild(webapp2.RequestHandler):
 		#add a mail to allowedCompany so it can be seen in console
 		ac = allowedCompany(email="tauhireteam@gmail.com")
 		ac.put()
-		
+				
 		q=Student.query()
 		q=q.fetch(1000)
 		for st in q:
 			if st.year==None: st.year=0
 			if st.availability==None: st.availability=0
 			if st.needs_job==None: st.needs_job=True
+			if st.cnt==None: st.cnt=0
 			st.put()
 		
-		#import csv
+		import csv
 		#with open('courses3.csv', 'rb') as csvfile:
 		#	spamreader = csv.reader(csvfile, delimiter=',')
 		#	for row in spamreader:
 		#		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
 		#		c.put()
+		
+		with open('allowedCompanies.csv', 'rb') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter='\n')
+			for row in spamreader:
+				s=(str(row)[2:len(str(row))-2]).strip()
+				logging.info(s.strip())
+				a=allowedCompany(email=s)
+				a.put()
 		
 		self.response.write(errorPage('Database built'))
 
@@ -403,15 +413,19 @@ class deleteStudent(webapp2.RequestHandler):
 		self.response.write(\
 		errorPage("שם המשתמש שלך נמחק, בהצלחה בהמשך הדרך"))
 
-#changes all hash id's in the DB
+
 class dbUserIdScramble(webapp2.RequestHandler):
+	#changes all hash id's in the DB
+	#the function is called using cron.yaml once a day for security reasons
 	def get(self):
 		passw=self.request.get("passw")
 		if (passw=="weLoveYouGoogle2016"):
+			#change student ids
 			q=Student.query()
 			for s in q:
 				s.user_id=str(hashlib.sha512(s.google_id + str(time())).hexdigest())
 				s.put()
+			#change company ids
 			q=Company.query()
 			for c in q:
 				c.user_id=str(hashlib.sha512(c.google_id + str(time())).hexdigest())
@@ -566,7 +580,7 @@ class dbHandler(webapp2.RequestHandler):
 		logging.info("residence added")
 		#residence validation and handling
 		residence = self.request.get('residence')
-		if (residence.isdigit()==False or int(residence)>5 or int(residence)<0):
+		if (residence.isdigit()==False or int(residence)>16 or int(residence)<0):
 			self.response.write (errorPage("קלט שגוי לאתר"))
 			return
 		st.residence = int(residence)
@@ -613,7 +627,6 @@ class dbHandler(webapp2.RequestHandler):
 		elif(cvKey!= True):
 			st.cv_blob_key=None
 		
-		
 		#logging.info(st)
 		st.put()
 		
@@ -626,10 +639,10 @@ class dbHandler(webapp2.RequestHandler):
 				window.location="/StudentOffersPage";
 				</script></html>""")
 	
+	#server side validation that uploaded file is a pdf with text in it
 	def checkPdfFile (self,file):
 		logging.info ("check cv")
 		cvFile= StringIO(file)
-		
 		try:
 			doc = pyPdf.PdfFileReader(cvFile)
 			logging.info ("cv check passed")
@@ -644,11 +657,11 @@ class dbHandler(webapp2.RequestHandler):
 		Returns:
 			The corresponding string blobkey for this GCS file.
 		"""
-		#saving the file in the blob store using the users google id
+		#saving the file in the blob store using the user's google id
 		#then a blobstore key is generated from that (not visible to user)
 		# Create a GCS file with GCS client.
 		#write user's CV File into blobstore
-		write_retry_params = gcs.RetryParams(backoff_factor=1.1)
+		write_retry_params = gcs.RetryParams(backoff_factor=1.1) 
 		bucket_name = os.environ.get('BUCKET_NAME',app_identity.get_default_gcs_bucket_name())
 		bucket = '/' + bucket_name
 		filename = bucket + '/'+user_id + '.cv'
@@ -659,7 +672,7 @@ class dbHandler(webapp2.RequestHandler):
 		return blobstore.create_gs_key(blobstore_filename)
 		
 
-#use this function to get user's own CV
+#use this function for student to get his/her own CV
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
@@ -681,6 +694,17 @@ class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 			st = Student.query(Student.user_id==cv_id).get()
 			if (st!=None):
 				self.send_blob(st.cv_blob_key)
-				
 
-#classes that send pages to user, should check if the duplicates can be reduced
+class GradeSheetHandler(webapp2.RequestHandler):
+	def get(self):
+		s_id = self.request.get('user_id')
+		user_id = self.request.cookies.get('id')
+		if (checkCompanyLoginExists(user_id)!=True):
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			st=Student.query(Student.user_id==s_id).get()
+			if (st!=None):
+				page = buildGradeSheetPage(st)
+				self.response.write(page)
+			else:
+				self.response.write(errorPage("גישה לא חוקית לדף"))

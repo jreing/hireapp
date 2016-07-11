@@ -14,7 +14,6 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-
 #function that builds an error page given a message
 def errorPage(errormsg):
 	html="""
@@ -37,7 +36,6 @@ def errorPage(errormsg):
 
 	return html
 
-
 #Methods to build the companyQueryResultsPage and StudentOffersPage
 
 def buildQueryResultsPage(q,ad_id,ad):
@@ -50,6 +48,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 	
 	htmlstart= """<!DOCTYPE html>
 	<html>
+	
 	<link rel="stylesheet" type="text/css" href="companyQueryResultsPage/style.css">
 	<body>
 	
@@ -132,45 +131,60 @@ def buildQueryResultsPage(q,ad_id,ad):
 			else:
 				htmlbody+="""<div class="form-element" align="right">"""
 		else:
-			htmlbody+="""<div class="form-element" align="right">"""
+			htmlbody+="""<div class="form-element" align="right" >"""
 			
 			
+		
+		htmlbody+="""
+			<table dir="rtl" style="width:100%">
+			<tr>
+			<td><b>זמינות: </b></td>
+			<td><b>שנה:</b> </td>
+			<td><b>אזור: </b></td>
+			<td><b>קורות חיים:</b></td>
+			<td><b>גיליון ציונים:</b></td>
+			<td><b>גיט: </b></td>
+			<td><b>בחר: </b></td>
+			</tr>
+			<td>
+			"""+availTranslate(student.availability).decode('utf-8', 'ignore')+"""
+			</td>
+			<td>
+			"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""
+			</td>
+			<td>
+			"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""
+			</td>
+			<td>
+			"""
 		if (hasCv) :
 			htmlbody+="""
-			  <label for="studentselect"""+str(i)+"""" class="textsmallpad">בחר</label>
-			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
-			  value="""+str(student.user_id)+""">
 			  <button type="button" onclick="window.open('getCV?user_id="""+str(student.user_id)+ """')" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
-			  <p class="textbigpad">:קורות חיים</p>"""
+			  </td><td>"""
 			  
 		else :
-			htmlbody+="""
-			  <label for="studentselect"""+str(i)+""" class="textsmallpad">בחר</label>
-			  <input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
-			  value="""+str(student.user_id)+""">
-			  <p class="textbigasCvButton">לא צורף</p>
-			  <p class="textbigpad">:קורות חיים</p>"""
-			  
+			htmlbody+="""לא צורף</td><td>"""  
+		
 		htmlbody+="""
-			<p class="text" >"""+availTranslate(student.availability).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:זמינות</p>
-			<p class="text" >"""+yearTranslate(student.year).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:שנה</p>
-			<p class="text" >"""+residenceTranslate(student.residence).decode('utf-8', 'ignore')+"""</p>
-			<p class="text">:אזור</p>"""
+		<button type="button" onclick="window.open('gradeSheet?user_id="""+str(student.user_id)+ """')" id="Cvbutton" """+str(i)+""" class="Cvbutton">הצג</button>
+		</td><td>"""
+		
+		
 		if (student.git!=""):	
-			htmlbody+="""<br><p class="text"> <a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a></p>
-			<p class="text">:גיט</p>
-			</div>"""
+			htmlbody+="""
+			<a href="http://www."""+ student.git.decode('utf-8', 'ignore')+""" "> חשבון גיט</a>
+			"""
 		else:
-			htmlbody+="""<br><p class="text">לא הוזן</p>
-			<p class="text">:גיט</p>
-			</div>"""
-			  	
+			htmlbody+="""לא הוזן"""
+		
+		htmlbody+="""</td><td>
+			<input type="checkbox" id="studentselect" """+str(i)+""" class="checkbox" 
+			value="""+str(student.user_id)+"""></td>
+		</tr></table></div>"""
 	
 	htmlend="""
       </div>
-
+		
       <label for="select-all" class="textsmallpad">בחר הכל</label>
       <input type="checkbox" name="select-all" id="select-all" />
       <div class="submit">
@@ -283,10 +297,22 @@ def buildStudentInputPage(course_query):
  				<select name="residence" id="element2" dir="rtl" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" placeholder="אזור" id="residence">
 				<option value=0>(לא נבחר אזור)</option>
 				<option value=1> תל אביב</option>
-				<option value=2> השרון</option>
-				<option value=3> מרכז גוש דן</option>
-				<option value=4> דרום גוש דן</option>
+				<option value=2> הרצליה-רמת השרון</option>
+				<option value=3> ר"ג-גבעתיים</option>
+				<option value=4> ראשל"צ-חולון-בת ים</option>
 				<option value=5> אשדוד</option>
+				<option value=6> רחובות-נס ציונה</option>
+				<option value=7> פתח תקווה והסביבה</option>
+				<option value=8> רעננה-כפ"ס-הוד השרון</option>
+				<option value=9> ראש העין והסביבה</option>
+				<option value=10> בקעת אונו</option>
+				<option value=11> בני ברק-גבעת שמואל</option>
+				<option value=12> שוהם והסביבה</option>
+				<option value=13> רמלה-לוד</option>
+				<option value=14> מודיעין והסביבה</option>
+				<option value=15> נתניה והסביבה</option>
+				<option value=16> השרון</option>
+				
 			  </select>
 		  </div>
 		  
@@ -388,10 +414,21 @@ def buildStudentInputPage(course_query):
 def residenceTranslate(num):
 	return{
 		1: "תל אביב",
-		2: "השרון",
-		3: "מרכז גוש דן",
-		4: "דרום גוש דן",
-		5: "אשדוד"
+		2: "הרצליה-רמת השרון",
+		3: 'ר"ג-גבעתיים',
+		4: 'ראשל"צ-חולון-בת ים',
+		5: "אשדוד והסביבה",
+		6: "רחובות-נס ציונה",
+		8: 'רעננה-כפ"ס-הוד השרון',
+		7: "פתח תקווה והסביבה",
+		9: "ראש העין והסביבה",
+		10: "בקעת אונו",
+		11: "בני ברק-גבעת שמואל",
+		12: "שוהם והסביבה",
+		13: "רמלה-לוד",
+		14: "מודיעין והסביבה",
+		15: "נתניה והסביבה",
+		16: "השרון"
 	} .get(num, "לא הוזן")
 	
 def yearTranslate(num):
@@ -423,7 +460,6 @@ def buildSearchParameters(ad_query):
 	logging.info(dynFlag)
 	
 	htmlMain = """
-		  
 			<div align="right">
 			<p class="text1">:ציון מינימלי בקורס</p>
 		  </div>
@@ -516,12 +552,24 @@ def buildSearchParameters(ad_query):
 	else:
 		htmlbody+="""<option value=0> כל האזורים</option>"""
 	
-	htmlbody+="""<option value=1> תל אביב</option>
-				<option value=2> השרון</option>
-				<option value=3> מרכז גוש דן</option>
-				<option value=4> דרום גוש דן</option>
-				<option value=5> אשדוד</option>
-			  </select></div>"""
+	htmlbody+="""
+		<option value=1> תל אביב</option>
+		<option value=2> הרצליה-רמת השרון</option>
+		<option value=3> ר"ג-גבעתיים</option>
+		<option value=4> ראשל"צ-חולון-בת ים</option>
+		<option value=5> אשדוד</option>
+		<option value=6> רחובות-נס ציונה</option>
+		<option value=7> פתח תקווה והסביבה</option>
+		<option value=8> רעננה-כפ"ס-הוד השרון</option>
+		<option value=9> ראש העין והסביבה</option>
+		<option value=10> בקעת אונו</option>
+		<option value=11> בני ברק-גבעת שמואל</option>
+		<option value=12> שוהם והסביבה</option>
+		<option value=13> רמלה-לוד</option>
+		<option value=14> מודיעין והסביבה</option>
+		<option value=15> נתניה והסביבה</option>
+		<option value=16> השרון</option>
+		</select></div>"""
 	
 		
 	htmlYear = """<br><br><div align="right" >
@@ -625,26 +673,37 @@ def buildStudentEditPage(student, course_query):
 	<html lang="he">
 	<link rel="stylesheet" type="text/css" href="studentEditPage/style.css">
 	<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
-  <body>
-  
-  <script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
-  <div id="form-main">
-    <div align="right">
-      <p class="titletext">:הפרטים שלי</p>
-    </div>
-    <div id="form-div">
-      <div align="right">
-        <p class="text1">:אזור מגורים</p>
-      </div>
-	  <form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
-	  <select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
-				<option value=""" + str(student.residence) + """>(לא נבחר אזור)</option>
-				<option value=1> תל אביב</option>
-				<option value=2> השרון</option>
-				<option value=3> מרכז גוש דן</option>
-				<option value=4> דרום גוש דן</option>
-				<option value=5> אשדוד</option>
-	  </select>"""
+	<body>
+	
+	<script type="text/javascript" src="/StudentToolbar/loadToolbar.js"></script>
+	<div id="form-main">
+	<div align="right">
+		<p class="titletext">:הפרטים שלי</p>
+	</div>
+	<div id="form-div">
+		<div align="right">
+			<p class="text1">:אזור מגורים</p>
+		</div>
+	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
+	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
+		<option value=""" + str(student.residence) + """>(לא נבחר אזור)</option>
+		<option value=1> תל אביב</option>
+		<option value=2> הרצליה-רמת השרון</option>
+		<option value=3> ר"ג-גבעתיים</option>
+		<option value=4> ראשל"צ-חולון-בת ים</option>
+		<option value=5> אשדוד</option>
+		<option value=6> רחובות-נס ציונה</option>
+		<option value=7> פתח תקווה והסביבה</option>
+		<option value=8> רעננה-כפ"ס-הוד השרון</option>
+		<option value=9> ראש העין והסביבה</option>
+		<option value=10> בקעת אונו</option>
+		<option value=11> בני ברק-גבעת שמואל</option>
+		<option value=12> שוהם והסביבה</option>
+		<option value=13> רמלה-לוד</option>
+		<option value=14> מודיעין והסביבה</option>
+		<option value=15> נתניה והסביבה</option>
+		<option value=16> השרון</option>
+	</select>"""
 
 	htmlbody = """<div align="right"> 
 					<p class="text1">:הקורסים שלי</p>
@@ -669,7 +728,7 @@ def buildStudentEditPage(student, course_query):
 
 	if(hasCv):
 		htmlcv = """<div align="right" id=cventry>
-					<p class="text3" id="element1" >:קורות החיים שהזנת</p>"""
+					<p class="text3" id="element1">:קורות החיים שהזנת</p>"""
 		
 		htmlcv += """<button type="button" onclick="location.href='getMyCV'" id="Cvbutton" class="Cvbutton">הצג</button>"""
 		
@@ -807,7 +866,7 @@ def buildAdPage(course_query):
 			  <input type="submit" value="צור מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
-	htmlend="""	</form> </div></div>
+	htmlend="""	</fodrm> </div></div>
 		
 	  </body>
 	  <script type="text/javascript" src="/createAd/script.js"></script>
@@ -831,7 +890,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 		  <p class="titletext">:בניית משרה</p>
 		</div>
 		<div id="form-div">"""
-	
+	d
 	htmlSearchParam = buildSearchParameters(ad_query)
 	
 	htmlbody = buildCourseList(course_query)
@@ -898,5 +957,193 @@ def buildCurrentAdsPage(ad_query):
 	html=htmlstart+htmlbody + htmlend
 	return html
 
+def buildCompanySignUp():
+	html="""<!DOCTYPE html>
+	<html lang="he">
+		<link rel="stylesheet" type="text/css" href="companySignUp/style.css">
+		
+
+	  <body>
+		<script type="text/javascript" src="companySignUp/jquery-2.2.3.js"></script>
+	  	<script type="text/javascript" src="/signUpToolbar/loadToolbar.js"></script>
+		
+
+		<div id="form-main">
+	
+		<div id="form-div">
+
+		<div align="right"> <p class="pink">מטרת האתר היא לסייע לקשר בין מעסיקים לסטודנטים למדעי המחשב מאוניברסיטת תל אביב. האתר מאפשר לסטודנטים להעלות לאתר את הקורסים שלמדו וקורות חיים ומאפשר למעסיקים לחפש את הסטודנטים שמתאימים למשרות שברצונם להציע   </p><br></div>
+
+		<div align="right"> <p class="cyan">על מנת להשתמש באתר כמעסיק יש צורך בתהליך הרשמה קצר. נא מלא את השדות שלמטה ולאחר מכן לחץ על "הרשם". בסיום תהליך ההרשמה הבקשה תשלח לתהליך אישור קצר שבסיומו יהיה ניתן להתחבר לאתר ולהתחיל לחפש סטודנטים </p></div>
+	
+		<form class="form" id="form1" onsubmit="return validateForm()" action="/signUpHandler" method="post" enctype="multipart/form-data">
+
+<div align="right">
+				<p class="text1" id="element1">תפקיד</p><br><br>
+
+				<input name="role" type="text" class="role" id="role" placeholder="" /> </div>
+
+<div align="right">
+				<p class="text1" id="element1">שם חברה/מעסיק</p><br><br>
+
+				<input name="compName" type="text" class="compName" id="compName" placeholder="" /></div>
+
+<div align="right">
+				<p class="text1" id="element1">מייל לשם כניסה לאתר (עם סיומת (@gmail.com</p><br><br>
+
+				<input name="mailAdd" type="text" class="mailAdd" id="mailAdd" placeholder="" /></div>"""
+
+
+
+	htmlButt ="""<div class="submit">
+			  <input type="submit" value="הרשם" id="button-blue" />
+			  <div class="ease"></div>"""
+
+	htmlEnd = """</div></div></form> </body>
+	<script type="text/javascript" src="/companySignUp/script.js"></script></html>
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">"""
+
+	return html + htmlButt + htmlEnd
 
 	
+#function that dynamically builds help page depending on
+#type of user and login state
+
+def buildHelpPage(isStudent, isCompany):
+	
+	html="""
+	<!DOCTYPE html>
+	<html lang="he">
+		<link rel="stylesheet" type="text/css" href="/HelpPage/style.css">
+	 <body>
+		<div id="form-main">
+			<div id="form-div">
+			<div align="right">
+	"""
+	if (isStudent and isCompany):
+		html+="""
+		<p class="student"> :אם הינך סטודנט</p>
+		"""
+	if (isStudent): 
+		html+="""
+		<p class="red" dir="rtl">
+		1. הזן פרטים 
+		<img src="/HelpPictures/HelpPic1.png" height="600" width="500" vspace="10">
+		<br>
+		2. המתן לקבלת הצעה
+		<img src="/HelpPictures/HelpPic2.png" height="300" width="500" vspace="10">
+		<br>
+		3. הצעות עבודה חדשות יופיעו באתר כך
+		(תוכל לבחור לקבל עדכונים על כך במייל)
+		<img src="/HelpPictures/HelpPic3.png" height="300" width="500" vspace="10">
+		<br>
+		</div>
+		"""
+	html+="""<div align="right">"""
+	
+	if (isCompany==True and isStudent==True):
+		html+="""
+		
+		<p class="company"> :אם הינך מעסיק</p>
+		"""
+	if (isCompany):
+		html+="""
+		<p class="red" dir="rtl">
+		1. בנה משרה
+		<img src="/HelpPictures/HelpPic4.png" height="350" width="500" vspace="10">
+		<br>
+		2. באפשרותך לצפות בסטודנטים מתאימים למשרה או לערוך אותה
+		<img src="/HelpPictures/HelpPic5.png" height="150" width="500" vspace="10">
+		<br>
+		3. בחר מועמדים מרשימת המועמדים המתאימים ושלח להם את המשרה
+		<br>
+		(תוכל לבחור לקבל עדכונים למייל כאשר נרשמים לאתר סטודנטים חדשים המתאימים למשרה)
+		<img src="/HelpPictures/HelpPic6.png" height="300" width="500" vspace="10">
+		</div>
+		"""
+		
+	html+="""</div>
+		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/HelpPage/decideToolbar.js"></script>
+		</body>
+		</html>
+		"""
+	return html
+	
+#function that builds gradesheet page given student id
+def buildGradeSheetPage(student):
+	hasCv=False
+	
+	htmlstart="""﻿<!DOCTYPE html>
+	<html lang="he">
+	<link rel="stylesheet" type="text/css" href="gradeSheet/style.css">
+	<script type="text/javascript" src="studentEditPage/jquery-2.2.3.js"></script>
+	<body>
+	
+	<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
+	<div id="form-main">
+	<div align="right">
+		<p class="titletext">:פרטי הסטודנט</p>
+	</div>
+	<div id="form-div">
+		"""
+
+	htmlbody = """<div align="right"> 
+					<p class="text1">:גיליון ציונים</p>
+      			  </div>
+		"""
+	j = 0
+	htmlbody+="""<table dir="rtl" align="right" class="text3"
+		border=1 width=100%>"""
+	for crs in student.student_courses:
+		
+		if (crs!=None):
+			htmlbody+= """<tr><td> 
+			"""+ str(crs.course.course_name) + """
+			</td> <td> """+ str(crs.grade) + """</td> </tr>
+			 """
+	
+	htmlbody+="""</table>"""
+	
+	if (student.cv_blob_key != None) :
+			hasCv=True
+	
+	if(hasCv):
+		htmlbody+= """<div align="right" id=cventry>
+				<p class="text1" id="element1">:קורות החיים שהוזנו"""
+		
+		htmlbody+= """<button type="button" align="left"
+		onclick="window.open('getCV?user_id=""" \
+		+str(student.user_id)+ """ ')"
+		id="Cvbutton" class="Cvbutton">הצג</button>"""
+		
+	htmlbody+="""<div align="right">
+			<p class="text1">אזור מגורים:
+			""" + residenceTranslate(student.residence) + """
+		</p>
+		
+			<p class="text1">ממוצע כללי:  
+			""" + str(student.avg) + """
+		</p>
+			<p class="text1">סוג משרה:  
+			""" + availTranslate(student.availability) + """
+		</p>
+		
+			<p class="text1">שנת לימודים:  
+			""" + yearTranslate(student.year) + """
+		</p></div>"""
+	if (student.hasgit):
+		htmlbody+="""
+		<div align="right">
+			<p class="text1">גיט:  
+			<a href="http://www."""+ student.git.decode('utf-8', 'ignore')+"""
+			"> חשבון גיט</a>
+		</p></div>"""
+	
+	htmlEnd = """</div></div></body> 
+	</html>"""
+  
+	html=htmlstart + htmlbody+"<br>"+"<br>"  + htmlEnd
+	
+	return html
+

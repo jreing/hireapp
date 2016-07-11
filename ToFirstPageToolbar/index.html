@@ -6,19 +6,16 @@
 
 	<script type="text/javascript" src="/LogInForBarak/script.js"></script>
     <meta name="google-signin-client_id" content="165493620970-oi8ske8hj7dd8gh4i7l56lmatbs1mj7p.apps.googleusercontent.com">
-	<div class="g-signin2" data-onsuccess="onSignIn" data-width="0" data-height="0"></div>
+	<div class="g-signin2" data-onsuccess="onSignIn" data-width=0 data-height=0></div>
 
 
-	<link rel="stylesheet" type="text/css" href="/StudentToolbar/style.css">
+	<link rel="stylesheet" type="text/css" href="/HelpToolbar/style.css">
 <body>
    <div id='cssmenu'>
  <ul>
 
-    <li ><a href="#" onclick="signOut()"><span>התנתק</span></a></li>
+    <li ><a href="/" ><span>חזור</span></a></li>
 
-    <li><a href='/studentEditPage'><span>הפרופיל שלי</span></a></li>
-    <li><a href='/StudentOffersPage'><span>ההצעות שלי</span></a></li>
-	<li><a href='/HelpPage'><span>עזרה</span></a></li>
  </ul> 
  </div>
  
@@ -29,7 +26,7 @@
 
 <script>
   function signOut() {
-  //gapi.auth2.init(client_id="587253450633-tp7a8kk4k7lugngc90s0i2u6vhjsdsu5")
+  
     var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
 		//alert("logout");

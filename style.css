@@ -6,7 +6,7 @@ html {
 }
 
 #feedback-page {
-  text-align: right;
+  text-align: center;
 }
 
 #form-main {
@@ -27,6 +27,7 @@ html {
   position: absolute;
   margin-top: 100px;
   margin-left: -260px;
+  -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
 }
 
@@ -36,34 +37,6 @@ html {
   float: right;
   width: 100%;
   color: white;
-  font-size: 34px;
-  padding-top: 5px;
-  margin-top: 0px;
-  padding-bottom: 0px;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-
-.yellow{
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  float: right;
-  width: 100%;
-  color: yellow;
-  font-size: 34px;
-  padding-top: 5px;
-  margin-top: 0px;
-  padding-bottom: 0px;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-
-.orange{
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  float: right;
-  width: 100%;
-  color: orange;
   font-size: 34px;
   padding-top: 5px;
   margin-top: 0px;
@@ -127,6 +100,7 @@ html {
 
 #employ_button {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  float: left;
   width: 100%;
   border: #fbfbfb solid 4px;
   cursor: pointer;
@@ -138,13 +112,26 @@ html {
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
-  margin-top: 10px;
+  margin-top: -4px;
   font-weight: 700;
 }
 
-#employ_button:disabled
-{
-    background:#CCC;
+#student_button {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  float: left;
+  width: 100%;
+  border: #fbfbfb solid 4px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+  font-size: 24px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  margin-top: 13px;
+  font-weight: 700;
 }
 
 

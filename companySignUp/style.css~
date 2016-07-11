@@ -21,13 +21,50 @@ html {
   padding-right: 35px;
   padding-top: 35px;
   padding-bottom: 50px;
-  width: 875px;
+  width: 575px;
   float: left;
   left: 50%;
   position: absolute;
   margin-top: 100px;
-  margin-left: -320px;
+  margin-left: -260px;
+  -moz-border-radius: 7px;
   -webkit-border-radius: 7px;
+}
+
+.feedback-input {
+  color: #3c3c3c;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  padding: 13px 13px 13px 54px;
+  margin-bottom: 10px;
+  width: 60%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+}
+
+.feedback-input2 {
+  color: #3c3c3c;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0;
+  line-height: 22px;
+  background-color: #fbfbfb;
+  padding: 13px 13px 13px 54px;
+  margin-bottom: 10px;
+  width: 25%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 3px solid rgba(0, 0, 0, 0);
 }
 
 .feedback-input3 {
@@ -51,6 +88,7 @@ html {
 
 .feedback-input:focus {
   background: #fff;
+  box-shadow: 0;
   border: 3px solid #3498db;
   color: #3498db;
   outline: none;
@@ -93,40 +131,20 @@ textarea {
   line-height: 150%;
   resize: vertical;
 }
+
 .titletext {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: bold;
   float: right;
   width: 100%;
   color: white;
-  font-size: 80px;
+  font-size: 60px;
   padding-top: 5px;
   margin-top: 0px;
   padding-bottom: 20px;
   margin-bottom: 20px;
   margin-right: 35px;
   font-weight: 700;
-}
-
-.medtitletext {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  width: 100%;
-  color: white;
-  font-size: 50px;
-  padding-top: 5px;
-  padding-bottom: 20px;
-}
-
-.medtitletextpadded {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  width: 100%;
-  color: white;
-  font-size: 50px;
-  padding-top: 5px;
-  padding-bottom: 20px;
-  margin-top: 40px
 }
 
 .text1 {
@@ -142,17 +160,50 @@ textarea {
   margin-bottom: 20px;
   font-weight: 700;
 }
+
 .text2 {
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: bold;
- 
-  width: 50%;
+  float: right;
+  width: 100%;
   color: white;
   font-size: 34px;
   padding-top: 5px;
   margin-top: 0px;
   padding-bottom: 0px;
   margin-bottom: 20px;
+  font-weight: 700;
+}
+
+#buttonadd {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  float: right;
+  width: 100%;
+  border: #fbfbfb solid 4px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+  font-size: 34px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.buttondel {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  float: right;
+  width: 13%;
+  border: #fbfbfb solid 4px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+  font-size: 34px;
+  padding-top: 7px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-left: 6px;
   font-weight: 700;
 }
 
@@ -170,104 +221,31 @@ textarea {
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   transition: all 0.3s;
-  margin-top: 50px;
+  margin-top: -4px;
   font-weight: 700;
 }
 
-.form-element {
-  border: 2px solid #fbfbfb;
-  padding: 10px;
-  padding-bottom: 10px;
-  margin: 1px;
-  width: 90%;
-  float: right;
-
-  background-color: #3498db;
-  color: #fbfbfb;
+#button-blue:hover {
+  background-color: rgba(0, 0, 0, 0);
+  color: #0493bd;
 }
 
-.form-element2 {
-  border: 2px solid #fbfbfb;
-  padding: 10px;
-  padding-bottom: 10px;
-  margin: 1px;
-  width: 90%;
-  float: right;
-
-  background-color: #339966;
-  color: #fbfbfb;
+.ease {
+  margin-top: 30px;
+  width: 0px;
+  height: 74px;
+  background-color: #fbfbfb;
+  -webkit-transition: .3s ease;
+  -moz-transition: .3s ease;
+  -o-transition: .3s ease;
+  -ms-transition: .3s ease;
+  transition: .3s ease;
 }
 
-.text {
-  margin-right: 7px;
-  display: inline;
-  width: 40px;
-}
-
-.checkbox {
-  margin-right: 10px;
-  display: inline-block;
-  width: 20px;
-}
-
-input[type=checkbox] {
-  /* All browsers except webkit*/
-  transform: scale(1.5);
-
-  /* Webkit browsers*/
-  -webkit-transform: scale(1.5);
-}
-
-table, td {
-    
-	table-layout:fixed;
-	width:20px;
-	overflow:hidden;
-	word-wrap:break-word;
-}
-
-.textsmallpad {
-  margin-right: 20px;
-  display: inline-block;
-}
-
-.textbigpad {
-  margin-right: 35px;
-  display: inline-block;
-}
-
-.texthugepad {
-  margin-right: 250px;
-  display: inline-block;
-}
-
-.studentselect {
-	display: inline-block;
-}
-
-.Cvbutton {
-  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-  border: #fbfbfb solid 4px;
-  cursor: pointer;
-  width: 60px;
-  margin-right: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  display: inline-block;
-
-}
-
-.textbigasCvButton {
-  margin-right: 25px;
-  display: inline;
-  width: 10px;
+.submit:hover .ease {
+  width: 100%;
+  background-color: white;
 }
 
 
-input[type='text']{
-text-align:right;
-}
-
-input[type='text']:focus{
-text-align:right;
 }
