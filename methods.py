@@ -890,7 +890,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 		  <p class="titletext">:בניית משרה</p>
 		</div>
 		<div id="form-div">"""
-	d
+	
 	htmlSearchParam = buildSearchParameters(ad_query)
 	
 	htmlbody = buildCourseList(course_query)
