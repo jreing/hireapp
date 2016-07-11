@@ -253,21 +253,22 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 	
 	def fetchQuery(self,adv):
 		course_query = Course.query()
-		minGradeQ = db.minGradeQuery()
+		#minGradeQ = db.minGradeQuery()
 		course_names = []
 			
 		for crs in adv.aQuery.student_courses:
 			course_names.append(crs.course.course_name)
-		ctypesBack = list(adv.aQuery.ctypes)	
-		q = minGradeQ.getQuery(course_names,adv.aQuery.cgrades,str(adv.aQuery.avg)
+		ctypesBack = list(adv.aQuery.ctypes)
+		
+		q = getQuery(course_names,adv.aQuery.cgrades,str(adv.aQuery.avg)
 			,adv.aQuery.ctypes,adv.aQuery.ctype_avgs,str(adv.aQuery.residence),str(adv.aQuery.year),str(adv.aQuery.availability),"False")	
+		if q==None: 
+			return q
 		adv.aQuery.ctypes = ctypesBack
 		adv.put()
 		return q
 		
 	def get(self):
-		
-		
 		user_id = self.request.cookies.get('id')
 		
 		if (Company.query(user_id==Company.user_id).get()==None):
@@ -292,7 +293,9 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 			
 			q = companyAdResultsHandler.fetchQuery(self,ad)
 			logging.info(ad)
-			
+			if q==None: 
+				self.response.write(errorPage("קלט שגוי לאתר"))
+				return
 			if (q==[]):
 				f = open("no_results_page.html")
 				self.response.write(f.read())

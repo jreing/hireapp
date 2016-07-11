@@ -849,7 +849,7 @@ def buildAdPage(course_query):
 
       <div align="right">
         <p class="text1">:תאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
+        <textarea class="scrollabletextbox" name="note" class="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
 		<br><br><div align="right">
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""
