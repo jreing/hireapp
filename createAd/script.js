@@ -128,20 +128,18 @@ function validateForm() {
         return category!=0 && grade === "";
     }).length !== 0;
 	
-	/*var noJobDescription = $(".note").filter(function (key, element) {
-        var category = $(element).children().eq(0).val();
-		var grade = $(element).children().eq(1).val();
-		//alert("category, grade are"+(category!=0)+" , "+(grade === ""));
-        return category!=0 && grade === "";
+	var noJobDescription = $(".note").filter(function (key, element) {
+        var desc = $(element).val();
+        return desc === "";
     }).length !== 0;
-	*/
 	
-	var noNameForJob = $(".jobId").filter(function (key, element) {
-		var name = $(element).key();
-		alert("AS");
+	
+	var noNameForJob = $("#jobId").filter(function (key, element) {
+		var name = $(element).val();
+		//alert("AS");
         return name === "";
-    });
-	alert(noNameForJob)
+    }).length !== 0; 
+
 	
     if (gradeWithoutCourse) {
 		alert("Exists a grade with a missing course name.\nPlease enter a valid course name");
@@ -164,7 +162,7 @@ function validateForm() {
 		return false }
 		
 	if (noJobDescription) {
-		alert("Please enter a description");
+		alert("Please enter a description for the job");
 		return false }
 	
 	return true;
