@@ -151,6 +151,137 @@ def checkCompanyLoginExists(user_id):
 	else:
 		return False
 	
+	
+def getQuery(course_names,grades,average,ctypes,ctype_avgs,residence,year,availability,hasgit):
+	logging.info ("GET QUERY")
+	
+	#server side input validation
+	if len(grades)!=len(course_names): return None
+	for crs in course_names:
+		if len(crs)>50: return None
+	for grade in grades:
+		if grade!="" and grade.isdigit()==False: return None
+	if average!="" and average.isdigit()==False: return None
+	if (len(ctypes)!=len(ctype_avgs)): return None
+	if (len(ctypes) >0 and ctypes[0]!=""):
+		for ctype in ctypes:
+			if ctype.isdigit()==False:return None
+	if (len(ctype_avgs)>0 and ctypes[0]!=""):
+		for ctype_avg in ctype_avgs:
+			if ctype_avg!="" and ctype_avg.isdigit()==False: return None
+	if residence.isdigit()==False:return None
+	
+	if year.isdigit()==False: return None
+	if availability.isdigit()==False: return None
+	if len(hasgit)>5: return None
+
+	#get only students who want to be found
+	q=Student.query(Student.needs_job==True)
+	q=q.fetch(100)
+	
+	#filter out unfinished signups
+	p=Student.query(Student.avg>0)
+	q = [val for val in p if val in q]
+					
+	logging.info(q)
+	
+	#filter by availability
+	if (int(availability)>0 and int(availability)<6):
+		p=Student.query(Student.availability==int(availability))
+		p=p.fetch(100)
+		q = [val for val in p if val in q]
+	
+	logging.info(q)
+	
+	#filter by hasgit
+	if (hasgit=="True"):
+		p=Student.query(Student.hasgit==True)
+		p=pp.fetch(100)
+		q = [val for val in p if val in q]
+	
+	logging.info(q)
+	
+	#filter by year
+	if (int(year)>0 and int(year)<6):
+		p=Student.query(Student.year==int(year))
+		p=p.fetch(100)
+		q = [val for val in p if val in q]
+	
+	logging.info(q)
+	
+	#filter by residence
+	if (int(residence)>0 and int(residence)<17):
+		p=Student.query(Student.residence==int(residence))
+		p=p.fetch(100)
+		q = [val for val in p if val in q]
+		
+	logging.info(q)	
+	
+	#filter out student by grades in specific courses
+	for i in range (0,len(grades)):	
+		if grades[i]=="" :
+			break
+		#logging.info(i)
+		#logging.info (len(grades)-1)
+		grade=int(grades[i])
+		course=Course.query(Course.course_name==course_names[i]).get()
+		course_id=course.course_id
+		logging.info(course_id)
+		
+		#p1=Student.query(Student.student_courses.course_id==course_id)
+		p=Student.query(Student.student_courses.grade>=grade)
+		p=p.fetch(100)
+		p=[[val.google_id] +  val.cgrades.split("),(") for val in p]
+		logging.info(p)
+		p=[[p[i][0],p[i][j]] for i in range(len(p)) for j in range(1, len(p[i]))]
+		logging.info(p)
+		
+		#filter students that have both course and grade
+		p=[v[0] for v in p if \
+		(''.join(c for c in v[1].split("',")[0] if c.isdigit())== \
+		''.join(c for c in course_id if c.isdigit())) and\
+		((int(''.join(c for c in v[1].split("',")[1] if c.isdigit()))) \
+		>=grade)]
+		logging.info(p)
+		p1=[]
+		#build list of those students
+		for google_id in p:
+			p1.append(Student.query(Student.google_id==google_id).get())
+		
+		#intersect
+		q = [val for val in q if val in p1]
+		logging.info(p)
+		logging.info(q)
+		
+	#filter out by average
+	if average!="":
+		p=Student.query (Student.avg>=int(average))
+		logging.info("MAIN AVERAGE QUERY")
+		p=p.fetch(100)
+		q = [val for val in q if val in p]
+
+	for i in range(0,len(ctypes)):
+		#logging.info(i)
+		filteredRes=[]
+		ctypes[i]=int(ctypes[i])
+		if(ctypes[i]!=0):
+			#logging.info("CTYPE QUERY")
+			for student in q:
+				if self.studentHasCType(student,ctypes[i]):
+					sctavg=self.studentCTypeAvg(student,ctypes[i])
+					logging.info("SCTAVG:" + str(sctavg))
+					if (int(sctavg)>=int(ctype_avgs[i])):
+						filteredRes.append(student)
+		if (i>=1):
+			q = [val for val in filteredRes if val in q]
+			#logging.info(filteredRes)
+		else:
+			if (ctypes[0]!=0):
+				q=filteredRes
+	return q
+			
+	
+	
 class minGradeQuery(webapp2.RequestHandler):
 	def errormsg(self):
 		self.response.write (errorPage("קלט שגוי לאתר"))
@@ -182,133 +313,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		if (num_points==0): return 0
 		else: return weighted_sum/num_points
 	
-	def getQuery(self, course_names,grades,average,ctypes,ctype_avgs,residence,year,availability,hasgit):
-		logging.info ("GET QUERY")
-		
-		#server side input validation
-		if len(grades)!=len(course_names): self.errormsg()
-		for crs in course_names:
-			if len(crs)>50: self.errormsg()
-		for grade in grades:
-			if grade!="" and grade.isdigit()==False: self.errormsg()
-		if average!="" and average.isdigit()==False: self.errormsg()
-		if (len(ctypes)!=len(ctype_avgs)): self.errormsg()
-		if (len(ctypes) >0 and ctypes[0]!=""):
-			for ctype in ctypes:
-				if ctype.isdigit()==False: self.errormsg()
-		if (len(ctype_avgs)>0 and ctypes[0]!=""):
-			for ctype_avg in ctype_avgs:
-				if ctype_avg!="" and ctype_avg.isdigit()==False: self.errormsg()
-		if residence.isdigit()==False: self.errormsg()
-		
-		if year.isdigit()==False: self.errormsg()
-		if availability.isdigit()==False: self.errormsg()
-		if len(hasgit)>5: self.errormsg()
-
-		#get only students who want to be found
-		q=Student.query(Student.needs_job==True)
-		q=q.fetch(100)
-		
-		#filter out unfinished signups
-		p=Student.query(Student.avg>0)
-		q = [val for val in p if val in q]
-						
-		logging.info(q)
-		
-		#filter by availability
-		if (int(availability)>0 and int(availability)<6):
-			p=Student.query(Student.availability==int(availability))
-			p=p.fetch(100)
-			q = [val for val in p if val in q]
-		
-		logging.info(q)
-		
-		#filter by hasgit
-		if (hasgit=="True"):
-			p=Student.query(Student.hasgit==True)
-			p=pp.fetch(100)
-			q = [val for val in p if val in q]
-		
-		logging.info(q)
-		
-		#filter by year
-		if (int(year)>0 and int(year)<6):
-			p=Student.query(Student.year==int(year))
-			p=p.fetch(100)
-			q = [val for val in p if val in q]
-		
-		logging.info(q)
-		
-		#filter by residence
-		if (int(residence)>0 and int(residence)<17):
-			p=Student.query(Student.residence==int(residence))
-			p=p.fetch(100)
-			q = [val for val in p if val in q]
-			
-		logging.info(q)	
-		
-		#filter out student by grades in specific courses
-		for i in range (0,len(grades)):	
-			if grades[i]=="" :
-				break
-			#logging.info(i)
-			#logging.info (len(grades)-1)
-			grade=int(grades[i])
-			course=Course.query(Course.course_name==course_names[i]).get()
-			course_id=course.course_id
-			logging.info(course_id)
-			
-			#p1=Student.query(Student.student_courses.course_id==course_id)
-			p=Student.query(Student.student_courses.grade>=grade)
-			p=p.fetch(100)
-			p=[[val.google_id] +  val.cgrades.split("),(") for val in p]
-			logging.info(p)
-			p=[[p[i][0],p[i][j]] for i in range(len(p)) for j in range(1, len(p[i]))]
-			logging.info(p)
-			
-			#filter students that have both course and grade
-			p=[v[0] for v in p if \
-			(''.join(c for c in v[1].split("',")[0] if c.isdigit())== \
-			''.join(c for c in course_id if c.isdigit())) and\
-			((int(''.join(c for c in v[1].split("',")[1] if c.isdigit()))) \
-			>=grade)]
-			logging.info(p)
-			p1=[]
-			#build list of those students
-			for google_id in p:
-				p1.append(Student.query(Student.google_id==google_id).get())
-			
-			#intersect
-			q = [val for val in q if val in p1]
-			logging.info(p)
-			logging.info(q)
-			
-		#filter out by average
-		if average!="":
-			p=Student.query (Student.avg>=int(average))
-			logging.info("MAIN AVERAGE QUERY")
-			p=p.fetch(100)
-			q = [val for val in q if val in p]
-
-		for i in range(0,len(ctypes)):
-			#logging.info(i)
-			filteredRes=[]
-			ctypes[i]=int(ctypes[i])
-			if(ctypes[i]!=0):
-				#logging.info("CTYPE QUERY")
-				for student in q:
-					if self.studentHasCType(student,ctypes[i]):
-						sctavg=self.studentCTypeAvg(student,ctypes[i])
-						logging.info("SCTAVG:" + str(sctavg))
-						if (int(sctavg)>=int(ctype_avgs[i])):
-							filteredRes.append(student)
-			if (i>=1):
-				q = [val for val in filteredRes if val in q]
-				#logging.info(filteredRes)
-			else:
-				if (ctypes[0]!=0):
-					q=filteredRes
-		return q
+	
 
 	
 	def post(self):	 
@@ -330,11 +335,15 @@ class minGradeQuery(webapp2.RequestHandler):
 		logging.info("ctype_avgs " + str(len(ctype_avgs)))
 		logging.info("residence " + str(residence))
 		
-		q = minGradeQuery.getQuery(self,course_names,grades,average,ctypes
+		q = getQuery(self,course_names,grades,average,ctypes
 		,ctype_avgs,residence,year,availability,hasgit)
 		#logging.info(q)
 		
 		#/no results
+		
+		if (q==None):
+			self.errormsg()
+		
 		if (q==[]):
 			f = open("no_results_page.html")
 			self.response.write(f.read())
@@ -343,14 +352,14 @@ class minGradeQuery(webapp2.RequestHandler):
 			page = buildQueryResultsPage(q,None,None)
 			self.response.write(page)
 			
-			
+
 #adds all courses to DB from the parsed courses files
 class dbBuild(webapp2.RequestHandler):
 	
 	def get(self):
 		#add a mail to allowedCompany so it can be seen in console
-		ac = allowedCompany(email="tauhireteam@gmail.com")
-		ac.put()
+		#ac = allowedCompany(email="tauhireteam@gmail.com")
+		#ac.put()
 				
 		q=Student.query()
 		q=q.fetch(1000)
