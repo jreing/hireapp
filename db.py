@@ -163,11 +163,13 @@ def checkCompanyLoginExists(user_id):
 	else:
 		return False
 	
-def getQuery(course_names,grades,average,ctypes,ctype_avgs,residence,year,availability,hasgit):
+def getQuery(self,course_names,grades,average,ctypes,ctype_avgs,residence,year,availability,hasgit):
 	logging.info ("GET QUERY")
 	
 	#server side input validation
+	logging.info(str(len(grades)) + " " + str(len(course_names)) )
 	if len(grades)!=len(course_names): return None
+	logging.info("look here")
 	for crs in course_names:
 		if len(crs)>50: return None
 	for grade in grades:
@@ -346,7 +348,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		logging.info("ctype_avgs " + str(len(ctype_avgs)))
 		logging.info("residence " + str(residence))
 		
-		q = getQuery(self,course_names,grades,average,ctypes
+		q = getQuery(self, course_names,grades,average,ctypes
 		,ctype_avgs,residence,year,availability,hasgit)
 		#logging.info(q)
 		
@@ -525,27 +527,27 @@ class dbHandler(webapp2.RequestHandler):
 			cv_blob_key=self.CreateFile(st.google_id,cv)
 			
 			
-			#cvContent = ''
-			#cvStr = cv.decode('utf-8', errors='ignore').encode('utf-8')
+			##cvContent = ''
+			##cvStr = cv.decode('utf-8', errors='ignore').encode('utf-8')
 			
-			cvPdf= StringIO(cv)
-			cvContent = dbHandler.convert_pdf_to_txt(self, cvPdf)
-			cvContentRev = dbHandler.reverseString(self,cvContent)
+			#cvPdf= StringIO(cv)
+			#cvContent = dbHandler.convert_pdf_to_txt(self, cvPdf)
+			#cvContentRev = dbHandler.reverseString(self,cvContent)
 		
-			#logging.info("whole cv: ")
-			#logging.info(cvContent)
-			#self.response.write (errorPage(cvContentd))
+			##logging.info("whole cv: ")
+			##logging.info(cvContent)
+			##self.response.write (errorPage(cvContentd))
 			
-			srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
+			#srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
 			
-			doc = search.Document(fields=srcFields)
-			try:
-				add_result = search.Index(name=INDEX_NAME).put(doc)
-			except search.Error:
-				logging.info("indexing result for search has failed")
-			#logging.info("indexed cv")
+			#doc = search.Document(fields=srcFields)
+			#try:
+				#add_result = search.Index(name=INDEX_NAME).put(doc)
+			#except search.Error:
+				#logging.info("indexing result for search has failed")
+			##logging.info("indexed cv")
 			
-			#trying to search
+			##trying to search
 			#query = 'Linux'			
 			#try:
 				#index = search.Index(INDEX_NAME)

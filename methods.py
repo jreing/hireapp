@@ -467,7 +467,7 @@ def buildSearchParameters(ad_query):
 			  <input type="button" id="buttonadd" value="הוסף קורס" />
 			</div>"""
 	htmlbody =""		
-	if (dynFlag==1):
+	if (dynFlag==1 and len(ad_query.aQuery.student_courses)>0):
 		j = 0
 		for crs in ad_query.aQuery.student_courses:
 			if (crs!=None):
@@ -849,7 +849,7 @@ def buildAdPage(course_query):
 
       <div align="right">
         <p class="text1">:תאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" class="note" dir="rtl" placeholder="פרטים על המשרה.."></textarea>
+        <textarea class="scrollabletextbox" name="note" class="note" dir="rtl" placeholder="פרטים על המשרה.." id="note"></textarea>
 		<br><br><div align="right">
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""
@@ -887,7 +887,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 	
 		<div id="form-main">
 		<div align="right">
-		  <p class="titletext">:בניית משרה</p>
+		  <p class="titletext">:עריכת משרה</p>
 		</div>
 		<div id="form-div">"""
 	
@@ -902,7 +902,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 
       <div align="right">
         <p class="text1">:תאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" dir="rtl">"""+ ad_query.message.cont +"""</textarea>
+        <textarea class="scrollabletextbox" name="note" id="note" dir="rtl">"""+ ad_query.message.cont +"""</textarea>
 		<br><br><div align="right">
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""

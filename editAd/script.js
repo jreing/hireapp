@@ -168,7 +168,26 @@ function validateForm() {
 		//alert("category, grade are"+(category!=0)+" , "+(grade === ""));
         return category!=0 && grade === "";
     }).length !== 0;
-		
+	
+	var noAverage = $("#avgentry #avg").filter(function (key, element) {
+		var avgchk = $(element).val();
+        return avgchk === "";
+    }).length !== 0;
+	
+	
+	var noJobDescription = $("#note").filter(function (key, element) {
+        var desc = $(element).val();
+        return desc === "";
+    }).length !== 0;
+	
+	
+	var noNameForJob = $("#jobId").filter(function (key, element) {
+		var name = $(element).val();
+		//alert("AS");
+        return name === "";
+    }).length !== 0; 
+
+	
     if (gradeWithoutCourse) {
 		alert("Exists a grade with a missing course name.\nPlease enter a valid course name");
 		return false }
@@ -184,6 +203,18 @@ function validateForm() {
 	if (categoryWithoutGrade) {
 		alert("Exists a category filter without a proper grade.\nPlease enter a grade average between 60 and 100 for the category");
 		return false } 
+		
+	if (noAverage) {
+		alert("Please enter an average between 60 and 100");
+		return false }
+		
+	if (noNameForJob) {
+		alert("Please enter a name for the job");
+		return false }
+		
+	if (noJobDescription) {
+		alert("Please enter a description for the job");
+		return false }
 	
 	return true;
 }

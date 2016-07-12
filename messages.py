@@ -216,8 +216,10 @@ class adHandler(webapp2.RequestHandler):
 		course_names=self.request.get_all('name')
 		grade = self.request.get_all('grade')
 		average=self.request.get('avg')
+		logging.info("number of grades received " + str(len(grade)))
+		logging.info("number of courses received " + str(len(course_names)))
 		if(average==""):
-			average = 0
+			average = 60
 		crstypes=self.request.get_all("ctype")
 		crstype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
@@ -236,6 +238,7 @@ class adHandler(webapp2.RequestHandler):
 		
 		dbHandler = db.dbHandler()
 		stdCrs= dbHandler.createStudentCourse(course_names, grade)
+		
 		
 		self.qry = adQuery()
 		self.qry.student_courses=stdCrs
@@ -276,10 +279,11 @@ class adHandler(webapp2.RequestHandler):
 		if (int(ad_id)==-1):
 			self.ad.studNum = "0" 		
 		self.ad.put()
-		
-		self.response.write ("""<html><script>
-				window.location="/currentAds";
-				</script></html>""")
+		t.sleep(1)
+		self.redirect("/currentAds")
+		#self.response.write ("""<html><script>
+				#window.location="/currentAds";
+				#</script></html>""")
 
 # class ConfirmUserSignup(webapp2.RequestHandler):
 #     def post(self):

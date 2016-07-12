@@ -218,11 +218,18 @@ class companyAdRemover(webapp2.RequestHandler):
 		else:
 			ad_id = self.request.get('ad_id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			
+			if (int(ad_id)<0 or int(ad_id)>=len(ad_query)):
+				self.redirect("/currentAds")
+				return
+				
 			ad_query[int(ad_id)].key.delete()
 			#ad_query.put()
-			self.response.write ("""<html><script>
-				window.location="/currentAds";
-				</script></html>""")
+			t.sleep(1)
+			self.redirect("/currentAds")
+			#self.response.write ("""<html><script>
+				#window.location="/currentAds";
+				#</script></html>""")
 			#ad = ad_query[int(ad_id)]
 			#ad.delete()
 			
@@ -245,6 +252,12 @@ class companyEditAdHandler(webapp2.RequestHandler):
 			ad_id = self.request.get('ad_id')
 			
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			logging.info("list len " + str(len(ad_query)) + " " + ad_id)
+			
+			if (int(ad_id)<0 or int(ad_id)>=len(ad_query)):
+				self.redirect("/currentAds")
+				return
+				
 			course_query = Course.query() 
 			page = EditAdPage(course_query,ad_query[int(ad_id)],ad_id)
 			self.response.write(page)
@@ -255,12 +268,13 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 		course_query = Course.query()
 		#minGradeQ = db.minGradeQuery()
 		course_names = []
-			
+		course_grades = []	
 		for crs in adv.aQuery.student_courses:
 			course_names.append(crs.course.course_name)
+			course_grades.append(str(crs.grade))
 		ctypesBack = list(adv.aQuery.ctypes)
-		
-		q = getQuery(course_names,adv.aQuery.cgrades,str(adv.aQuery.avg)
+		minGradeQ = db.minGradeQuery()
+		q = getQuery(minGradeQ,course_names,course_grades,str(adv.aQuery.avg)
 			,adv.aQuery.ctypes,adv.aQuery.ctype_avgs,str(adv.aQuery.residence),str(adv.aQuery.year),str(adv.aQuery.availability),"False")	
 		if q==None: 
 			return q
@@ -276,7 +290,13 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 		else:
 			ad_id = self.request.get('ad_id')
 			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			
+			if (int(ad_id)<0 or int(ad_id)>=len(ad_query)):
+				self.redirect("/currentAds")
+				return
+				
 			ad = ad_query[int(ad_id)]
+			
 			
 			#course_query = Course.query()
 			#minGradeQ = db.minGradeQuery()
