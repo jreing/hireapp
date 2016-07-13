@@ -645,23 +645,22 @@ def buildCompanyQuery(course_query):
 
 	htmlQueryParam = buildSearchParameters(None)
 
-	htmlButt ="""<div class="submit">
+	htmlButt ="""<p class="text1" dir="rtl">
+	לתשומת לבכם: שאילתא ריקה תניב את כל הסטודנטים הרשומים באתר כרגע</p>
+	
+	<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
 			  <div class="ease"></div>"""
 	
 	htmlCourseList = buildCourseList(course_query)	  
 	
 	
-	htmlend="""	</form> </div></div>
-		
+	htmlend="""	
+	</form> </div></div>
 	  </body>
 	  <script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </html>"""
 	
-	# htmlGit is not in use right now	
-	htmlGit = """<div class="hasgit" align="right">
-			  <label for="hasgit" class="textsmallpad">חפש סטודנט עם חשבון גיט</label>
-			  <input type="checkbox" value="True" name="hasgit" id="hasgit" class="checkbox"> </div>"""
 	
 	html=htmlstart+ htmlQueryParam +htmlButt + htmlCourseList + htmlend
 	return html
