@@ -862,7 +862,12 @@ def buildAdPage(course_query):
 			  </select>
 		  </div>"""
 	
-	htmlButt ="""<div class="submit">
+	htmlButt ="""  <p class="text1" id="element1" dir="rtl">
+	לתשומת לבכם: 
+	על מנת שסטודנטים יוכלו לראות את ההודעה יש להיכנס לתוצאות
+	החיפוש ולשלוח אותה. </p>
+	
+	<div class="submit">
 			  <input type="submit" value="צור מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
@@ -907,7 +912,12 @@ def EditAdPage(course_query,ad_query,ad_id):
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""
 	
-	htmlButt ="""<div class="submit">
+	htmlButt =""" <p class="text1" id="element1" dir="rtl">
+	לתשומת לבכם: 
+	על מנת שסטודנטים יוכלו לראות את ההודעה יש להיכנס לתוצאות
+	החיפוש ולשלוח אותה. </p>
+	
+	<div class="submit">
 			  <input type="submit" value="ערוך מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
