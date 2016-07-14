@@ -278,12 +278,23 @@ class adHandler(webapp2.RequestHandler):
 		
 		if (int(ad_id)==-1):
 			self.ad.studNum = "0" 		
-		self.ad.put()
+		ad_key = self.ad.put()
+		#logging.info("key: " + str(ad_key.id()))
 		t.sleep(1)
-		self.redirect("/currentAds")
-		#self.response.write ("""<html><script>
-				#window.location="/currentAds";
-				#</script></html>""")
+		
+		ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+		i = 0 
+		for ad in ad_query:
+			#logging.info(ad.key.id())
+			if (ad.key.id() == ad_key.id()):
+				logging.info("i " + str(i))
+				break
+			i+=1
+		if (int(ad_id)==-1):	
+			self.redirect("/showAdResults?ad_id=" + str(i))
+		else:
+			self.redirect("/currentAds")
+		
 
 # class ConfirmUserSignup(webapp2.RequestHandler):
 #     def post(self):

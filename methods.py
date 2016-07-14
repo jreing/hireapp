@@ -865,22 +865,23 @@ def buildAdPage(course_query):
 			  </select>
 		  </div>"""
 	
-	htmlButt ="""  <p class="text1" id="element1" dir="rtl">
-	לתשומת לבכם: 
-	על מנת שסטודנטים יוכלו לראות את ההודעה יש להיכנס לתוצאות
-	החיפוש ולשלוח אותה. </p>
+	htmlExpl = """ <div><p class="text2" id="element1" dir="rtl">
+	בדף זה תוכלו לבנות משרה עם מאפייני הסטודנטים שאתם מחפשים 
+	<br><br> בסיום הבנייה יהיה באפשרותכם לחפש במאגר הסטודנטים שרשומים לאתר, לראות אלו סטודנטים באתר מתאימים לדרישות שהגדרתם ולשלוח להם את המשרה למייל. 
+	<br><br> ניתן לגשת בכל עת למשרות שבניתם דרך באמצעות לחיצה על "המשרות שלי" בתפריט, בדף זה תוכלו לצפות במשרות שיצרתם, לערוך אותן באמצעות לחיצה על "ערוך משרה" ולראות אלו סטודנטים מתאימים למשרה שהגדרתם באמצעות לחיצה על כפתור "הצג תוצאות".
+ </p></div> """
 	
-	<div class="submit">
-			  <input type="submit" value="צור מודעה" id="button-blue" />
+	htmlButt ="""<div class="submit">
+			  <input type="submit" value="צור משרה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
-	htmlend="""	</fodrm> </div></div>
+	htmlend="""	</form> </div></div>
 		
 	  </body>
 	  <script type="text/javascript" src="/createAd/script.js"></script>
 	  </html>"""
 	  
-	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlButt +htmlbody + htmlend
+	html=htmlstart+ htmlExpl + htmlAdDesc +htmlSearchParam + htmlButt  +htmlbody + htmlend
 	return html
 
 def EditAdPage(course_query,ad_query,ad_id):
@@ -914,14 +915,15 @@ def EditAdPage(course_query,ad_query,ad_id):
 		<br><br><div align="right">
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""
+		
+	htmlExpl = """ <div><p class="text2" id="element1" dir="rtl">
+	בדף זה תוכלו לבנות משרה עם מאפייני הסטודנטים שאתם מחפשים 
+	<br><br> בסיום הבנייה יהיה באפשרותכם לחפש במאגר הסטודנטים שרשומים לאתר, לראות אלו סטודנטים באתר מתאימים לדרישות שהגדרתם ולשלוח להם את המשרה למייל. 
+	<br><br> ניתן לגשת בכל עת למשרות שבניתם דרך באמצעות לחיצה על "המשרות שלי" בתפריט, בדף זה תוכלו לצפות במשרות שיצרתם, לערוך אותן באמצעות לחיצה על "ערוך משרה" ולראות אלו סטודנטים מתאימים למשרה שהגדרתם באמצעות לחיצה על כפתור "הצג תוצאות".
+ </p></div> """
 	
-	htmlButt =""" <p class="text1" id="element1" dir="rtl">
-	לתשומת לבכם: 
-	על מנת שסטודנטים יוכלו לראות את ההודעה יש להיכנס לתוצאות
-	החיפוש ולשלוח אותה. </p>
-	
-	<div class="submit">
-			  <input type="submit" value="ערוך מודעה" id="button-blue" />
+	htmlButt ="""<div class="submit">
+			  <input type="submit" value="ערוך משרה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
 	htmlend="""	</form> </div></div>
@@ -930,7 +932,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 	  <script type="text/javascript" src="/editAd/script.js"></script>
 	  </html>"""
 	  
-	html=htmlstart+htmlAdDesc +htmlSearchParam +htmlbody +htmlButt + htmlend
+	html=htmlstart + htmlAdDesc +htmlSearchParam + htmlButt +htmlbody  + htmlend
 	return html
 
 def buildCurrentAdsPage(ad_query):
