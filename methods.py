@@ -645,8 +645,9 @@ def buildCompanyQuery(course_query):
 
 	htmlQueryParam = buildSearchParameters(None)
 
-	htmlButt ="""<p class="text1" dir="rtl">
-	לתשומת לבכם: שאילתא ריקה תניב את כל הסטודנטים הרשומים באתר כרגע</p>
+	htmlNote = """<p class="text2" dir="rtl">לתשומת לבכם: שאילתא ריקה תניב את כל הסטודנטים הרשומים באתר כרגע</p>"""
+	
+	htmlButt ="""
 	
 	<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
@@ -662,7 +663,7 @@ def buildCompanyQuery(course_query):
 	  </html>"""
 	
 	
-	html=htmlstart+ htmlQueryParam +htmlButt + htmlCourseList + htmlend
+	html=htmlstart+ htmlQueryParam +htmlNote +htmlButt + htmlCourseList + htmlend
 	return html
 
 def buildStudentEditPage(student, course_query):
