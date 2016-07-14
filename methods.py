@@ -680,8 +680,12 @@ def buildStudentEditPage(student, course_query):
 		<p class="titletext">:הפרטים שלי</p>
 	</div>
 	<div id="form-div">
-		<div align="right">
-			<p class="text1">:אזור מגורים</p>
+		<div align="right" dir="rtl">
+			<p class="text1">מספר צפיות בקורות החיים שלי: """+ str(student.cv_view_cnt)\
+			+ """</p>
+			<p class="text1">מספר צפיות בגיליון הציונים שלי: """+ str(student.gradesheet_view_cnt)\
+			+ """</p>
+			<p class="text1">אזור מגורים:</p>
 		</div>
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />

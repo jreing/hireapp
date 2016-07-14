@@ -122,6 +122,11 @@ class Student(ndb.Model):
 	needs_job=ndb.BooleanProperty(indexed=True, required=True)
 	cnt= ndb.IntegerProperty(indexed=False, required=True)
 	
+	cv_view_cnt=ndb.IntegerProperty(indexed=False, required=True)
+	cv_viewed_by=ndb.StringProperty(indexed=True, repeated=True)
+	gradesheet_view_cnt=ndb.IntegerProperty(indexed=False, required=True)
+	gradesheet_viewed_by=ndb.StringProperty(indexed=True,repeated=True)
+	
 class allowedCompany(ndb.Model):
 	email =ndb.StringProperty(indexed=True, required=True)
 	
@@ -381,6 +386,8 @@ class dbBuild(webapp2.RequestHandler):
 			if st.availability==None: st.availability=0
 			if st.needs_job==None: st.needs_job=True
 			if st.cnt==None: st.cnt=0
+			if st.cv_view_cnt==None : st.cv_view_cnt=0
+			if st.gradesheet_view_cnt==None: st.gradesheet_view_cnt=0
 			st.put()
 		
 		import csv
@@ -390,13 +397,13 @@ class dbBuild(webapp2.RequestHandler):
 		#		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
 		#		c.put()
 		
-		with open('allowedCompanies.csv', 'rb') as csvfile:
-			spamreader = csv.reader(csvfile, delimiter='\n')
-			for row in spamreader:
-				s=(str(row)[2:len(str(row))-2]).strip()
-				logging.info(s.strip())
-				a=allowedCompany(email=s)
-				a.put()
+		#with open('allowedCompanies.csv', 'rb') as csvfile:
+		#	spamreader = csv.reader(csvfile, delimiter='\n')
+		#	for row in spamreader:
+		#		s=(str(row)[2:len(str(row))-2]).strip()
+		#		logging.info(s.strip())
+		#		a=allowedCompany(email=s)
+		#		a.put()
 		
 		self.response.write(errorPage('Database built'))
 
@@ -698,11 +705,20 @@ class getCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
 		cv_id = self.request.get('user_id')
 		user_id = self.request.cookies.get('id')
+		
+		#check that session is valid
 		if (checkCompanyLoginExists(user_id)!=True):
 			self.response.write(errorPage("גישה לא חוקית לדף"))
 		else:
+			company=Company.query(Company.user_id==user_id).get()
 			st = Student.query(Student.user_id==cv_id).get()
+			#check student id is valid
 			if (st!=None):
+				#if a new company is watching this cv- add it and inc counter
+				if (company.email not in st.cv_viewed_by):
+					st.cv_view_cnt+=1
+					st.cv_viewed_by.append(company.email)
+					st.put()
 				self.send_blob(st.cv_blob_key)
 
 class GradeSheetHandler(webapp2.RequestHandler):
@@ -712,8 +728,17 @@ class GradeSheetHandler(webapp2.RequestHandler):
 		if (checkCompanyLoginExists(user_id)!=True):
 			self.response.write(errorPage("גישה לא חוקית לדף"))
 		else:
+			company=Company.query(Company.user_id==user_id).get()
 			st=Student.query(Student.user_id==s_id).get()
 			if (st!=None):
+				logging.info("VIEWING")
+				logging.info(st.gradesheet_viewed_by)
+				logging.info(company.email not in st.gradesheet_viewed_by)
+				if (company.email not in st.gradesheet_viewed_by):
+					st.gradesheet_view_cnt+=1
+					st.gradesheet_viewed_by.append(company.email)
+					st.put()
+					
 				page = buildGradeSheetPage(st)
 				self.response.write(page)
 			else:

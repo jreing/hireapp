@@ -196,8 +196,6 @@ class StudentEditHandler(webapp2.RequestHandler):
 			course_query = Course.query()
 			page = buildStudentEditPage(student_query, course_query)
 			self.response.write(page)
-
-
 			
 class companyAdHandler(webapp2.RequestHandler):
 	def get(self):
