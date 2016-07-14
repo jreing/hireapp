@@ -390,8 +390,8 @@ class dbBuild(webapp2.RequestHandler):
 	
 	def get(self):
 		#add a mail to allowedCompany so it can be seen in console
-		#ac = allowedCompany(email="tauhireteam@gmail.com")
-		#ac.put()
+		# ac = allowedCompany(email="tauhireteam@gmail.com")
+		# ac.put()
 				
 		q=Student.query()
 		q=q.fetch(1000)
@@ -405,11 +405,11 @@ class dbBuild(webapp2.RequestHandler):
 			st.put()
 		
 		import csv
-		#with open('courses3.csv', 'rb') as csvfile:
-		#	spamreader = csv.reader(csvfile, delimiter=',')
-		#	for row in spamreader:
-		#		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
-		#		c.put()
+		# with open('courses3.csv', 'rb') as csvfile:
+		# 	spamreader = csv.reader(csvfile, delimiter=',')
+		# 	for row in spamreader:
+		# 		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
+		# 		c.put()
 		
 		#with open('allowedCompanies.csv', 'rb') as csvfile:
 		#	spamreader = csv.reader(csvfile, delimiter='\n')
