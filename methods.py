@@ -645,23 +645,22 @@ def buildCompanyQuery(course_query):
 
 	htmlQueryParam = buildSearchParameters(None)
 
-	htmlButt ="""<div class="submit">
+	htmlButt ="""<p class="text1" dir="rtl">
+	לתשומת לבכם: שאילתא ריקה תניב את כל הסטודנטים הרשומים באתר כרגע</p>
+	
+	<div class="submit">
 			  <input type="submit" value="חפש" id="button-blue" />
 			  <div class="ease"></div>"""
 	
 	htmlCourseList = buildCourseList(course_query)	  
 	
 	
-	htmlend="""	</form> </div></div>
-		
+	htmlend="""	
+	</form> </div></div>
 	  </body>
 	  <script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
 	  </html>"""
 	
-	# htmlGit is not in use right now	
-	htmlGit = """<div class="hasgit" align="right">
-			  <label for="hasgit" class="textsmallpad">חפש סטודנט עם חשבון גיט</label>
-			  <input type="checkbox" value="True" name="hasgit" id="hasgit" class="checkbox"> </div>"""
 	
 	html=htmlstart+ htmlQueryParam +htmlButt + htmlCourseList + htmlend
 	return html
@@ -681,8 +680,12 @@ def buildStudentEditPage(student, course_query):
 		<p class="titletext">:הפרטים שלי</p>
 	</div>
 	<div id="form-div">
-		<div align="right">
-			<p class="text1">:אזור מגורים</p>
+		<div align="right" dir="rtl">
+			<p class="text1">מספר צפיות בקורות החיים שלי: """+ str(student.cv_view_cnt)\
+			+ """</p>
+			<p class="text1">מספר צפיות בגיליון הציונים שלי: """+ str(student.gradesheet_view_cnt)\
+			+ """</p>
+			<p class="text1">אזור מגורים:</p>
 		</div>
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
 	<select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input3" align= "right" dir="rtl" />
@@ -862,7 +865,12 @@ def buildAdPage(course_query):
 			  </select>
 		  </div>"""
 	
-	htmlButt ="""<div class="submit">
+	htmlButt ="""  <p class="text1" id="element1" dir="rtl">
+	לתשומת לבכם: 
+	על מנת שסטודנטים יוכלו לראות את ההודעה יש להיכנס לתוצאות
+	החיפוש ולשלוח אותה. </p>
+	
+	<div class="submit">
 			  <input type="submit" value="צור מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
@@ -907,7 +915,12 @@ def EditAdPage(course_query,ad_query,ad_id):
 		  <p class="text1">:פרמטרים לחיפוש</p>
 		</div>"""
 	
-	htmlButt ="""<div class="submit">
+	htmlButt =""" <p class="text1" id="element1" dir="rtl">
+	לתשומת לבכם: 
+	על מנת שסטודנטים יוכלו לראות את ההודעה יש להיכנס לתוצאות
+	החיפוש ולשלוח אותה. </p>
+	
+	<div class="submit">
 			  <input type="submit" value="ערוך מודעה" id="button-blue" />
 			  <div class="ease"></div>"""
 			  
