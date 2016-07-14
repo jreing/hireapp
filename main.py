@@ -79,6 +79,8 @@ class tokenSignIn(webapp2.RequestHandler):
 					logging.info(user_id)
 					cmp= Company(cnt=0, email=email, google_id=google_id, user_id=user_id, name="", city="")
 					cmp.put()
+					t.sleep(1)
+					user_query = Company.query(Company.google_id==google_id).get()
 				else:
 					self.response.write(errorPage("אין כניסה, משתמש לא חוקי"))
 					return

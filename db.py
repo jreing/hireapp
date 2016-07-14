@@ -356,17 +356,18 @@ class minGradeQuery(webapp2.RequestHandler):
 		,ctype_avgs,residence,year,availability,hasgit)
 		#logging.info(q)
 		
-		searchTerm = 'Linux'
-		if (searchTerm !=''):
-			try:
-				index = search.Index(INDEX_NAME)
-				search_results = index.search(searchTerm)
-				logging.info("completed search")
-				for res in search_results:
-					logging.info("result: ")
-					logging.info(res.doc_id)
-			except search.Error:
-				logging.info("search error")
+		## initial code for searching module
+		#searchTerm = 'Linux'
+		#if (searchTerm !=''):
+			#try:
+				#index = search.Index(INDEX_NAME)
+				#search_results = index.search(searchTerm)
+				#logging.info("completed search")
+				#for res in search_results:
+					#logging.info("result: ")
+					#logging.info(res.doc_id)
+			#except search.Error:
+				#logging.info("search error")
 		
 		
 		
@@ -550,21 +551,21 @@ class dbHandler(webapp2.RequestHandler):
 			##cvContent = ''
 			##cvStr = cv.decode('utf-8', errors='ignore').encode('utf-8')
 			
-			cvPdf= StringIO(cv)
-			cvContent = dbHandler.convert_pdf_to_txt(self, cvPdf)
-			cvContentRev = dbHandler.reverseString(self,cvContent)
+			#cvPdf= StringIO(cv)
+			#cvContent = dbHandler.convert_pdf_to_txt(self, cvPdf)
+			#cvContentRev = dbHandler.reverseString(self,cvContent)
 		
 			##logging.info("whole cv: ")
 			##logging.info(cvContent)
 			##self.response.write (errorPage(cvContentd))
 			
-			srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
+			#srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
 			
-			doc = search.Document(doc_id = user_id,fields=srcFields)
-			try:
-				add_result = search.Index(name=INDEX_NAME).put(doc)
-			except search.Error:
-				logging.info("indexing result for search has failed")
+			#doc = search.Document(doc_id = user_id,fields=srcFields)
+			#try:
+				#add_result = search.Index(name=INDEX_NAME).put(doc)
+			#except search.Error:
+				#logging.info("indexing result for search has failed")
 			##logging.info("indexed cv")
 			
 			##trying to search
