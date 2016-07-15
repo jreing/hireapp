@@ -458,7 +458,13 @@ def buildSearchParameters(ad_query):
 		dynFlag = 1
 	
 	logging.info(dynFlag)
-	
+	htmlSearch = """
+			<div align="right">
+			<p class="text1">:ביטוי לחיפוש בקורות חיים</p>
+		  </div>
+			<div align="right">
+			  <input type="text" name="searchBar" id="searchBar" value="" class="validate[required,custom[onlyLetter]] feedback-input" />
+			</div>"""
 	htmlMain = """
 			<div align="right">
 			<p class="text1">:ציון מינימלי בקורס</p>
@@ -613,7 +619,7 @@ def buildSearchParameters(ad_query):
 		
 		htmlEmail+= """> </div>"""		
 	
-	return htmlMain +htmlbody+ htmlYear +htmlAvail + htmlEmail
+	return htmlSearch + htmlMain +htmlbody+ htmlYear +htmlAvail + htmlEmail
 
 def buildCourseList(course_query):
 	i = 0
