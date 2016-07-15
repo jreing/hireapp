@@ -30,6 +30,7 @@ gcs.set_default_retry_params(my_default_retry_params)
 ##to validate pdf files
 import pyPdf
 import PyPDF2
+import re
 
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
@@ -357,22 +358,56 @@ class minGradeQuery(webapp2.RequestHandler):
 		#logging.info(q)
 		
 		## initial code for searching module
-		#searchTerm = 'Linux'
-		#if (searchTerm !=''):
-			#try:
-				#index = search.Index(INDEX_NAME)
-				#search_results = index.search(searchTerm)
-				#logging.info("completed search")
-				#for res in search_results:
-					#logging.info("result: ")
-					#logging.info(res.doc_id)
-			#except search.Error:
-				#logging.info("search error")
+		logging.info("trying to search")
+		searchFlag = 0
+		searchTerm = ''
+		searchTermTry = self.request.get('searchBar')
+		#logging.info(searchTermTry)
 		
+		# input validation and seperate words by ' '
+		srcWordList = re.sub("[^\w]", " ",  searchTermTry).split()
 		
+		#logging.info(srcWordList)
+		
+		# if more than one term in search query put 'AND' between terms
+		for i in range(0,len(srcWordList)):
+			searchTerm += srcWordList[i]
+			if (i<len(srcWordList)-1):
+				searchTerm += " AND "
+				
+		#logging.info(searchTerm)
+		
+		srcRes = []
+		if (searchTerm !=''):
+			searchFlag = 1
+			logging.info(searchTerm)
+			try:
+				index = search.Index(INDEX_NAME)
+				search_results = index.search(searchTerm)
+				logging.info("completed search: " + str(search_results.number_found))
+				if (search_results.number_found>0):
+					for res in search_results:
+						#logging.info("result: ")
+						#logging.info(res.doc_id)
+						srcRes.append(res.doc_id)
+			except search.Error:
+				logging.info("search error")
+		
+		if (searchFlag==1):
+			if(srcRes==[]):
+				logging.info("no search results")
+				f = open("no_results_page.html")
+				self.response.write(f.read())
+				f.close()
+				return
+			elif(srcRes!=[] and (q!=None and q!=[])):
+				qUnion = []
+				for std in q:
+					if std.user_id in srcRes:
+						qUnion.append(std)
+				q = qUnion
 		
 		#/no results
-		
 		if (q==None):
 			self.errormsg()
 		
@@ -558,24 +593,22 @@ class dbHandler(webapp2.RequestHandler):
 			##cvContent = ''
 			##cvStr = cv.decode('utf-8', errors='ignore').encode('utf-8')
 			
-			#cvPdf= StringIO(cv)
-			#cvContent = dbHandler.convert_pdf_to_txt(self, cvPdf)
-			#cvContentRev = dbHandler.reverseString(self,cvContent)
+			cvPdf= StringIO(cv)
+			cvContent = dbHandler.convert_pdf_to_txt(self, cvPdf)
+			cvContentRev = dbHandler.reverseString(self,cvContent)
 		
 			##logging.info("whole cv: ")
 			##logging.info(cvContent)
 			##self.response.write (errorPage(cvContentd))
 			
-			#srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
+			srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
 			
-			#doc = search.Document(doc_id = user_id,fields=srcFields)
-			#try:
-				#add_result = search.Index(name=INDEX_NAME).put(doc)
-			#except search.Error:
-				#logging.info("indexing result for search has failed")
+			doc = search.Document(doc_id = user_id,fields=srcFields)
+			try:
+				add_result = search.Index(name=INDEX_NAME).put(doc)
+			except search.Error:
+				logging.info("indexing result for search has failed")
 			##logging.info("indexed cv")
-			
-			##trying to search
 		elif(st.cv_blob_key!=None):
 			cvKey = True
 		
