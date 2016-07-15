@@ -246,8 +246,8 @@ textarea {
   font-weight: bold;
   float: right;
   width: 100%;
-  color: white;
-  font-size: 20px;
+  color:  #D3D3D3;
+  font-size: 24px;
   padding-top: 5px;
   margin-top: 0px;
   padding-bottom: 0px;
@@ -345,7 +345,7 @@ textarea {
 .ease {
   margin-top: 180px;
   width: 0px;
-  height: 74px;
+  height:74px;
   background-color: #fbfbfb;
   -webkit-transition: .3s ease;
   -moz-transition: .3s ease;
@@ -435,5 +435,5 @@ text-align:center;
 }
 
 input[type='number']:focus{
-text-align:right;
+text-align:center;
 }
