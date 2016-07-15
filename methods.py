@@ -1043,7 +1043,7 @@ def buildHelpPage(isStudent, isCompany):
 		"""
 	if (isStudent): 
 		html+="""
-		<p class="black" dir="rtl">
+		<p class="white" dir="rtl">
 		1. הזן פרטים 
 		<img src="/HelpPictures/HelpPic1.png" height="600" width="500" vspace="10">
 		<br>
@@ -1065,7 +1065,7 @@ def buildHelpPage(isStudent, isCompany):
 		"""
 	if (isCompany):
 		html+="""
-		<p class="black" dir="rtl">
+		<p class="white" dir="rtl">
 		1. בנה משרה
 		<img src="/HelpPictures/HelpPic4.png" height="350" width="500" vspace="10">
 		<br>
