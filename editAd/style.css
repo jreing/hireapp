@@ -421,5 +421,5 @@ text-align:center;
 }
 
 input[type='number']:focus{
-text-align:right;
+text-align:center;
 }

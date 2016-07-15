@@ -867,9 +867,9 @@ def buildAdPage(course_query):
 		  </div>"""
 	
 	htmlExpl = """ <div><p class="text2" id="element1" dir="rtl">
-	בדף זה תוכלו ליצור פרופיל משרה עם מאפייני הסטודנטים שאתם מחפשים 
+	בדף זה תוכלו ליצור פרופיל משרה עם מאפייני הסטודנטים שאתם מחפשים. 
 	<br><br> בסיום התהליך יהיה באפשרותכם לערוך חיפוש במאגר הסטודנטים באתר, לאתר את הסטודנטים שמתאימים לדרישות המשרה ולפנות אליהם. 
-	<br><br> ניתן לגשת בכל עת למשרות שיצרתם באמצעות לחיצה על "המשרות שלי" בתפריט. שם תוכלו לצפות במשרות שיצרתם, לערוך אותן באמצעות לחיצה על "ערוך משרה" ולראות אלו סטודנטים מתאימים למשרה שהגדרתם באמצעות לחיצה על כפתור "הצג תוצאות".
+	<br><br> ניתן לגשת בכל עת למשרות שיצרתם באמצעות לחיצה על "המשרות שלי" בתפריט. שם תוכלו לצפות במשרות שיצרתם, לערוך אותן באמצעות לחיצה על "ערוך משרה" ולראות אלו סטודנטים מתאימים למשרה שהגדרתם באמצעות לחיצה על "הצג תוצאות".
  </p></div> """
 	
 	htmlButt ="""<div class="submit">
@@ -1042,7 +1042,7 @@ def buildHelpPage(isStudent, isCompany):
 		"""
 	if (isStudent): 
 		html+="""
-		<p class="red" dir="rtl">
+		<p class="black" dir="rtl">
 		1. הזן פרטים 
 		<img src="/HelpPictures/HelpPic1.png" height="600" width="500" vspace="10">
 		<br>
@@ -1064,7 +1064,7 @@ def buildHelpPage(isStudent, isCompany):
 		"""
 	if (isCompany):
 		html+="""
-		<p class="red" dir="rtl">
+		<p class="black" dir="rtl">
 		1. בנה משרה
 		<img src="/HelpPictures/HelpPic4.png" height="350" width="500" vspace="10">
 		<br>
