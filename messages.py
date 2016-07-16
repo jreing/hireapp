@@ -48,7 +48,7 @@ class Message(ndb.Model):
 	receiver = ndb.StructuredProperty(Author)
 	#receiver = ndb.StringProperty(indexed=False)
 	cont = ndb.StringProperty(indexed=False)
-	compMail = ndb.StringProperty(indexed=False)
+	compMail = ndb.StringProperty(indexed=True)
 	compName = ndb.StringProperty(indexed=False)
 	jobName = ndb.StringProperty(indexed=False)
 	date = ndb.DateTimeProperty(auto_now_add=True)
@@ -64,15 +64,24 @@ class Ad(ndb.Model):
 	studNum = ndb.StringProperty(indexed=True, required=False)
 	message = ndb.StructuredProperty(Message)
 	aQuery = ndb.StructuredProperty(adQuery) 
-	
+
+class adDbBuild(webapp2.RequestHandler):
+	def get(self):
+		a = q=Ad.query()
+		a = a.fetch(1000)
+		for ad in a:
+			ad.put()
+		self.response.write(errorPage('ad Database built'))
+					
 class MessageHandler(webapp2.RequestHandler):
     def get(self):
 		logging.info("message handler")
 		conv_query = Conversation.query()	
 		#mess_query = Message.query()
 		#self.response.write(MESSAGE_PAGE_HTML)
-		userid = self.request.cookies.get('id')
-		page = buildStudentOffersPage(conv_query,userid)
+		user_id = self.request.cookies.get('id')
+		st = Student.query(Student.user_id==user_id).get() 
+		page = buildStudentOffersPage(conv_query,st.google_id)
 		"""
 		for conver in conv_query:
 			for message in conver.message:
@@ -109,7 +118,10 @@ class MessageSend(webapp2.RequestHandler):
 		logging.info(ad_id)
 		if (int(ad_id)!=-1):
 			user_id = self.request.cookies.get('id')
-			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			comp = Company.query(Company.user_id == user_id).get()
+			email = comp.email
+			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			self.ad = ad_query[int(ad_id)]
 			
 		
@@ -122,20 +134,25 @@ class MessageSend(webapp2.RequestHandler):
 		#destIdVal = destIdKey.get()
 		#self.key = appUser(usr=destId).put()
 		#self.rec = self.key.get()
-		
+		logging.info("starting message sending proccess " + str(len(recList)))
 		for rec in recList:
+			st = Student.query(Student.user_id==rec).get()
 			self.conversation = Conversation()
 			self.message = Message(cont = self.request.get('note'))
-			self.message.receiver = Author(identity = rec)
+			#self.message.receiver = Author(identity = rec)
+			self.message.receiver = Author(identity = st.google_id)
 			self.message.compName = self.request.get('companyName')
 			self.message.jobName = self.request.get('jobId')
 			self.message.compMail = self.request.get('companyMail')
 			self.message.date = datetime.datetime.now()
-			userid = self.request.cookies.get('id')
-			self.message.sender = Author(identity = userid)
+			#userid = self.request.cookies.get('id')
+			cmp = (Company.query(user_id==Company.user_id)).get()
+			#self.message.sender = Author(identity = userid)
+			self.message.sender = Author(identity = cmp.google_id)
 			
 			if (int(ad_id)!=-1):
-				self.ad.sentId.append(rec)
+				#self.ad.sentId.append(rec)
+				self.ad.sentId.append(st.google_id)
 				self.ad.put()
 				
 			#if users.get_current_user():
@@ -149,7 +166,8 @@ class MessageSend(webapp2.RequestHandler):
 			#conNum.put()
 			self.conversation.put()
 			self.message.put()
-
+			logging.info("message inserted")
+			
 			student=Student.query(Student.user_id==rec).get()
 			if student.allow_emails==True:
 				user_address=student.email
@@ -227,13 +245,17 @@ class adHandler(webapp2.RequestHandler):
 		availability=self.request.get("availability")
 		adCont = self.request.get("note")
 		adName = self.request.get("jobId")
+		searchTerms = self.request.get('searchBar')
 		
+		srcWordList = re.sub("[^\w]", " ",  searchTerms).split()
+		logging.info(srcWordList)
 		if (int(ad_id)==-1):
 			logging.info("ad id = -1")
 			self.ad = Ad()
 			self.ad.sentId = []
 		else:
-			adqy = Ad.query(Ad.user_id ==user_id ).fetch()
+			adqy = Ad.query(Ad.message.compMail == comp_query.email).fetch()
+			#adqy = Ad.query(Ad.user_id ==user_id ).fetch()
 			self.ad = adqy[int(ad_id)]
 		
 		dbHandler = db.dbHandler()
@@ -250,6 +272,7 @@ class adHandler(webapp2.RequestHandler):
 		self.qry.availability= int(availability)
 		self.qry.year= int(year)
 		self.qry.hasGit= "False"
+		self.qry.srchWords = srcWordList
 		
 		if (self.request.get('getEmailNotification')=="True"):
 			self.qry.scheduler=True
@@ -272,7 +295,7 @@ class adHandler(webapp2.RequestHandler):
 		self.message.compMail = comp_query.email
 		self.message.compName = comp_query.name
 		
-		self.ad.user_id = user_id
+		self.ad.user_id = comp_query.google_id
 		self.ad.message = self.message
 		self.ad.aQuery = self.qry
 		
@@ -282,7 +305,10 @@ class adHandler(webapp2.RequestHandler):
 		#logging.info("key: " + str(ad_key.id()))
 		t.sleep(1)
 		
-		ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+		#comp = Company.query(Company.user_id == user_id).get()
+		#email = comp.email
+		ad_query = Ad.query(Ad.message.compMail ==  comp_query.email).fetch()
+		#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 		i = 0 
 		for ad in ad_query:
 			#logging.info(ad.key.id())

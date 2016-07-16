@@ -126,7 +126,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 			hasCv=True
 		
 		if(adFlag!=0):
-			if(student.user_id in ad.sentId):
+			if(student.google_id in ad.sentId):
 				htmlbody+="""<div class="form-element2" align="right">"""
 			else:
 				htmlbody+="""<div class="form-element" align="right">"""
@@ -178,7 +178,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 			htmlbody+="""לא הוזן"""
 		
 		htmlbody+="""</td><td>
-			<input type="checkbox" id="studentselect" """+str(i)+""" class="checkbox" 
+			<input type="checkbox" name="studentselect" id="studentselect" """+str(i)+""" class="checkbox" 
 			value="""+str(student.user_id)+"""></td>
 		</tr></table></div>"""
 	
@@ -224,7 +224,7 @@ def buildStudentOffersPage(conv_query, user_id):
 
 
       <div id="scroll">"""
-	  
+	#st = Student.query(Student.user_id==user_id).get()  
 	htmlbody=''
 	
 	for conver in conv_query:
@@ -463,8 +463,14 @@ def buildSearchParameters(ad_query):
 			<p class="text1">:ביטוי לחיפוש בקורות חיים</p>
 		  </div>
 			<div align="right">
-			  <input type="text" name="searchBar" id="searchBar" value="" class="validate[required,custom[onlyLetter]] feedback-input" />
-			</div>"""
+			  <input type="text" name="searchBar" id="searchBar" class="validate[required,custom[onlyLetter]] feedback-input" """
+	if (dynFlag==1):
+		searchTerms = ''.join(ad_query.aQuery.srchWords)
+		htmlSearch+= """value=" """ +searchTerms + """ " />"""
+	else:
+		htmlSearch+= """value="" />"""
+			  
+	htmlSearch+="""</div>"""
 	htmlMain = """
 			<div align="right">
 			<p class="text1">:ציון מינימלי בקורס</p>

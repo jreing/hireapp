@@ -150,6 +150,7 @@ class adQuery(ndb.Model):
 	year=ndb.IntegerProperty(indexed=True, required=True)
 	hasgit = ndb.BooleanProperty(indexed=False, required=True, default=False)
 	scheduler = ndb.BooleanProperty(indexed=False, required=True, default=False)
+	srchWords = ndb.StringProperty(indexed=True,repeated = True)
 
 #end of DB class definitions
 
@@ -201,7 +202,7 @@ def getQuery(self,course_names,grades,average,ctypes,ctype_avgs,residence,year,a
 	p=Student.query(Student.avg>0)
 	q = [val for val in p if val in q]
 					
-	logging.info(q)
+	#logging.info(q)
 	
 	#filter by availability
 	if (int(availability)>0 and int(availability)<6):
@@ -209,7 +210,7 @@ def getQuery(self,course_names,grades,average,ctypes,ctype_avgs,residence,year,a
 		p=p.fetch(100)
 		q = [val for val in p if val in q]
 	
-	logging.info(q)
+	#logging.info(q)
 	
 	#filter by hasgit
 	if (hasgit=="True"):
@@ -217,7 +218,7 @@ def getQuery(self,course_names,grades,average,ctypes,ctype_avgs,residence,year,a
 		p=pp.fetch(100)
 		q = [val for val in p if val in q]
 	
-	logging.info(q)
+	#logging.info(q)
 	
 	#filter by year
 	if (int(year)>0 and int(year)<6):
@@ -225,7 +226,7 @@ def getQuery(self,course_names,grades,average,ctypes,ctype_avgs,residence,year,a
 		p=p.fetch(100)
 		q = [val for val in p if val in q]
 	
-	logging.info(q)
+	#logging.info(q)
 	
 	#filter by residence
 	if (int(residence)>0 and int(residence)<17):
@@ -233,7 +234,7 @@ def getQuery(self,course_names,grades,average,ctypes,ctype_avgs,residence,year,a
 		p=p.fetch(100)
 		q = [val for val in p if val in q]
 		
-	logging.info(q)	
+	#logging.info(q)	
 	
 	#filter out student by grades in specific courses
 	for i in range (0,len(grades)):	
@@ -298,7 +299,20 @@ def getQuery(self,course_names,grades,average,ctypes,ctype_avgs,residence,year,a
 				q=filteredRes
 	return q
 			
-	
+def getSearchQuery(searchTerm):
+	srcRes = []
+	try:
+		index = search.Index(INDEX_NAME)
+		search_results = index.search(searchTerm)
+		logging.info("completed search: " + str(search_results.number_found))
+		if (search_results.number_found>0):
+			for res in search_results:
+				#logging.info("result: ")
+				#logging.info(res.doc_id)
+				srcRes.append(res.doc_id)
+	except search.Error:
+		logging.info("search error")
+	return srcRes
 	
 class minGradeQuery(webapp2.RequestHandler):
 	def errormsg(self):
@@ -377,21 +391,11 @@ class minGradeQuery(webapp2.RequestHandler):
 				
 		#logging.info(searchTerm)
 		
-		srcRes = []
+		#srcRes = []
 		if (searchTerm !=''):
 			searchFlag = 1
 			logging.info(searchTerm)
-			try:
-				index = search.Index(INDEX_NAME)
-				search_results = index.search(searchTerm)
-				logging.info("completed search: " + str(search_results.number_found))
-				if (search_results.number_found>0):
-					for res in search_results:
-						#logging.info("result: ")
-						#logging.info(res.doc_id)
-						srcRes.append(res.doc_id)
-			except search.Error:
-				logging.info("search error")
+			srcRes = getSearchQuery(searchTerm)
 		
 		if (searchFlag==1):
 			if(srcRes==[]):
@@ -401,9 +405,11 @@ class minGradeQuery(webapp2.RequestHandler):
 				f.close()
 				return
 			elif(srcRes!=[] and (q!=None and q!=[])):
+				logging.info("search res: " + str(srcRes))
 				qUnion = []
 				for std in q:
-					if std.user_id in srcRes:
+					#logging.info("student id: " + str(std.google_id))
+					if std.google_id in srcRes:
 						qUnion.append(std)
 				q = qUnion
 		
@@ -439,7 +445,6 @@ class dbBuild(webapp2.RequestHandler):
 			if st.cv_view_cnt==None : st.cv_view_cnt=0
 			if st.gradesheet_view_cnt==None: st.gradesheet_view_cnt=0
 			st.put()
-		
 		
 		import csv
 		
@@ -603,7 +608,7 @@ class dbHandler(webapp2.RequestHandler):
 			
 			srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
 			
-			doc = search.Document(doc_id = user_id,fields=srcFields)
+			doc = search.Document(doc_id = st.google_id,fields=srcFields)
 			try:
 				add_result = search.Index(name=INDEX_NAME).put(doc)
 			except search.Error:

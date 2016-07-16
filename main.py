@@ -191,6 +191,7 @@ class StudentHandler(webapp2.RequestHandler):
 class StudentEditHandler(webapp2.RequestHandler):
 	def get(self):
 		user_id = self.request.cookies.get('id')
+		logging.info("id: " + str(user_id))
 		student_query = Student.query(Student.user_id==user_id).get()
 		if (student_query==None): 
 			self.response.write(errorPage("גישה לא חוקית לדף"))
@@ -217,7 +218,12 @@ class companyAdRemover(webapp2.RequestHandler):
 			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
-			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			
+			comp = Company.query(Company.user_id == user_id).get()
+			email = comp.email
+			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			
+			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			
 			if (int(ad_id)<0 or int(ad_id)>=len(ad_query)):
 				self.redirect("/currentAds")
@@ -239,7 +245,11 @@ class companyCurrAdHandler(webapp2.RequestHandler):
 		if (Company.query(user_id==Company.user_id).get()==None):
 			self.response.write(errorPage("זמן החיבור פג"))
 		else:
-			ad_query = Ad.query(Ad.user_id ==user_id )
+			comp = Company.query(Company.user_id == user_id).get()
+			email = comp.email
+			
+			#ad_query = Ad.query(Ad.user_id ==user_id )
+			ad_query = Ad.query(Ad.message.compMail == email).fetch()
 			page = buildCurrentAdsPage(ad_query)
 			self.response.write(page)
 		
@@ -250,8 +260,10 @@ class companyEditAdHandler(webapp2.RequestHandler):
 			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
-			
-			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			comp = Company.query(Company.user_id == user_id).get()
+			email = comp.email
+			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			logging.info("list len " + str(len(ad_query)) + " " + ad_id)
 			
 			if (int(ad_id)<0 or int(ad_id)>=len(ad_query)):
@@ -276,6 +288,32 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 		minGradeQ = db.minGradeQuery()
 		q = getQuery(minGradeQ,course_names,course_grades,str(adv.aQuery.avg)
 			,adv.aQuery.ctypes,adv.aQuery.ctype_avgs,str(adv.aQuery.residence),str(adv.aQuery.year),str(adv.aQuery.availability),"False")	
+		
+		searchFlag = 0 
+		searchTerm = ''
+		srcWordList = adv.aQuery.srchWords
+		for i in range(0,len(srcWordList)):
+			searchTerm += srcWordList[i]
+			if (i<len(srcWordList)-1):
+				searchTerm += " AND "
+		logging.info(searchTerm)
+		if (searchTerm != ''):
+			searchFlag = 1
+			s = getSearchQuery(searchTerm)
+		
+		if (searchFlag==1):
+			if(s==[]):
+				logging.info("no search results for ad")
+				return s
+			elif(s!=[] and (q!=None and q!=[])):
+				logging.info("search res: " + str(s))
+				qUnion = []
+				for std in q:
+					#logging.info("student id: " + str(std.google_id))
+					if std.google_id in s:
+						qUnion.append(std)
+				q = qUnion
+		
 		if q==None: 
 			return q
 		adv.aQuery.ctypes = ctypesBack
@@ -289,7 +327,11 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 			self.response.write(errorPage("זמן החיבור פג"))
 		else:
 			ad_id = self.request.get('ad_id')
-			ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+			
+			comp = Company.query(Company.user_id == user_id).get()
+			email = comp.email
+			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			
 			if (int(ad_id)<0 or int(ad_id)>=len(ad_query)):
 				self.redirect("/currentAds")
@@ -328,38 +370,40 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 
 class adSchedHandler(webapp2.RequestHandler):
 	def get(self):
+		logging.info("ad schedular started")
 		user_id = self.request.cookies.get('id')
-		if (Company.query(user_id==Company.user_id).get()==None):
-			self.response.write(errorPage("session timeout"))
-		else:
-			ad_query = Ad.query()
-			cmpAdHandler = companyAdResultsHandler()
-			for ad in ad_query:
-			
-				if (ad.aQuery.scheduler == False):
-					continue
+		
+		ad_query = Ad.query()
+		logging.info(ad_query.count())
+		cmpAdHandler = companyAdResultsHandler()
+		logging.info("ad schedular flag")
+		i = 0 
+		for ad in ad_query:
 				
-				q = cmpAdHandler.fetchQuery(ad)
-				logging.info("len q " + str(len(q)) + " studNum " + ad.studNum) 
-				if (len(q) > int(ad.studNum)):
-					for student in q:
-						if(student.user_id not in ad.sentId):
-							logging.info("student detected")
-							#self.response.write(errorPage("new student detected"))
+			if (ad.aQuery.scheduler == False):
+				continue
+				
+			q = cmpAdHandler.fetchQuery(ad)
+			logging.info(str(i) + " len q " + str(len(q)) + " studNum " + ad.studNum) 
+			if (len(q) > int(ad.studNum)):
+				for student in q:
+					if(student.google_id not in ad.sentId):
+						logging.info("student detected")
+						#self.response.write(errorPage("new student detected"))
 							
-							sender_address = "TauHireTeam@gmail.com"
-							subject = "TauHire team - new candidates are waiting for you"
-							body = "Dear Sir/Madam,\n\n"+"Your Ad" + ad.message.jobName + " have a new candidates in TauHire website: \n \n"+\
-							"Best regards"+"\n\n"+"TauHireTeam"
+						sender_address = "TauHireTeam@gmail.com"
+						subject = "TauHire team - new candidates are waiting for you"
+						body = "Dear Sir/Madam,\n\n"+"Your Ad" + ad.message.jobName + " have a new candidates in TauHire website: \n \n"+\
+						"Best regards"+"\n\n"+"TauHireTeam"
 							
-							logging.info(ad.message.compMail)
-							mail.send_mail(sender_address, ad.message.compMail, subject, body)
-							break
-						#else:
-							#self.response.write(errorPage("no new student detected"))
-							#break
-			
-			self.response.write(errorPage("scheduler ran successfully"))	
+						logging.info(ad.message.compMail)
+						mail.send_mail(sender_address, ad.message.compMail, subject, body)
+						break
+					#else:
+						#self.response.write(errorPage("no new student detected"))
+						#break
+			i+=1
+		self.response.write(errorPage("scheduler ran successfully"))	
 
 
 class compSignUpHandler(webapp2.RequestHandler):
@@ -439,6 +483,7 @@ app = webapp2.WSGIApplication([
 	('/dbUserIdScramble', dbUserIdScramble),
 	#('/dbDelete', dbDelete),
 	('/dbBuild', dbBuild),
+	('/adDbBuild', adDbBuild),
 	('/studentInputPage', StudentInputHandler),
 	('/gradeSheet', GradeSheetHandler),
 	#('/StudentWelcomePage/index.html', WelcomeHandler),	
