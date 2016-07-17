@@ -1,7 +1,7 @@
-var newNum = $('.cloneme').length -1;
-var elems = $('.cloneme').length;
+var newNum = $('.cloneme').length -1; //always the numeric ID of the new input field being added
+var elems = $('.cloneme').length; //number of course elements on page, starts as 1
 
-
+//get list of courses
 var courses = $("#courses option").map(function () {
     return this.value;
 }).get();
@@ -11,6 +11,7 @@ if (elems == 1){
 	inputs[0].disabled = true;
 }
 
+//function to delete a course element from the page
 function b(id) {
   
   num = id.substring(9);
@@ -28,7 +29,7 @@ function b(id) {
 }
 
 
-
+//upon clicking on add button, add another set of fields for course to pages html
 $('#buttonadd').click(function ab() {
   elems++;
   newNum = new Number(newNum + 1); // the numeric ID of the new input field being added
@@ -54,17 +55,7 @@ $('#buttonadd').click(function ab() {
 
 });
 
-//$('.buttondel').click(function b() {
-//	alert("calle buttondel");
-  //var num = this.id.substring(9);
-  //elems--;
-
- // $('#cloneme' + num).remove(); // remove the last element
-
-  //if only one element remains, disable the "remove" button
-  //if (elems == 1)
-   // $('.buttondel').attr('disabled', 'disabled');
-//});
+//validate form input before submission, if not stop and alert with error message
 function validateForm() {
 	
 	var allCourseNamesValid = $(".feedback-input").filter(function (key, element) {
@@ -126,7 +117,7 @@ function validateForm() {
 	
 	return true;
 }
-
+//set default text to select element according to selected value
 function setSelect(elem){
 	var chValue = document.getElementById(elem).value;
 	var select = document.getElementById(elem)
@@ -143,6 +134,7 @@ setSelect("residence")
 setSelect("availability")
 setSelect("year")
 
+//profile deletetion functionality
 function delClick(){
 	if (confirm("האם אתה בטוח שברצונך למחוק את הפרופיל שלך?")== true){
 		location.href = 'deleteStudent'

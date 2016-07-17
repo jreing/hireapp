@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#parse courses from input file and update course list (courses.csv)
 inputfile = open('C:courses_input.txt')
 outputfile = open('C:courses.csv', 'w')
 

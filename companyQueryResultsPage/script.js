@@ -14,7 +14,7 @@ $('#select-all').click(function(event) {
     });
   }
 });
-
+//validate form before submission, alert message if input is bad
 function validateForm() {
 
 	var NoStudentsSelected = $(".checkbox").filter(function (key, element) {

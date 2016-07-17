@@ -1,4 +1,4 @@
-
+//function to show extra information upon clicking on show/hide info button
 $(".button").click(function() { 
 	var num = this.id.substring(6);
     $(('#extra'+num)).toggle('display');
