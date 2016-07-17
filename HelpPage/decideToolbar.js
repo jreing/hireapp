@@ -1,6 +1,6 @@
 document.body.innerHTML = '<div id="includedContent"></div>'+document.body.innerHTML;
 notStudent=false
-
+//function to load the correct toobar according to user type
 $(function loadtoolbar(){
 	//check if user is a logged in student
 	$.post("/validateStudent", function(data){

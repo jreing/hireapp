@@ -36,8 +36,7 @@ def errorPage(errormsg):
 
 	return html
 
-#Methods to build the companyQueryResultsPage and StudentOffersPage
-
+#Method to build the companyQueryResultsPage 
 def buildQueryResultsPage(q,ad_id,ad):
 	i=0
 	adFlag = 0
@@ -203,7 +202,7 @@ def buildQueryResultsPage(q,ad_id,ad):
 
 	html=htmlstart+htmlbody+htmlend
 	return html
-		
+#Method to build the StudentOffersPage		
 def buildStudentOffersPage(conv_query, user_id):
 	i=0
 	htmlstart= """<!DOCTYPE html>
@@ -273,7 +272,7 @@ def buildStudentOffersPage(conv_query, user_id):
 	html=htmlstart+htmlbody+htmlend
 	return html
 
-
+#Method to build the StudentInputPage	
 def buildStudentInputPage(course_query):
 	i=0
 	message=""" This is my statement one.\n;This is my statement2"""
@@ -410,7 +409,7 @@ def buildStudentInputPage(course_query):
 
 	html=htmlstart+htmlbody+htmlend
 	return html
-
+#Method to parse the residence info from the client side
 def residenceTranslate(num):
 	return{
 		1: "תל אביב",
@@ -430,7 +429,7 @@ def residenceTranslate(num):
 		15: "נתניה והסביבה",
 		16: "השרון"
 	} .get(num, "לא הוזן")
-	
+#Method to parse the year info from the client side	
 def yearTranslate(num):
 	return{
 		1: "א",
@@ -438,13 +437,13 @@ def yearTranslate(num):
 		3: "ג",
 		4: "ד",
 	} .get(num, "לא הוזן")	
-	
+#Method to parse the availability info from the client side	
 def availTranslate(num):
 	return{
 		1: "חצי משרה",
 		2: "משרה מלאה",
 	} .get(num, "לא הוזן")
-
+#Method to build html templates for search pages
 def buildSearchParameters(ad_query):
 	
 	dynFlag = 0
@@ -623,7 +622,7 @@ def buildSearchParameters(ad_query):
 		htmlEmail+= """> </div>"""		
 	
 	return htmlSearch + htmlMain +htmlbody+ htmlYear +htmlAvail + htmlEmail
-
+#Method to build the list of courses in html for the "select course" (autocomplete) field
 def buildCourseList(course_query):
 	i = 0
 	htmlbody="""<div><datalist id="courses" hidden>"""
@@ -635,7 +634,7 @@ def buildCourseList(course_query):
 	htmlbody+= """</datalist>"""
 	
 	return htmlbody
-	
+#Method to build the CompanyQueryPage
 def buildCompanyQuery(course_query):
 	i=0
 	htmlstart="""<!DOCTYPE html>
@@ -676,7 +675,7 @@ def buildCompanyQuery(course_query):
 	
 	html=htmlstart+ htmlQueryParam +htmlNote +htmlButt + htmlCourseList + htmlend
 	return html
-
+#Method to build the StudentEditPage
 def buildStudentEditPage(student, course_query):
 	hasCv=False
 	
@@ -836,7 +835,7 @@ def buildStudentEditPage(student, course_query):
 	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlButt +"<br>"+"<br>"+htmlDlist +htmlEndForm + htmlDel + htmlEnd
 	return html
 
-	
+#Method to build the createAd page (page to create job advertisement)
 def buildAdPage(course_query):
 
 	htmlstart="""<!DOCTYPE html>
@@ -899,7 +898,7 @@ def buildAdPage(course_query):
 	  
 	html=htmlstart+ htmlExpl + htmlAdDesc +  htmlSearchParam + htmlButt +htmlbody + htmlend
 	return html
-
+#Method to build the EditAd page (page to edit job advertisements)
 def EditAdPage(course_query,ad_query,ad_id):
 
 	htmlstart="""<!DOCTYPE html>
@@ -953,7 +952,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 	  
 	html=htmlstart + htmlAdDesc +htmlSearchParam + htmlButt +htmlbody  + htmlend
 	return html
-
+#Method to build the CurrentAds page (page to view current job advertisements)
 def buildCurrentAdsPage(ad_query):
 	logging.info("entered buildCurrentAdsPage")
 	htmlstart="""<!DOCTYPE html>
@@ -990,7 +989,7 @@ def buildCurrentAdsPage(ad_query):
 	  
 	html=htmlstart+htmlbody + htmlend
 	return html
-
+#Method to build the CompanySignUp page
 def buildCompanySignUp():
 	html="""<!DOCTYPE html>
 	<html lang="he">
@@ -1043,6 +1042,7 @@ def buildCompanySignUp():
 #function that dynamically builds help page depending on
 #type of user and login state
 
+#Method to build the HelpPage page
 def buildHelpPage(isStudent, isCompany):
 	
 	html="""

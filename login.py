@@ -3,6 +3,7 @@
 #import logging
 #import traceback
 
+#handle login page
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
         f = open("chooseEmployOrStudentPage/index.html") 
