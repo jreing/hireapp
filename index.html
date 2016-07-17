@@ -10,8 +10,9 @@
   <meta name="google-signin-client_id" content="165493620970-oi8ske8hj7dd8gh4i7l56lmatbs1mj7p.apps.googleusercontent.com">
   <div id="form-main">
     <div id="form-div">
-<div align="center">
-        <p class="text1"> Welcome to TauHire!</p>
+      <div align="center">
+        <p class="text1"> Welcome to TauHire! </p>
+        <p class="explain">אתר זה מקשר בין מעסיקים לסטודנטים אשר מחפשים עבודה</p>
 		
       </div>
       <div align="right">
@@ -23,14 +24,15 @@
 
         <form class="form" id="form1" method="post">
           <div align="center" class="employ_or_student">
-		  <div id="my-signin2"></div>
+		        <div id="my-signin2"></div>
 
-		  <div class="my-signin2" id="login" data-width="560" data-height="100">		  
+		        <div class="my-signin2" id="login" data-width="560" data-height="100"></div>
+		        <button type="button" id="employ_button" hidden="true" onclick="ForceLogin()">Continue </button>
           </div>
-		  <button type="button" id="employ_button" hidden="true" onclick="ForceLogin()">Continue </button>
         </form>
     </div>
 	</div>
+
 <script type="text/javascript" src="/LogInForBarak/script.js"></script>
 <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 <script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>

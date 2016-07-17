@@ -30,6 +30,23 @@ html {
   -webkit-border-radius: 7px;
 }
 
+.explain{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  float: right;
+  width: 100%;
+  color: white;
+  font-size: 23px;
+  padding-top: 5px;
+  margin-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-align: right;
+
+
+}
+
 .text1, .text2, .text3, .text11{
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: bold;
