@@ -116,8 +116,8 @@ class MessageSend(webapp2.RequestHandler):
 		#self.conNum.put()
 		ad_id = self.request.get('ad_id')
 		logging.info(ad_id)
+		user_id = self.request.cookies.get('id')
 		if (int(ad_id)!=-1):
-			user_id = self.request.cookies.get('id')
 			comp = Company.query(Company.user_id == user_id).get()
 			email = comp.email
 			ad_query = Ad.query(Ad.message.compMail == email).fetch()
