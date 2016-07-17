@@ -450,21 +450,21 @@ class dbBuild(webapp2.RequestHandler):
 		
 		#upload courses to db
 
-		# with open('courses3.csv', 'rb') as csvfile:
-		# 	spamreader = csv.reader(csvfile, delimiter=',')
-		# 	for row in spamreader:
-		# 		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
-		# 		c.put()
+		with open('courses3.csv', 'rb') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter=',')
+			for row in spamreader:
+		 		c=Course(course_name=row[0],course_id=row[1], course_type=int(row[2]), course_weight=int(row[3]))
+		 		c.put()
 
 		#upload allowed companies file to db 
 		
-		#with open('allowedCompanies.csv', 'rb') as csvfile:
-		#	spamreader = csv.reader(csvfile, delimiter='\n')
-		#	for row in spamreader:
-		#		s=(str(row)[2:len(str(row))-2]).strip()
-		#		logging.info(s.strip())
-		#		a=allowedCompany(email=s)
-		#		a.put()
+		with open('allowedCompanies.csv', 'rb') as csvfile:
+			spamreader = csv.reader(csvfile, delimiter='\n')
+			for row in spamreader:
+				s=(str(row)[2:len(str(row))-2]).strip()
+				logging.info(s.strip())
+				a=allowedCompany(email=s)
+				a.put()
 		
 		self.response.write(errorPage('Database built'))
 
@@ -487,7 +487,9 @@ class deleteStudent(webapp2.RequestHandler):
 		st=Student.query(id==Student.user_id).get()
 		if (st!=None):
 			#remove student
-			st.key.delete()	
+			st.key.delete()
+			index = search.Index(name=INDEX_NAME)
+			index.delete(st.google_id)	
 		self.response.write(\
 		errorPage("שם המשתמש שלך נמחק, בהצלחה בהמשך הדרך"))
 

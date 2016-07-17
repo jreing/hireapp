@@ -147,7 +147,51 @@ function validateForm() {
 	return true;
 }
 
+$(document).ready(function() {
+// Tooltip only Text
+var msg=".חלק זה מאפשר לך להוסיף לחיפוש רשימת קורסים עם ציון מינימלי עבור כל קורס <br> .תוצאות החיפוש יכילו רק סטודנטים שלמדו את הקורסים הללו וקיבלו בהם ציון גבוה מהציון שהוזן<br>.הוספה של אשכול מאפשרת לבצע חיפוש עבור סטודנטים שלמדו קבוצה של קורסים בעלי נושא משותף<br>כך לדוגמה, חיפוש אחר אשכול של אבטחת מידע יחזיר סטודנטים שלמדו לפחות קורס אחד באבטחת מידע<br> ושהממוצע שלהם בקורסים שלקחו בנושא גדול מהממוצע שהוזן בחיפוש"
+$('#toolTipTwo').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<p class="tooltip"></p>')
+        .html(msg)
+        .appendTo('body')
+        .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX - 700; //Get X coordinates
+        var mousey = e.pageY - 10; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+	});
+});
 
+$(document).ready(function() {
+// Tooltip only Text
+var msg="חלק זה מאפשר לחפש ביטויים בקורות חיים שהועלו לאתר <br> .כך למשל הכנסת הביטוי לינוקס תחזיר סטודנטים שהמילה מופיעה בקורות החיים שלהם  <br> .באפשרותך לחפש יותר מביטוי אחד באמצעות הכנסת הביטויים השונים עם רווחים ביניהם"
+$('#toolTipOne').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<p class="tooltip"></p>')
+        .html(msg)
+        .appendTo('body')
+        .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX - 590; //Get X coordinates
+        var mousey = e.pageY - 10; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+	});
+});
 
 
 

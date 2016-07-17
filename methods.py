@@ -458,23 +458,20 @@ def buildSearchParameters(ad_query):
 		dynFlag = 1
 	
 	logging.info(dynFlag)
-	htmlSearch = """
-			<div align="right">
-			<p class="text1">:ביטוי לחיפוש בקורות חיים</p>
-		  </div>
-			<div align="right">
-			  <input type="text" name="searchBar" id="searchBar" class="validate[required,custom[onlyLetter]] feedback-input" """
+	htmlSearch = """<div align="right" id="info">
+			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" id="masterTooltip" title="">:ביטוי לחיפוש בקורות חיים</a> </div>
+
+<div align="right"> <input type="text" name="searchBar" id="searchBar" class="validate[required,custom[onlyLetter]] feedback-input" """
 	if (dynFlag==1):
 		searchTerms = ''.join(ad_query.aQuery.srchWords)
 		htmlSearch+= """value=" """ +searchTerms + """ " />"""
 	else:
-		htmlSearch+= """value="" />"""
+		htmlSearch+= """placeholder="ביטויים לחיפוש"  />"""
 			  
 	htmlSearch+="""</div>"""
-	htmlMain = """
-			<div align="right">
-			<p class="text1">:ציון מינימלי בקורס</p>
-		  </div>
+
+	htmlMain = """<div align="right" id="info">
+			<a id="toolTipTwo" class="ui-btn ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right" data-rel="dialog" id="masterTooltip" title="">:ציון מינימלי בקורס</a></div><br><br>
 			<div class="inputline">
 			  <input type="button" id="buttonadd" value="הוסף קורס" />
 			</div>"""
@@ -521,7 +518,7 @@ def buildSearchParameters(ad_query):
 				<option value=7>ביואינפורמטיקה</option>
 			  </select>
 			  
-			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input6" min="60" max="100" id="ctype_avg" value=""" + str(ad_query.aQuery.ctype_avgs[k]) + """ />
+			  <input name="ctype_avg" type="number" class="validate[required,custom[email]] feedback-input6" min="60" max="100" id="ctype_avg" placeholder="ממוצע" value=""" + str(ad_query.aQuery.ctype_avgs[k]) + """ />
 			  <input type="button" id="buttondeltwo""" + str(k) + """" class="buttondeltwo" onclick= "btwo(this.id)" value="הסר" />
 			</div>"""
 				k +=1
@@ -645,7 +642,7 @@ def buildCompanyQuery(course_query):
 	<html>
 		<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
 	  <body>
-		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/companyQueryFormPage/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		
 		<div id="form-main">
@@ -672,6 +669,8 @@ def buildCompanyQuery(course_query):
 	</form> </div></div>
 	  </body>
 	  <script type="text/javascript" src="/companyQueryFormPage/script.js"></script>
+	  
+	  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	  </html>"""
 	
 	
@@ -844,7 +843,7 @@ def buildAdPage(course_query):
 	<html>
 		<link rel="stylesheet" type="text/css" href="createAd/style.css">
 	  <body>
-		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="createAd/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd?ad_id=-1" method="post">
 		
@@ -853,6 +852,8 @@ def buildAdPage(course_query):
 		  <p class="titletext">:בניית משרה</p>
 		</div>
 		<div id="form-div">"""
+
+	message = ""
 	
 	htmlSearchParam = buildSearchParameters(1)
 	
@@ -892,9 +893,11 @@ def buildAdPage(course_query):
 		
 	  </body>
 	  <script type="text/javascript" src="/createAd/script.js"></script>
+	
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	  </html>"""
 	  
-	html=htmlstart+ htmlExpl + htmlAdDesc +htmlSearchParam + htmlButt  +htmlbody + htmlend
+	html=htmlstart+ htmlExpl + htmlAdDesc +  htmlSearchParam + htmlButt +htmlbody + htmlend
 	return html
 
 def EditAdPage(course_query,ad_query,ad_id):
@@ -903,7 +906,7 @@ def EditAdPage(course_query,ad_query,ad_id):
 	<html>
 		<link rel="stylesheet" type="text/css" href="editAd/style.css">
 	  <body>
-		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/editAd/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/processAd?ad_id="""+ad_id+"""" method="post">
 	
@@ -944,6 +947,8 @@ def EditAdPage(course_query,ad_query,ad_id):
 		
 	  </body>
 	  <script type="text/javascript" src="/editAd/script.js"></script>
+	  
+	  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	  </html>"""
 	  
 	html=htmlstart + htmlAdDesc +htmlSearchParam + htmlButt +htmlbody  + htmlend
