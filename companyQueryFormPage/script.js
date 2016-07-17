@@ -1,11 +1,14 @@
-var newNum = 0;
-var elems = 1;
-var newNumtwo = 0;
-var elemstwo = 1;
+var newNum = 0; //always the numeric ID of the new input field being added for courses
+var elems = 1; //number of course elements on page, starts as 1
+var newNumtwo = 0; //always the numeric ID of the new input field being added for clusters
+var elemstwo = 1; //number of cluster elements on page, starts as 1
+
+//get list of courses
 var courses = $("#courses option").map(function () {
     return this.value;
 }).get();
 
+//function to delete a course element from the page
 function b() {
   var num = this.id.substring(9);
   elems--;
@@ -20,7 +23,7 @@ function b() {
 	}
   }
 }
-
+//function to delete a cluster element from the page
 function btwo() {
   var numtwo = this.id.substring(12);
   elemstwo--;
@@ -38,7 +41,7 @@ function btwo() {
 
 
 
-
+//upon clicking on add button, add another set of fields for course to pages html
 $('#buttonadd').click(function ab() {
   elems++;
   newNum = new Number(newNum + 1); // the numeric ID of the new input field being added
@@ -65,6 +68,7 @@ $('#buttonadd').click(function ab() {
 
 });
 
+//upon clicking on add button, add another set of fields for cluster to pages html
 $('#buttonaddtwo').click(function abtwo() {
   elemstwo++;
   newNumtwo = new Number(newNumtwo + 1); // the numeric ID of the new input field being added
@@ -91,7 +95,7 @@ $('#buttonaddtwo').click(function abtwo() {
 
 });
 
- 
+ //disable delete buttons until add buttons are clicked
 $('.buttondel')[ 0 ].onclick= b;
 $('.buttondel').attr('disabled', 'disabled');
 $('.buttondeltwo')[ 0 ].onclick= btwo;
@@ -99,7 +103,7 @@ $('.buttondeltwo').attr('disabled', 'disabled');
 
 
 
-
+//validate form input before submission, if not stop and alert with error message
 function validateForm() {
  	var gradeWithoutCourse = $(".cloneme").filter(function (key, element) {
         var course = $(element).children().eq(0).val();
