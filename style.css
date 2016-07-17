@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,800);
+/* css for index.html , our login page*/
 html {
   background: url(/bgimg/feedback-img.jpg) no-repeat center center fixed;
   background-size: cover;
