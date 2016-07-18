@@ -59,7 +59,7 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
     <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend?ad_id=-1" method="post">"""
 	else:
 		htmlstart+=	"""<div id="form-div">
-    <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
+    <div align="right"> <p class="medtitletext">:הזן את פרטי המשרה לשליחה</p>  </div>
     <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend?ad_id="""+ad_id+"""" method="post">"""
 		
 	htmlstart+="""  <div align="right">
@@ -108,7 +108,7 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
         
            
 	htmlstart+="""  </div>
-	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים</p> </div>
+	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים מבין המתאימים</p> </div>
 
       <div id="scroll" style="overflow-y: scroll; height:600px;">"""
 	  
