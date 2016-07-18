@@ -71,6 +71,8 @@ html {
   padding-bottom: 0px;
   margin-bottom: 20px;
   font-weight: 700;
+  white-space: pre-wrap;
+  direction: rtl;
 }
 
 #button {
