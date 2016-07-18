@@ -450,8 +450,13 @@ class dbBuild(webapp2.RequestHandler):
 			if st.cnt==None: st.cnt=0
 			if st.cv_view_cnt==None : st.cv_view_cnt=0
 			if st.gradesheet_view_cnt==None: st.gradesheet_view_cnt=0
-			st.put()
-		
+			
+			#index CVs:
+			if (st.cv_blob_key!=None):
+				blob_reader = blobstore.BlobReader(st.cv_blob_key)
+				#get the file text
+				text = blob_reader.read()
+
 		#import csv
 		
 		#upload courses to db
@@ -594,9 +599,8 @@ class dbHandler(webapp2.RequestHandler):
 			#logging.info ("cv detected " + cv)
 			
 			#validate the user's file is a REAL PDF.
-			if (self.checkPdfFile(cv)==False):
-				#TODO - more elegent error message
-				self.response.write(("קובץ לא חוקי להעלאה"))
+			if (self.checkPdfFile(cv)==False or len(cv)>3000000):
+				self.response.write(errorPage("קובץ לא חוקי להעלאה"))
 				return
 			
 			#write user's CV File into blobstore
@@ -762,8 +766,6 @@ class deleteMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 				window.location="studentEditPage";
 				</script></html>""")
 
-
-		
 #use this function for student to get his/her own CV
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
