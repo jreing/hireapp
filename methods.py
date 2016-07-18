@@ -1022,7 +1022,7 @@ def buildCompanySignUp():
 				<input name="compName" type="text" class="compName" id="compName" placeholder="" /></div>
 
 <div align="right">
-				<p class="text1" id="element1">מייל לשם כניסה לאתר (עם סיומת (@gmail.com</p><br><br>
+				<p class="text1" id="element1">מייל של גוגל לשם כניסה לאתר </p>
 
 				<input name="mailAdd" type="text" class="mailAdd" id="mailAdd" placeholder="" /></div>"""
 
