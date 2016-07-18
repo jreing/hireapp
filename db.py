@@ -9,6 +9,8 @@ from methods import *
 import hashlib
 from time import time
 
+import time as t
+
 #for blobstore
 from google.appengine.ext import blobstore
 from google.appengine.ext.blobstore import BlobKey
@@ -743,7 +745,25 @@ class dbHandler(webapp2.RequestHandler):
 		blobstore_filename = '/gs' + filename
 		return blobstore.create_gs_key(blobstore_filename)
 		
+#use this function for student to get his/her own CV
+class deleteMyCV(blobstore_handlers.BlobstoreDownloadHandler):
+	def get(self):
+		user_id = self.request.cookies.get('id')
+		if (checkStudentLoginExists(user_id)!=True):
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			st = Student.query(Student.user_id==user_id).get()
+			if (st.cv_blob_key!=None):
+				blobstore.delete(st.cv_blob_key)
+				st.cv_blob_key=None
+				st.put()
+				t.sleep(2)
+			self.response.write ("""<html><script>
+				window.location="studentEditPage";
+				</script></html>""")
 
+
+		
 #use this function for student to get his/her own CV
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 	def get(self):
