@@ -348,7 +348,11 @@ class minGradeQuery(webapp2.RequestHandler):
 	
 
 	
-	def post(self):	 
+	def post(self):
+
+		user_id = self.request.cookies.get('id')
+		comp_query = Company.query(Company.user_id ==user_id).get()		
+	 
 		#get fields from request
 		course_names=self.request.get_all('name')
 		grades= self.request.get_all('grade')
@@ -422,7 +426,7 @@ class minGradeQuery(webapp2.RequestHandler):
 			self.response.write(f.read())
 			f.close()
 		else: #build result page
-			page = buildQueryResultsPage(q,None,None)
+			page = buildQueryResultsPage(q,None,comp_query)
 			self.response.write(page)
 			
 

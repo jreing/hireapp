@@ -192,6 +192,14 @@ textarea {
 .text {
   margin-right: 30px;
   display: inline-block;
+  white-space: pre-wrap;
+  direction: rtl;
+}
+
+.texthead {
+  margin-right: 30px;
+  display: inline-block;
+  white-space: pre-wrap;
 }
 
 .textsmallpad {

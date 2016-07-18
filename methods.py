@@ -44,7 +44,6 @@ def buildQueryResultsPage(q,ad_id,ad):
 	if (ad_id!=None):
 		adFlag = 1
 	
-	
 	htmlstart= """<!DOCTYPE html>
 	<html>
 	
@@ -72,16 +71,16 @@ def buildQueryResultsPage(q,ad_id,ad):
 	else:
 		htmlstart+= """value=" """ + ad.message.compName + "\""  
 	  
-	htmlstart+= """id="companyName" /></div>"""
+	htmlstart+= """id="companyName" placeholder="שם"   /></div>"""
 
 	htmlstart+=  """<div align="right">
         <p class="text1">:מייל החברה</p>
         <input name="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """
 	
 	if (adFlag == 0):
-		htmlstart+="""placeholder="מייל" """
+		htmlstart+="""placeholder="מייל" value=" """ + ad.email + "\""
 	else:
-		htmlstart+= """value=" """ + ad.message.compMail + "\""
+		htmlstart+= """placeholder="מייל" value=" """ + ad.message.compMail + "\""
 		
 
 	htmlstart+= """id="name" /> </div>"""
@@ -493,9 +492,11 @@ def buildSearchParameters(ad_query):
 			  <input type="button" id="buttondel0" class="buttondel" onclick= "b(this.id)" value="הסר" />
 			</div>"""
 	
-	htmlbody+= """<div align="right" id="bysubject">
-			  <p class="text1">:ממוצע מינימלי באשכול</p>
-			</div>
+	htmlbody+= """
+			
+			
+			<div align="right" id="bysubject">
+			<a id="toolTipThree" class="ui-btn ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right" data-rel="dialog" id="masterTooltip" title="">:ממוצע מינימלי באשכול</a></div>
 			<div class="inputline">
 			  <input type="button" id="buttonaddtwo" value="הוסף אשכול" />
 			</div>"""
@@ -675,6 +676,7 @@ def buildCompanyQuery(course_query):
 	
 	html=htmlstart+ htmlQueryParam +htmlNote +htmlButt + htmlCourseList + htmlend
 	return html
+
 #Method to build the StudentEditPage
 def buildStudentEditPage(student, course_query):
 	hasCv=False
