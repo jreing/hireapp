@@ -9,6 +9,8 @@ from methods import *
 import hashlib
 from time import time
 
+import time as t
+
 #for blobstore
 from google.appengine.ext import blobstore
 from google.appengine.ext.blobstore import BlobKey
@@ -448,8 +450,13 @@ class dbBuild(webapp2.RequestHandler):
 			if st.cnt==None: st.cnt=0
 			if st.cv_view_cnt==None : st.cv_view_cnt=0
 			if st.gradesheet_view_cnt==None: st.gradesheet_view_cnt=0
-			st.put()
-		
+			
+			#index CVs:
+			if (st.cv_blob_key!=None):
+				blob_reader = blobstore.BlobReader(st.cv_blob_key)
+				#get the file text
+				text = blob_reader.read()
+
 		#import csv
 		
 		#upload courses to db
@@ -592,9 +599,8 @@ class dbHandler(webapp2.RequestHandler):
 			#logging.info ("cv detected " + cv)
 			
 			#validate the user's file is a REAL PDF.
-			if (self.checkPdfFile(cv)==False):
-				#TODO - more elegent error message
-				self.response.write(("קובץ לא חוקי להעלאה"))
+			if (self.checkPdfFile(cv)==False or len(cv)>3000000):
+				self.response.write(errorPage("קובץ לא חוקי להעלאה"))
 				return
 			
 			#write user's CV File into blobstore
@@ -743,6 +749,22 @@ class dbHandler(webapp2.RequestHandler):
 		blobstore_filename = '/gs' + filename
 		return blobstore.create_gs_key(blobstore_filename)
 		
+#use this function for student to get his/her own CV
+class deleteMyCV(blobstore_handlers.BlobstoreDownloadHandler):
+	def get(self):
+		user_id = self.request.cookies.get('id')
+		if (checkStudentLoginExists(user_id)!=True):
+			self.response.write(errorPage("גישה לא חוקית לדף"))
+		else:
+			st = Student.query(Student.user_id==user_id).get()
+			if (st.cv_blob_key!=None):
+				blobstore.delete(st.cv_blob_key)
+				st.cv_blob_key=None
+				st.put()
+				t.sleep(2)
+			self.response.write ("""<html><script>
+				window.location="studentEditPage";
+				</script></html>""")
 
 #use this function for student to get his/her own CV
 class getMyCV(blobstore_handlers.BlobstoreDownloadHandler):

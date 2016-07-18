@@ -1,4 +1,3 @@
-//document.getElementById("login").style.width = document.getElementById("employ_button").style.width;
 var isStudent=undefined;
 
 function getCookie(cname) {
@@ -16,11 +15,9 @@ function getCookie(cname) {
     return "";
 } 
 
-
+//loads the appropriate page depending on type of user
 function ForceLogin() {
-	console.log(getCookie("id"));
 	while (getCookie("id")==""){
-		console.log("forcedlogin");
 	}
 	if (isStudent==true){
 		window.location="/studenthandler";
@@ -33,24 +30,25 @@ function ForceLogin() {
 
 
 function onLogin(googleUser){
-	//alert("Started onLogin")
+
 	console.log('Logging In');
-	//var id_token = googleUser.getAuthResponse().id_token;
-	
+
 	//make sure cookie (and love) don't last long
 	var date = new Date();
     date.setTime(date.getTime()+(2*60*60*1000));
 	var expires = "; expires="+date.toGMTString();
 	document.cookie="expires=" +expires ;
-	
+
+	//get user profile
 	var profile = googleUser.getBasicProfile();
-	//console.log(profile);
 	var user_id=profile.Ka;
 	
 	//console.log('idToken: ' + id_token);
 	//console.log('Name: ' + profile.getName());
 	//console.log('Image URL: ' + profile.getImageUrl());
 	//console.log('Email: ' + profile.getEmail()); 
+
+	//client side check if user is student or company (server side)
 	var email = profile.getEmail();
 	if (email.endsWith('tau.ac.il')){
 		isStudent=true;
@@ -59,31 +57,22 @@ function onLogin(googleUser){
 		isStudent=false;
 	}
 
+	//send HTTP request to server for logging in to app
 	var xhr = new XMLHttpRequest();
-	//alert("Started on Login")
-	//console.log('mark');
 	xhr.open('POST', '/tokenSignIn');
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-	
 	xhr.send('user_id=' + profile.Ka + "&email=" + email + "&isStudent=" + isStudent);
 	
-	//document.getElementById("employ_button").hidden=false;
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == XMLHttpRequest.DONE) {
-			if (xhr.responseText!=""){
-				//document.write(xhr.responseText);
+			if (xhr.responseText!=""){ //bad response
 				window.location="/unauthorized"
 			}	
-			else {
-				
+			else {		//good response
 				setTimeout(ForceLogin, 1000);
-				
 			}
 		}
-
 	}
-	
-
 }
 
 function onFailure(error) {
@@ -91,18 +80,7 @@ function onFailure(error) {
   location.reload();
 }
 
-// function signOut() {
-	// alert("logout");
-    // var auth2 = gapi.auth2.getAuthInstance();
-    // auth2.signOut().then(function () {
-		// console.log('User signed out.');
-
-    // });
-
-	// auth2.signOut();
-
-  // }
-  
+//create google button- works only when adblock is not on
 
 function renderButton() {
   gapi.signin2.render('my-signin2', {

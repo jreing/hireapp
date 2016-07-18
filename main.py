@@ -493,6 +493,7 @@ app = webapp2.WSGIApplication([
 	('/messageSend', MessageSend),
 	('/messageReply', MessageReply),
 	('/studentEditPage', StudentEditHandler),
+	('/deleteMyCV', deleteMyCV),
 	('/getMyCV', getMyCV),
 	('/getCV', getCV),
 	('/createAd', companyAdHandler),

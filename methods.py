@@ -745,6 +745,7 @@ def buildStudentEditPage(student, course_query):
 					<p class="text3" id="element1">:קורות החיים שהזנת</p>"""
 		
 		htmlcv += """<button type="button" onclick="location.href='getMyCV'" id="Cvbutton" class="Cvbutton">הצג</button>"""
+		htmlcv += """<button type="button" onclick="location.href='deleteMyCV'" id="Cvbutton" class="Cvbutton">מחק</button>"""
 		
 		htmlcv += """<div>
     				<p class="text4">:החלפת קורות חיים</p>
