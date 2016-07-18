@@ -233,11 +233,7 @@ class companyAdRemover(webapp2.RequestHandler):
 			#ad_query.put()
 			t.sleep(1)
 			self.redirect("/currentAds")
-			#self.response.write ("""<html><script>
-				#window.location="/currentAds";
-				#</script></html>""")
-			#ad = ad_query[int(ad_id)]
-			#ad.delete()
+			
 			
 class companyCurrAdHandler(webapp2.RequestHandler):
 	def get(self):
@@ -365,7 +361,7 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 			else: #build result page
 				ad.studNum = str(len(q))
 				ad.put()
-				page = buildQueryResultsPage(q,ad_id,ad)
+				page = buildQueryResultsPage(q,ad_id,ad,comp)
 				self.response.write(page)
 
 class adSchedHandler(webapp2.RequestHandler):

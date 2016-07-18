@@ -37,7 +37,7 @@ def errorPage(errormsg):
 	return html
 
 #Method to build the companyQueryResultsPage 
-def buildQueryResultsPage(q,ad_id,ad):
+def buildQueryResultsPage(q,ad_id,ad,comp):
 	i=0
 	adFlag = 0
 	
@@ -64,46 +64,43 @@ def buildQueryResultsPage(q,ad_id,ad):
 		
 	htmlstart+="""  <div align="right">
         <p class="text1">:שם החברה</p>
-        <input name="companyName" id="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+        <input name="companyName" id="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם חברה" """ 
       
-	if (adFlag == 0):
-		htmlstart+="""placeholder="שם" """
-	else:
-		htmlstart+= """value='""" + ad.message.compName + "'"  
-	  
+	htmlstart+= """value='""" + comp.name + "'"  
+	
+	htmlstart+= """ /></div>"""
+
+	htmlstart+="""  <div align="right">
+        <p class="text1">:מיקום החברה</p>
+        <input name="companyCity" id="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מיקום החברה" """ 
+      
+	htmlstart+= """value='""" + comp.city + "'"  
+	
 	htmlstart+= """ /></div>"""
 
 	htmlstart+=  """<div align="right">
         <p class="text1">:מייל החברה</p>
-        <input name="companyMail" id="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """
+        <input name="companyMail" id="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" """
 	
-	if (adFlag == 0):
-		htmlstart+="""placeholder="מייל" value=" """ + ad.email + "\""
-	else:
-		htmlstart+= """placeholder="מייל" value='""" + ad.message.compMail + "'"
-
-		
+	htmlstart+="""value='""" + comp.email + "'"	
 
 	htmlstart+= """ /> </div>"""
 
 	htmlstart+= """<div align="right">
         <p class="text1">:שם המשרה</p>
-        <input name="jobId" id="jobName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+        <input name="jobId" id="jobName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" """ 
 		
-	if (adFlag == 0):
-		htmlstart+="""placeholder="משרה" """
-	else:
+	if (adFlag != 0):
 		htmlstart+= """value='""" + ad.message.jobName + "'"
-		
-		
+	
 	htmlstart+=""" /></div>"""
 
 	htmlstart+="""<div align="right">
         <p class="text1">:תאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" id="jobDescription" dir="rtl" """
+        <textarea class="scrollabletextbox" name="note" id="jobDescription" dir="rtl" placeholder="פרטים על המשרה.." """
 
 	if (adFlag == 0):
-		htmlstart+="""placeholder="פרטים על המשרה..">"""
+		htmlstart+=""">"""
 	else:
 		htmlstart+= """>""" + ad.message.cont 
 

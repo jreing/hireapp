@@ -426,7 +426,7 @@ class minGradeQuery(webapp2.RequestHandler):
 			self.response.write(f.read())
 			f.close()
 		else: #build result page
-			page = buildQueryResultsPage(q,None,comp_query)
+			page = buildQueryResultsPage(q,None,None,comp_query)
 			self.response.write(page)
 			
 
