@@ -65,42 +65,42 @@ def buildQueryResultsPage(q,ad_id,ad):
 		
 	htmlstart+="""  <div align="right">
         <p class="text1">:שם החברה</p>
-        <input name="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+        <input name="companyName" id="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
       
 	if (adFlag == 0):
 		htmlstart+="""placeholder="שם" """
 	else:
-		htmlstart+= """value=" """ + ad.message.compName + "\""  
+		htmlstart+= """value='""" + ad.message.compName + "'"  
 	  
-	htmlstart+= """id="companyName" /></div>"""
+	htmlstart+= """ /></div>"""
 
 	htmlstart+=  """<div align="right">
         <p class="text1">:מייל החברה</p>
-        <input name="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """
+        <input name="companyMail" id="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """
 	
 	if (adFlag == 0):
 		htmlstart+="""placeholder="מייל" """
 	else:
-		htmlstart+= """value=" """ + ad.message.compMail + "\""
+		htmlstart+= """value='""" + ad.message.compMail + "'"
 		
 
-	htmlstart+= """id="name" /> </div>"""
+	htmlstart+= """ /> </div>"""
 
 	htmlstart+= """<div align="right">
         <p class="text1">:שם המשרה</p>
-        <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+        <input name="jobId" id="jobName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
 		
 	if (adFlag == 0):
 		htmlstart+="""placeholder="משרה" """
 	else:
-		htmlstart+= """value=" """ + ad.message.jobName + "\""
+		htmlstart+= """value='""" + ad.message.jobName + "'"
 		
 		
-	htmlstart+=""" id="jobId" /></div>"""
+	htmlstart+=""" /></div>"""
 
 	htmlstart+="""<div align="right">
         <p class="text1">:תאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" dir="rtl" """
+        <textarea class="scrollabletextbox" name="note" id="jobDescription" dir="rtl" """
 
 	if (adFlag == 0):
 		htmlstart+="""placeholder="פרטים על המשרה..">"""
