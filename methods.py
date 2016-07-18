@@ -238,12 +238,12 @@ def buildStudentOffersPage(conv_query, user_id):
 		
 						<div align="right">
 							<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
-							<p class="text">"""+str(message.compMail)+"""</p>
-							<p class="text">:מייל</p>
-							<p class="text">"""+str(message.compName)+"""</p>
-							<p class="text">:שם חברה</p>
-							<p class="text">"""+str(message.jobName)+"""</p>
-							<p class="text">:שם משרה</p>
+							<p class="texthead">"""+str(message.compMail)+"""</p>
+							<p class="texthead">:מייל</p>
+							<p class="texthead">"""+str(message.compName)+"""</p>
+							<p class="texthead">:שם חברה</p>
+							<p class="texthead">"""+str(message.jobName)+"""</p>
+							<p class="texthead">:שם משרה</p>
 						</div>
 				
 						<div class="form-extra" id="extra"""+str(i)+"""""; align="right">
