@@ -109,7 +109,6 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
            
 	htmlstart+="""  </div>
 	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים מבין המתאימים</p> </div>
-
       <div id="scroll" style="overflow-y: scroll; height:600px;">"""
 	  
 	htmlbody=''
@@ -185,10 +184,8 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
       <input type="checkbox" name="select-all" id="select-all" />
       <div class="submit">
         <input type="submit" value="שלח משרה" id="button-blue" />
-
       </div>
     </form>
-
   </div>
   </body>
   	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
@@ -213,12 +210,9 @@ def buildStudentOffersPage(conv_query, user_id):
   <div >
     <p class="titletext"  >:ההצעות שלי</p>
   </div>
-
   <div id="form-div">
     <div align="right"> <p class="medtitletext">:הצעות שקיבלת</p>  </div>
   
-
-
       <div id="scroll">"""
 	#st = Student.query(Student.user_id==user_id).get()  
 	htmlbody=''
@@ -230,7 +224,6 @@ def buildStudentOffersPage(conv_query, user_id):
 				#send = users.User(_user_id = message.sender.identity)
 				i=i+1
 				htmlbody+="""
-
 				        <div class="form-element" ; align="right">
 						<div align="right">
 						<table dir="rtl" style="width:100%">
@@ -251,18 +244,13 @@ def buildStudentOffersPage(conv_query, user_id):
 						</tr></table></div>
 				
 						<div class="form-extra" id="extra"""+str(i)+"""""; align="right">
-
 						<p class="text" id="extra1" >""" +str(message.cont)+ """</p>
-
-
 						</div>
 				</div>"""
 	
 	emptypage="""
             </div>
-
     <div align="right"> <p class="medtitletext" id="empty">...טרם קיבלת הצעות</p>  </div>
-
   </div>"""
 
 	htmlend = """
@@ -284,7 +272,6 @@ def buildStudentInputPage(course_query):
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="studentInputPage/style.css">
 		
-
 	  <body>
 		<script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/StudentToolbar/loadToolbarInputPage.js"></script>
@@ -333,10 +320,8 @@ def buildStudentInputPage(course_query):
 			  
 		    </div>
 		
-
 		    <div id="avgEntry" >
 				<p class="text2" id="element1">:הזן ממוצע כללי</p> 
-
 				<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" placeholder="ממוצע" />			  
 			</div>
 			<div>
@@ -369,7 +354,6 @@ def buildStudentInputPage(course_query):
 			
 			<br><div id="gitEntry" >
 				<p class="text2" id="element1">:אופציונלי - הזן חשבון גיט</p><br><br>
-
 				<input name="git" type="text" class="git" id="git" placeholder="" />			  
 			</div>
 			
@@ -382,7 +366,6 @@ def buildStudentInputPage(course_query):
 			
 			<div id="info">
 			<a class="ui-btn ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right" data-rel="dialog" id="masterTooltip" title=" """+message+""" ">פרטיות</a>			
-
 			</div>
 			
 		    <div class="submit">
@@ -404,10 +387,7 @@ def buildStudentInputPage(course_query):
 		
 	  </div>
 	  </body>
-
-
 		<script type="text/javascript" src="studentInputPage/script.js"></script>
-
 	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	</html>"""
 
@@ -463,7 +443,6 @@ def buildSearchParameters(ad_query):
 	logging.info(dynFlag)
 	htmlSearch = """<div align="right" id="info">
 			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" id="masterTooltip" title="">:ביטוי לחיפוש בקורות חיים</a> </div>
-
 <div align="right"> <input type="text" name="searchBar" id="searchBar" class="validate[required,custom[onlyLetter]] feedback-input" """
 	if (dynFlag==1):
 		searchTerms = ''.join(ad_query.aQuery.srchWords)
@@ -555,9 +534,7 @@ def buildSearchParameters(ad_query):
 		htmlbody+="""placeholder="ממוצע" """
 		
 	htmlbody+="""/>	</div>
-
 		<div align="right">
-
 			<p class="text1">:אזור מגורים</p>
 		  <select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />"""
 		  
@@ -870,7 +847,6 @@ def buildAdPage(course_query):
         <p class="text1">:שם המשרה</p>
         <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="jobId" />
       </div>
-
       <div align="right">
         <p class="text1">:תאור המשרה</p>
         <textarea class="scrollabletextbox" name="note" class="note" dir="rtl" placeholder="פרטים על המשרה.." id="note"></textarea>
@@ -931,7 +907,6 @@ def EditAdPage(course_query,ad_query,ad_id):
         <p class="text1">:שם המשרה</p>
         <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" value='""" + ad_query.message.jobName + """' id="jobId" />
       </div>
-
       <div align="right">
         <p class="text1">:תאור המשרה</p>
         <textarea class="scrollabletextbox" name="note" id="note" dir="rtl">"""+ ad_query.message.cont +"""</textarea>
@@ -943,7 +918,6 @@ def EditAdPage(course_query,ad_query,ad_id):
 	בדף זה תוכלו ליצור פרופיל משרה עם מאפייני הסטודנטים שאתם מחפשים 
 	<br><br> בסיום התהליך יהיה באפשרותכם לערוך חיפוש במאגר הסטודנטים באתר, לאתר את הסטודנטים שמתאימים לדרישות המשרה ולפנות אליהם. 
 	<br><br> ניתן לגשת בכל עת למשרות שיצרתם באמצעות לחיצה על "המשרות שלי" בתפריט. שם תוכלו לצפות במשרות שיצרתם, לערוך אותן באמצעות לחיצה על "ערוך משרה" ולראות אילו סטודנטים מתאימים למשרה שהגדרתם באמצעות לחיצה על כפתור "הצג תוצאות".
-
 	</p></div> """
 	
 	htmlButt ="""<div class="submit">
@@ -1003,35 +977,25 @@ def buildCompanySignUp():
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="companySignUp/style.css">
 		
-
 	  <body>
 		<script type="text/javascript" src="companySignUp/jquery-2.2.3.js"></script>
 	  	<script type="text/javascript" src="/signUpToolbar/loadToolbar.js"></script>
 		
-
 		<div id="form-main">
 	
 		<div id="form-div">
-
 		<div align="right"> <p class="pink">מטרת האתר היא לסייע לקשר בין מעסיקים לסטודנטים למדעי המחשב מאוניברסיטת תל אביב. האתר מאפשר לסטודנטים להעלות לאתר את הקורסים שלמדו וקורות חיים ומאפשר למעסיקים לחפש את הסטודנטים שמתאימים למשרות שברצונם להציע   </p><br></div>
-
 		<div align="right"> <p class="cyan">על מנת להשתמש באתר כמעסיק יש צורך בתהליך הרשמה קצר. נא מלא את השדות שלמטה ולאחר מכן לחץ על "הרשם". בסיום תהליך ההרשמה הבקשה תשלח לתהליך אישור קצר שבסיומו יהיה ניתן להתחבר לאתר ולהתחיל לחפש סטודנטים </p></div>
 	
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/signUpHandler" method="post" enctype="multipart/form-data">
-
 <div align="right">
 				<p class="text1" id="element1">תפקיד</p><br><br>
-
 				<input name="role" type="text" class="role" id="role" placeholder="" /> </div>
-
 <div align="right">
 				<p class="text1" id="element1">שם חברה/מעסיק</p><br><br>
-
 				<input name="compName" type="text" class="compName" id="compName" placeholder="" /></div>
-
 <div align="right">
 				<p class="text1" id="element1">מייל של גוגל לשם כניסה לאתר </p>
-
 				<input name="mailAdd" type="text" class="mailAdd" id="mailAdd" placeholder="" /></div>"""
 
 
@@ -1188,4 +1152,3 @@ def buildGradeSheetPage(student):
 	html=htmlstart + htmlbody+"<br>"+"<br>"  + htmlEnd
 	
 	return html
-
