@@ -587,6 +587,8 @@ class dbHandler(webapp2.RequestHandler):
 		rev = ''
 		temp = ''
 		for i in range(0,len(str)):
+			# if the word is in english there no need to reverse it
+			# otherwise there is a need to encode the word and revers it
 			if (ord(str[i])>=128):
 				temp+=str[i]
 			else:

@@ -156,6 +156,7 @@ class MessageSend(webapp2.RequestHandler):
 			#self.message.sender = Author(identity = userid)
 			self.message.sender = Author(identity = cmp.google_id)
 			
+			# if the message was sent using an Ad update wich student recieve the message in the Ad structure.
 			if (int(ad_id)!=-1):
 				#self.ad.sentId.append(rec)
 				self.ad.sentId.append(st.google_id)
@@ -223,13 +224,15 @@ class MessageSend(webapp2.RequestHandler):
 									</html>""")
 
 
-class MessageReply(webapp2.RequestHandler):
-	def get(self):
-		self.response.write(MESSAGE_PAGE_HTML)
+#class MessageReply(webapp2.RequestHandler):
+	#def get(self):
+		#self.response.write(MESSAGE_PAGE_HTML)
 		
-	def post(self):
-		self.message = Message(cont = self.request.get('mess'))
+	#def post(self):
+		#self.message = Message(cont = self.request.get('mess'))
 
+# this function insert a new ad or an edit of existing ad to the database
+# a case of new ad is marked with ad_id = -1
 class adHandler(webapp2.RequestHandler):
 	
 	def post(self):
@@ -237,13 +240,18 @@ class adHandler(webapp2.RequestHandler):
 		user_id = self.request.cookies.get('id')
 		comp_query = Company.query(Company.user_id ==user_id).get()
 		
+		#collecting parameters from the html form
 		course_names=self.request.get_all('name')
 		grade = self.request.get_all('grade')
 		average=self.request.get('avg')
+		
 		logging.info("number of grades received " + str(len(grade)))
 		logging.info("number of courses received " + str(len(course_names)))
+		
+		#if there is no average in the input - place 60  
 		if(average==""):
 			average = 60
+			
 		crstypes=self.request.get_all("ctype")
 		crstype_avgs=self.request.get_all("ctype_avg")
 		residence=self.request.get("residence")
@@ -253,8 +261,11 @@ class adHandler(webapp2.RequestHandler):
 		adName = self.request.get("jobId")
 		searchTerms = self.request.get('searchBar')
 		
-		srcWordList = re.sub("[^\w]", " ",  searchTerms).split()
+		# convert search query string into list (with input validation to make sure input is number or a letter)
+		srcWordList = re.sub("~/[\p{L}]/", " ",  searchTerms).split()
 		logging.info(srcWordList)
+		
+		# if the ad is a new ad
 		if (int(ad_id)==-1):
 			logging.info("ad id = -1")
 			self.ad = Ad()
@@ -267,7 +278,7 @@ class adHandler(webapp2.RequestHandler):
 		dbHandler = db.dbHandler()
 		stdCrs= dbHandler.createStudentCourse(course_names, grade)
 		
-		
+		#creating adQuery
 		self.qry = adQuery()
 		self.qry.student_courses=stdCrs
 		self.qry.cgrades = grade
@@ -285,17 +296,7 @@ class adHandler(webapp2.RequestHandler):
 		else:
 			self.qry.scheduler=False
 		
-
-		#student_courses=ndb.StructuredProperty(Student_Course,repeated=True)
-		#cgrades= ndb.ComputedProperty(lambda self: ",".join(Student.getCGrades()))
-		#avg= ndb.IntegerProperty(indexed=True, required=True)
-		#ctypes = ndb.ComputedProperty(lambda self: ",".join(Student.getCTypes()))
-		#ctype_avgs=ndb.StringProperty(indexed=True,repeated = True)
-		#residence=ndb.IntegerProperty(indexed=True, required=True)
-		#availability=ndb.IntegerProperty(indexed=True, required=True)
-		#year=ndb.IntegerProperty(indexed=True, required=True)
-		#hasgit = ndb.ComputedProperty(lambda self: self.hasGit())
-		
+		#creating message
 		self.message = Message(cont = adCont)
 		self.message.jobName = adName
 		self.message.compMail = comp_query.email
@@ -305,16 +306,18 @@ class adHandler(webapp2.RequestHandler):
 		self.ad.message = self.message
 		self.ad.aQuery = self.qry
 		
+		#studnum is a parameter that save the number of students the company has seen in the ad results
 		if (int(ad_id)==-1):
 			self.ad.studNum = "0" 		
 		ad_key = self.ad.put()
-		#logging.info("key: " + str(ad_key.id()))
 		t.sleep(1)
 		
 		#comp = Company.query(Company.user_id == user_id).get()
 		#email = comp.email
 		ad_query = Ad.query(Ad.message.compMail ==  comp_query.email).order(Ad.message.date).fetch()
 		#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
+		
+		#this loop is used to find new ad and to redirect the user to the ad results
 		i = 0 
 		for ad in ad_query:
 			#logging.info(ad.key.id())
@@ -322,6 +325,8 @@ class adHandler(webapp2.RequestHandler):
 				logging.info("i " + str(i))
 				break
 			i+=1
+			
+		#if ad is new redirect to ad results otherwise redirect to ad list	
 		if (int(ad_id)==-1):	
 			self.redirect("/showAdResults?ad_id=" + str(i))
 		else:

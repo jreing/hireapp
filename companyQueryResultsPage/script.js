@@ -57,3 +57,25 @@ function validateForm() {
   return true;
 }
 
+$(document).ready(function() {
+// Tooltip only Text
+var msg=" .הסטודנטים בתוצאות החיפוש מופיעים בצבעים <br> .כחול עבור סטודנטים שעדיין לא שלחת להם הודעה וירוק עבור סטודנטים שכן"
+$('#toolTipOne').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('<p class="tooltip"></p>')
+        .html(msg)
+        .appendTo('body')
+        .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX - 560; //Get X coordinates
+        var mousey = e.pageY - 10; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+	});
+});

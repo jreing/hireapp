@@ -274,13 +274,16 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 	
 	def fetchQuery(self,adv):
 		course_query = Course.query()
-		#minGradeQ = db.minGradeQuery()
+		
+		# making adjusments between the ad parameters and query parameters
 		course_names = []
 		course_grades = []	
 		for crs in adv.aQuery.student_courses:
 			course_names.append(crs.course.course_name)
 			course_grades.append(str(crs.grade))
 		ctypesBack = list(adv.aQuery.ctypes)
+		
+		#creating a mingrafequery object that is used by the getQuery function as 'self'
 		minGradeQ = db.minGradeQuery()
 		q = getQuery(minGradeQ,course_names,course_grades,str(adv.aQuery.avg)
 			,adv.aQuery.ctypes,adv.aQuery.ctype_avgs,str(adv.aQuery.residence),str(adv.aQuery.year),str(adv.aQuery.availability),"False")	
@@ -288,19 +291,24 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 		searchFlag = 0 
 		searchTerm = ''
 		srcWordList = adv.aQuery.srchWords
+		# convers search terms to a string with AND between the terms
 		for i in range(0,len(srcWordList)):
 			searchTerm += srcWordList[i]
 			if (i<len(srcWordList)-1):
 				searchTerm += " AND "
 		logging.info(searchTerm)
+		# if a search term(s) exist call the getSearchQuery function to get results
 		if (searchTerm != ''):
 			searchFlag = 1
 			s = getSearchQuery(searchTerm)
 		
+		#check the results of the search in cvs
 		if (searchFlag==1):
+			# if result is empty
 			if(s==[]):
 				logging.info("no search results for ad")
 				return s
+			# unifing the results of the two queries
 			elif(s!=[] and (q!=None and q!=[])):
 				logging.info("search res: " + str(s))
 				qUnion = []
@@ -334,20 +342,6 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 				return
 				
 			ad = ad_query[int(ad_id)]
-			
-			
-			#course_query = Course.query()
-			#minGradeQ = db.minGradeQuery()
-			
-			#course_names = []
-			
-			#for crs in ad.aQuery.student_courses:
-				#course_names.append(crs.course.course_name)
-				
-			#course_names = ad.aQuery.student_courses.course
-			
-			#q = minGradeQ.getQuery(course_names,ad.aQuery.cgrades,str(ad.aQuery.avg)
-			#,ad.aQuery.ctypes,ad.aQuery.ctype_avgs,str(ad.aQuery.residence),str(ad.aQuery.year),str(ad.aQuery.availability),"False")		
 			
 			q = companyAdResultsHandler.fetchQuery(self,ad)
 			logging.info(ad)
@@ -526,7 +520,7 @@ app = webapp2.WSGIApplication([
 	('/companyQueryResultsPage' , minGradeQuery),
 	('/StudentOffersPage', MessageHandler),
 	('/messageSend', MessageSend),
-	('/messageReply', MessageReply),
+	#('/messageReply', MessageReply),
 	('/studentEditPage', StudentEditHandler),
 	('/deleteMyCV', deleteMyCV),
 	('/getMyCV', getMyCV),

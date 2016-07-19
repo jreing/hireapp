@@ -37,6 +37,8 @@ def errorPage(errormsg):
 	return html
 
 #Method to build the companyQueryResultsPage 
+# ad_id = None means that the function was called from the regular search page 
+# otherwise the page has to be dynamicly fitted (in this case the adFlag ==1)
 def buildQueryResultsPage(q,ad_id,ad,comp):
 	i=0
 	adFlag = 0
@@ -106,11 +108,14 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
 
 	htmlstart+= """</textarea>"""
         
-           
-	htmlstart+="""  </div>
-	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים מבין המתאימים</p> </div>
-      <div id="scroll" style="overflow-y: scroll; height:600px;">"""
-	  
+	if (adFlag != 0):
+		htmlstart+=	"""</div><div align="right" id="info">
+			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" id="masterTooltip" title="">:בחר מועמדים מבין המתאימים</a> </div>
+			<br><br><br><br><br><br><br><br>"""
+	else:
+		htmlstart+= """</div><div align="right" > <p class="medtitletextpadded">:בחר מועמדים מבין המתאימים</p> </div>"""
+	 
+	htmlstart+= """<div id="scroll" style="overflow-y: scroll; height:600px;">"""
 	htmlbody=''
 	hasCv=False
 	
@@ -120,6 +125,8 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
 		if (student.cv_blob_key != None) :
 			hasCv=True
 		
+		# if the page is called from a an ad check for each student if the student already received a message from 
+		#this ad. if he did paint student in green
 		if(adFlag!=0):
 			if(student.google_id in ad.sentId):
 				htmlbody+="""<div class="form-element2" align="right">"""
@@ -188,11 +195,12 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
     </form>
   </div>
   </body>
-  	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+  	<script type="text/javascript" src="companyQueryResultsPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	
-	</html>"""
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	  </html>"""
 
 	html=htmlstart+htmlbody+htmlend
 	return html
@@ -428,6 +436,7 @@ def availTranslate(num):
 		2: "משרה מלאה",
 	} .get(num, "לא הוזן")
 #Method to build html templates for search pages
+# ad_query = 1 means new ad ad_query = NONE means call from the search page
 def buildSearchParameters(ad_query):
 	
 	dynFlag = 0
@@ -445,7 +454,7 @@ def buildSearchParameters(ad_query):
 			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" id="masterTooltip" title="">:ביטוי לחיפוש בקורות חיים</a> </div>
 <div align="right"> <input type="text" name="searchBar" id="searchBar" class="validate[required,custom[onlyLetter]] feedback-input" """
 	if (dynFlag==1):
-		searchTerms = ''.join(ad_query.aQuery.srchWords)
+		searchTerms = ' '.join(ad_query.aQuery.srchWords)
 		htmlSearch+= """value=" """ +searchTerms + """ " />"""
 	else:
 		htmlSearch+= """placeholder="ביטויים לחיפוש"  />"""
@@ -941,7 +950,7 @@ def buildCurrentAdsPage(ad_query):
 	<html>
 		<link rel="stylesheet" type="text/css" href="currentAds/style.css">
 	  <body>
-		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/currentAds/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		<div id="form-main">
 		<div align="right">
@@ -949,12 +958,25 @@ def buildCurrentAdsPage(ad_query):
 		</div>
 		<div id="form-div">"""
 	
-	htmlbody=""
+	htmlstart+= """<div align="right" id="info">
+			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" 
+			id="masterTooltip" title="">:רשימת המשרות</a> </div>"""
 	
+	htmlbody=""
+	markAd = 0
 	i = 0 
 	for ad in ad_query:
-		htmlbody+="""<div class="form-element" align="right">
-			<p class="text1">"""+str(ad.message.jobName) + """</p>
+		# if the company already sent messages from this ad 
+		# paint the ad green
+		if (len(ad.sentId)>0):
+			markAd = 1
+		if (markAd==1):
+			htmlbody+="""<div class="form-element2" align="right">"""
+			markAd = 0
+		else:
+			htmlbody+="""<div class="form-element" align="right">"""
+		
+		htmlbody+="""<p class="text1">"""+str(ad.message.jobName) + """</p>
 			<br><br><p class="text2" >"""+str(ad.message.cont)+"""</p></div>
 			<br><br><div><button type="button2" id="button2" onclick="location.href='deleteAd?ad_id="""+str(i)+ """'" id="showRes" class="showRes">מחק</button>
 			<button type="button" id="button" onclick="location.href='editAd?ad_id="""+str(i)+ """'" " id="editAd" class="editAd">ערוך משרה</button></div>
@@ -967,6 +989,7 @@ def buildCurrentAdsPage(ad_query):
 		
 	  </body>
 	  <script type="text/javascript" src="/currentAds/script.js"></script>
+	  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	  </html>"""
 	  
 	html=htmlstart+htmlbody + htmlend
