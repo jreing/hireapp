@@ -50,6 +50,7 @@ class Message(ndb.Model):
 	cont = ndb.StringProperty(indexed=False)
 	compMail = ndb.StringProperty(indexed=True)
 	compName = ndb.StringProperty(indexed=False)
+	compLocation = ndb.StringProperty(indexed=False)
 	jobName = ndb.StringProperty(indexed=False)
 	date = ndb.DateTimeProperty(auto_now_add=True)
 
@@ -76,7 +77,7 @@ class adDbBuild(webapp2.RequestHandler):
 class MessageHandler(webapp2.RequestHandler):
     def get(self):
 		logging.info("message handler")
-		conv_query = Conversation.query()	
+		conv_query = Conversation.query().order(Conversation.message.date)	
 		#mess_query = Message.query()
 		#self.response.write(MESSAGE_PAGE_HTML)
 		user_id = self.request.cookies.get('id')
@@ -123,8 +124,12 @@ class MessageSend(webapp2.RequestHandler):
 			ad_query = Ad.query(Ad.message.compMail == email).fetch()
 			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			self.ad = ad_query[int(ad_id)]
-			
 		
+		compName = self.request.get('companyName')
+		compCity = self.request.get('companyCity') 
+		comp.city = compCity
+		comp.name = compName
+		comp.put()
 		
 		recList = self.request.get_all('studentselect') 
 		destAdd = self.request.get('recv') + "@example.com"
@@ -141,7 +146,8 @@ class MessageSend(webapp2.RequestHandler):
 			self.message = Message(cont = self.request.get('note'))
 			#self.message.receiver = Author(identity = rec)
 			self.message.receiver = Author(identity = st.google_id)
-			self.message.compName = self.request.get('companyName')
+			self.message.compName = compName
+			self.message.compLocation = compCity
 			self.message.jobName = self.request.get('jobId')
 			self.message.compMail = self.request.get('companyMail')
 			self.message.date = datetime.datetime.now()

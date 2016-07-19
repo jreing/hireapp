@@ -72,7 +72,7 @@ def buildQueryResultsPage(q,ad_id,ad,comp):
 
 	htmlstart+="""  <div align="right">
         <p class="text1">:מיקום החברה</p>
-        <input name="companyCity" id="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מיקום החברה" """ 
+        <input name="companyCity" id="companyCity" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מיקום החברה" """ 
       
 	htmlstart+= """value='""" + comp.city + "'"  
 	
@@ -232,16 +232,23 @@ def buildStudentOffersPage(conv_query, user_id):
 				htmlbody+="""
 
 				        <div class="form-element" ; align="right">
-		
 						<div align="right">
-							<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
-							<p class="texthead">"""+str(message.compMail)+"""</p>
-							<p class="texthead">:מייל</p>
-							<p class="texthead">"""+str(message.compName)+"""</p>
-							<p class="texthead">:שם חברה</p>
-							<p class="texthead">"""+str(message.jobName)+"""</p>
-							<p class="texthead">:שם משרה</p>
-						</div>
+						<table dir="rtl" style="width:100%">
+						<tr>
+						<td></td>
+						<td><b>שם משרה: </b></td>
+						<td><b>שם חברה: </b></td>
+						<td><b>מיקום חברה: </b></td>
+						<td><b>מייל: </b></td>
+						</tr>
+						<tr>
+						<td><button type="button" id="button" onclick="location.href='deleteMessage?mess_id="""+str(i)+ """'" id="delmess" class="delmess">מחק</button></td>
+						<td>""" + str(message.jobName) + """</td>
+						<td>""" + str(message.compName) + """</td>
+						<td>""" + str(message.compLocation) + """</td>
+						<td>""" + str(message.compMail) + """</td>
+						<td><button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button></td>
+						</tr></table></div>
 				
 						<div class="form-extra" id="extra"""+str(i)+"""""; align="right">
 

@@ -401,6 +401,41 @@ class adSchedHandler(webapp2.RequestHandler):
 			i+=1
 		self.response.write(errorPage("scheduler ran successfully"))	
 
+class messageRemover(webapp2.RequestHandler):
+					
+	def get(self):
+		i = 0
+		mess_id = self.request.get('mess_id')
+		user_id = self.request.cookies.get('id')
+		st = Student.query(Student.user_id==user_id).get() 
+		
+		conv_query = Conversation.query().order(Conversation.message.date)
+		mess_query = Message.query().order(Message.date)
+		
+		for conver in conv_query:
+			for mess in conver.message:
+				if(mess.receiver.identity == st.google_id):
+					logging.info(str(i))
+					i+=1
+				if (i==int(mess_id)):
+					logging.info("found")
+					logging.info(conver.key)
+					conver.key.delete()
+					break
+		i=0			
+		for msg in mess_query:
+			if(mess.receiver.identity == st.google_id):
+				logging.info(str(i))
+				i+=1
+			if (i==int(mess_id)):
+				logging.info("found")
+				logging.info(msg.key)
+				msg.key.delete()
+				break
+		t.sleep(1)
+		self.redirect("/StudentOffersPage")
+		
+				
 
 class compSignUpHandler(webapp2.RequestHandler):
 	def get(self): 
@@ -503,6 +538,7 @@ app = webapp2.WSGIApplication([
 	('/deleteAd', companyAdRemover),
 	('/processAd', adHandler),
 	('/adScheduler', adSchedHandler),
+	('/deleteMessage', messageRemover),
 	('/HelpPage', HelpHandler),
 	#('/doubleLogin', doubleLogin)
 	('/companySignUp', compSignUpHandler),

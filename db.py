@@ -456,7 +456,19 @@ class dbBuild(webapp2.RequestHandler):
 				blob_reader = blobstore.BlobReader(st.cv_blob_key)
 				#get the file text
 				text = blob_reader.read()
-
+				dbHndlr = dbHandler()
+				cvPdf= StringIO(text)
+				cvContent = dbHandler.convert_pdf_to_txt(dbHndlr, cvPdf)
+				cvContentRev = dbHandler.reverseString(dbHndlr,cvContent)
+				self.response.write(cvContentRev)
+			
+				srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
+			
+				doc = search.Document(doc_id = st.google_id,fields=srcFields)
+				try:
+					add_result = search.Index(name=INDEX_NAME).put(doc)
+				except search.Error:
+					logging.info("indexing result for search has failed")
 		#import csv
 		
 		#upload courses to db
@@ -477,7 +489,7 @@ class dbBuild(webapp2.RequestHandler):
 				#a=allowedCompany(email=s)
 				#a.put()
 		
-		self.response.write(errorPage('Database built'))
+		#self.response.write(errorPage('Database built'))
 
 #deletes all courses from DB	
 class dbDelete(webapp2.RequestHandler):
