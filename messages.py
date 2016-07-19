@@ -118,10 +118,10 @@ class MessageSend(webapp2.RequestHandler):
 		ad_id = self.request.get('ad_id')
 		logging.info(ad_id)
 		user_id = self.request.cookies.get('id')
+		comp = Company.query(Company.user_id == user_id).get()
 		if (int(ad_id)!=-1):
-			comp = Company.query(Company.user_id == user_id).get()
 			email = comp.email
-			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			ad_query = Ad.query(Ad.message.compMail == email).order(Ad.message.date).fetch()
 			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			self.ad = ad_query[int(ad_id)]
 		
@@ -260,7 +260,7 @@ class adHandler(webapp2.RequestHandler):
 			self.ad = Ad()
 			self.ad.sentId = []
 		else:
-			adqy = Ad.query(Ad.message.compMail == comp_query.email).fetch()
+			adqy = Ad.query(Ad.message.compMail == comp_query.email).order(Ad.message.date).fetch()
 			#adqy = Ad.query(Ad.user_id ==user_id ).fetch()
 			self.ad = adqy[int(ad_id)]
 		
@@ -313,7 +313,7 @@ class adHandler(webapp2.RequestHandler):
 		
 		#comp = Company.query(Company.user_id == user_id).get()
 		#email = comp.email
-		ad_query = Ad.query(Ad.message.compMail ==  comp_query.email).fetch()
+		ad_query = Ad.query(Ad.message.compMail ==  comp_query.email).order(Ad.message.date).fetch()
 		#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 		i = 0 
 		for ad in ad_query:

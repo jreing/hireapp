@@ -510,9 +510,10 @@ class deleteStudent(webapp2.RequestHandler):
 		st=Student.query(id==Student.user_id).get()
 		if (st!=None):
 			#remove student
-			st.key.delete()
 			index = search.Index(name=INDEX_NAME)
-			index.delete(st.google_id)	
+			index.delete(st.google_id)
+			st.key.delete()
+				
 		self.response.write(\
 		errorPage("שם המשתמש שלך נמחק, בהצלחה בהמשך הדרך"))
 
@@ -769,6 +770,8 @@ class deleteMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 			self.response.write(errorPage("גישה לא חוקית לדף"))
 		else:
 			st = Student.query(Student.user_id==user_id).get()
+			index = search.Index(name=INDEX_NAME)
+			index.delete(st.google_id)
 			if (st.cv_blob_key!=None):
 				blobstore.delete(st.cv_blob_key)
 				st.cv_blob_key=None

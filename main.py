@@ -221,7 +221,7 @@ class companyAdRemover(webapp2.RequestHandler):
 			
 			comp = Company.query(Company.user_id == user_id).get()
 			email = comp.email
-			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			ad_query = Ad.query(Ad.message.compMail == email).order(Ad.message.date).fetch()
 			
 			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			
@@ -245,7 +245,7 @@ class companyCurrAdHandler(webapp2.RequestHandler):
 			email = comp.email
 			
 			#ad_query = Ad.query(Ad.user_id ==user_id )
-			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			ad_query = Ad.query(Ad.message.compMail == email).order(Ad.message.date).fetch()
 			page = buildCurrentAdsPage(ad_query)
 			self.response.write(page)
 		
@@ -258,7 +258,7 @@ class companyEditAdHandler(webapp2.RequestHandler):
 			ad_id = self.request.get('ad_id')
 			comp = Company.query(Company.user_id == user_id).get()
 			email = comp.email
-			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			ad_query = Ad.query(Ad.message.compMail == email).order(Ad.message.date).fetch()
 			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			logging.info("list len " + str(len(ad_query)) + " " + ad_id)
 			
@@ -326,7 +326,7 @@ class companyAdResultsHandler(webapp2.RequestHandler):
 			
 			comp = Company.query(Company.user_id == user_id).get()
 			email = comp.email
-			ad_query = Ad.query(Ad.message.compMail == email).fetch()
+			ad_query = Ad.query(Ad.message.compMail == email).order(Ad.message.date).fetch()
 			#ad_query = Ad.query(Ad.user_id ==user_id).fetch()
 			
 			if (int(ad_id)<0 or int(ad_id)>=len(ad_query)):
