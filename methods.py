@@ -37,7 +37,9 @@ def errorPage(errormsg):
 	return html
 
 #Method to build the companyQueryResultsPage 
-def buildQueryResultsPage(q,ad_id,ad):
+# ad_id = None means that the function was called from the regular search page 
+# otherwise the page has to be dynamicly fitted (in this case the adFlag ==1)
+def buildQueryResultsPage(q,ad_id,ad,comp):
 	i=0
 	adFlag = 0
 	
@@ -59,62 +61,61 @@ def buildQueryResultsPage(q,ad_id,ad):
     <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend?ad_id=-1" method="post">"""
 	else:
 		htmlstart+=	"""<div id="form-div">
-    <div align="right"> <p class="medtitletext">:הזן משרה</p>  </div>
+    <div align="right"> <p class="medtitletext">:הזן את פרטי המשרה לשליחה</p>  </div>
     <form class="form" id="form1" onsubmit="return validateForm()" action="/messageSend?ad_id="""+ad_id+"""" method="post">"""
 		
 	htmlstart+="""  <div align="right">
         <p class="text1">:שם החברה</p>
-        <input name="companyName" id="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+        <input name="companyName" id="companyName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="שם חברה" """ 
       
-	if (adFlag == 0):
-		htmlstart+="""placeholder="שם" """
-	else:
-		htmlstart+= """value='""" + ad.message.compName + "'"  
-	  
+	htmlstart+= """value='""" + comp.name + "'"  
+	
+	htmlstart+= """ /></div>"""
+
+	htmlstart+="""  <div align="right">
+        <p class="text1">:מיקום החברה</p>
+        <input name="companyCity" id="companyCity" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מיקום החברה" """ 
+      
+	htmlstart+= """value='""" + comp.city + "'"  
+	
 	htmlstart+= """ /></div>"""
 
 	htmlstart+=  """<div align="right">
         <p class="text1">:מייל החברה</p>
-        <input name="companyMail" id="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """
+        <input name="companyMail" id="companyMail" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="מייל" """
 	
-	if (adFlag == 0):
-		htmlstart+="""placeholder="מייל" value=" """ + ad.email + "\""
-	else:
-		htmlstart+= """placeholder="מייל" value='""" + ad.message.compMail + "'"
-
-		
+	htmlstart+="""value='""" + comp.email + "'"	
 
 	htmlstart+= """ /> </div>"""
 
 	htmlstart+= """<div align="right">
         <p class="text1">:שם המשרה</p>
-        <input name="jobId" id="jobName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" """ 
+        <input name="jobId" id="jobName" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" """ 
 		
-	if (adFlag == 0):
-		htmlstart+="""placeholder="משרה" """
-	else:
+	if (adFlag != 0):
 		htmlstart+= """value='""" + ad.message.jobName + "'"
-		
-		
+	
 	htmlstart+=""" /></div>"""
 
 	htmlstart+="""<div align="right">
         <p class="text1">:תאור המשרה</p>
-        <textarea class="scrollabletextbox" name="note" id="jobDescription" dir="rtl" """
+        <textarea class="scrollabletextbox" name="note" id="jobDescription" dir="rtl" placeholder="פרטים על המשרה.." """
 
 	if (adFlag == 0):
-		htmlstart+="""placeholder="פרטים על המשרה..">"""
+		htmlstart+=""">"""
 	else:
 		htmlstart+= """>""" + ad.message.cont 
 
 	htmlstart+= """</textarea>"""
         
-           
-	htmlstart+="""  </div>
-	<div align="right" > <p class="medtitletextpadded">:בחר מועמדים</p> </div>
-
-      <div id="scroll" style="overflow-y: scroll; height:600px;">"""
-	  
+	if (adFlag != 0):
+		htmlstart+=	"""</div><div align="right" id="info">
+			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" id="masterTooltip" title="">:בחר מועמדים מבין המתאימים</a> </div>
+			<br><br><br><br><br><br><br><br>"""
+	else:
+		htmlstart+= """</div><div align="right" > <p class="medtitletextpadded">:בחר מועמדים מבין המתאימים</p> </div>"""
+	 
+	htmlstart+= """<div id="scroll" style="overflow-y: scroll; height:600px;">"""
 	htmlbody=''
 	hasCv=False
 	
@@ -124,6 +125,8 @@ def buildQueryResultsPage(q,ad_id,ad):
 		if (student.cv_blob_key != None) :
 			hasCv=True
 		
+		# if the page is called from a an ad check for each student if the student already received a message from 
+		#this ad. if he did paint student in green
 		if(adFlag!=0):
 			if(student.google_id in ad.sentId):
 				htmlbody+="""<div class="form-element2" align="right">"""
@@ -188,17 +191,16 @@ def buildQueryResultsPage(q,ad_id,ad):
       <input type="checkbox" name="select-all" id="select-all" />
       <div class="submit">
         <input type="submit" value="שלח משרה" id="button-blue" />
-
       </div>
     </form>
-
   </div>
   </body>
-  	<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+  	<script type="text/javascript" src="companyQueryResultsPage/jquery-2.2.3.js"></script>
 	<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 	<script type="text/javascript" src="companyQueryResultsPage/script.js"></script>
 	
-	</html>"""
+	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+	  </html>"""
 
 	html=htmlstart+htmlbody+htmlend
 	return html
@@ -216,12 +218,9 @@ def buildStudentOffersPage(conv_query, user_id):
   <div >
     <p class="titletext"  >:ההצעות שלי</p>
   </div>
-
   <div id="form-div">
     <div align="right"> <p class="medtitletext">:הצעות שקיבלת</p>  </div>
   
-
-
       <div id="scroll">"""
 	#st = Student.query(Student.user_id==user_id).get()  
 	htmlbody=''
@@ -233,32 +232,33 @@ def buildStudentOffersPage(conv_query, user_id):
 				#send = users.User(_user_id = message.sender.identity)
 				i=i+1
 				htmlbody+="""
-
 				        <div class="form-element" ; align="right">
-		
 						<div align="right">
-							<button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button>
-							<p class="texthead">"""+str(message.compMail)+"""</p>
-							<p class="texthead">:מייל</p>
-							<p class="texthead">"""+str(message.compName)+"""</p>
-							<p class="texthead">:שם חברה</p>
-							<p class="texthead">"""+str(message.jobName)+"""</p>
-							<p class="texthead">:שם משרה</p>
-						</div>
+						<table dir="rtl" style="width:100%">
+						<tr>
+						<td></td>
+						<td><b>שם משרה: </b></td>
+						<td><b>שם חברה: </b></td>
+						<td><b>מיקום חברה: </b></td>
+						<td><b>מייל: </b></td>
+						</tr>
+						<tr>
+						<td><button type="button" id="button" onclick="location.href='deleteMessage?mess_id="""+str(i)+ """'" id="delmess" class="delmess">מחק</button></td>
+						<td>""" + str(message.jobName) + """</td>
+						<td>""" + str(message.compName) + """</td>
+						<td>""" + str(message.compLocation) + """</td>
+						<td>""" + str(message.compMail) + """</td>
+						<td><button type="button" id="button"""+str(i)+"""" class="button">הצג פרטים</button></td>
+						</tr></table></div>
 				
 						<div class="form-extra" id="extra"""+str(i)+"""""; align="right">
-
 						<p class="text" id="extra1" >""" +str(message.cont)+ """</p>
-
-
 						</div>
 				</div>"""
 	
 	emptypage="""
             </div>
-
     <div align="right"> <p class="medtitletext" id="empty">...טרם קיבלת הצעות</p>  </div>
-
   </div>"""
 
 	htmlend = """
@@ -280,7 +280,6 @@ def buildStudentInputPage(course_query):
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="studentInputPage/style.css">
 		
-
 	  <body>
 		<script type="text/javascript" src="studentInputPage/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/StudentToolbar/loadToolbarInputPage.js"></script>
@@ -329,10 +328,8 @@ def buildStudentInputPage(course_query):
 			  
 		    </div>
 		
-
 		    <div id="avgEntry" >
 				<p class="text2" id="element1">:הזן ממוצע כללי</p> 
-
 				<input name="average" type="number" class="average" id="element2" min="60" max="100" id="average" placeholder="ממוצע" />			  
 			</div>
 			<div>
@@ -365,7 +362,6 @@ def buildStudentInputPage(course_query):
 			
 			<br><div id="gitEntry" >
 				<p class="text2" id="element1">:אופציונלי - הזן חשבון גיט</p><br><br>
-
 				<input name="git" type="text" class="git" id="git" placeholder="" />			  
 			</div>
 			
@@ -378,7 +374,6 @@ def buildStudentInputPage(course_query):
 			
 			<div id="info">
 			<a class="ui-btn ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right" data-rel="dialog" id="masterTooltip" title=" """+message+""" ">פרטיות</a>			
-
 			</div>
 			
 		    <div class="submit">
@@ -400,10 +395,7 @@ def buildStudentInputPage(course_query):
 		
 	  </div>
 	  </body>
-
-
 		<script type="text/javascript" src="studentInputPage/script.js"></script>
-
 	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	</html>"""
 
@@ -444,6 +436,7 @@ def availTranslate(num):
 		2: "משרה מלאה",
 	} .get(num, "לא הוזן")
 #Method to build html templates for search pages
+# ad_query = 1 means new ad ad_query = NONE means call from the search page
 def buildSearchParameters(ad_query):
 	
 	dynFlag = 0
@@ -459,10 +452,9 @@ def buildSearchParameters(ad_query):
 	logging.info(dynFlag)
 	htmlSearch = """<div align="right" id="info">
 			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" id="masterTooltip" title="">:ביטוי לחיפוש בקורות חיים</a> </div>
-
 <div align="right"> <input type="text" name="searchBar" id="searchBar" class="validate[required,custom[onlyLetter]] feedback-input" """
 	if (dynFlag==1):
-		searchTerms = ''.join(ad_query.aQuery.srchWords)
+		searchTerms = ' '.join(ad_query.aQuery.srchWords)
 		htmlSearch+= """value=" """ +searchTerms + """ " />"""
 	else:
 		htmlSearch+= """placeholder="ביטויים לחיפוש"  />"""
@@ -551,9 +543,7 @@ def buildSearchParameters(ad_query):
 		htmlbody+="""placeholder="ממוצע" """
 		
 	htmlbody+="""/>	</div>
-
 		<div align="right">
-
 			<p class="text1">:אזור מגורים</p>
 		  <select name="residence" id="residence" class="validate[required,custom	[onlyLetter],length[0,100]] feedback-input4" align="right" id="validateFormcity" />"""
 		  
@@ -866,7 +856,6 @@ def buildAdPage(course_query):
         <p class="text1">:שם המשרה</p>
         <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" placeholder="משרה" id="jobId" />
       </div>
-
       <div align="right">
         <p class="text1">:תאור המשרה</p>
         <textarea class="scrollabletextbox" name="note" class="note" dir="rtl" placeholder="פרטים על המשרה.." id="note"></textarea>
@@ -927,7 +916,6 @@ def EditAdPage(course_query,ad_query,ad_id):
         <p class="text1">:שם המשרה</p>
         <input name="jobId" type="text" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input3" value='""" + ad_query.message.jobName + """' id="jobId" />
       </div>
-
       <div align="right">
         <p class="text1">:תאור המשרה</p>
         <textarea class="scrollabletextbox" name="note" id="note" dir="rtl">"""+ ad_query.message.cont +"""</textarea>
@@ -939,7 +927,6 @@ def EditAdPage(course_query,ad_query,ad_id):
 	בדף זה תוכלו ליצור פרופיל משרה עם מאפייני הסטודנטים שאתם מחפשים 
 	<br><br> בסיום התהליך יהיה באפשרותכם לערוך חיפוש במאגר הסטודנטים באתר, לאתר את הסטודנטים שמתאימים לדרישות המשרה ולפנות אליהם. 
 	<br><br> ניתן לגשת בכל עת למשרות שיצרתם באמצעות לחיצה על "המשרות שלי" בתפריט. שם תוכלו לצפות במשרות שיצרתם, לערוך אותן באמצעות לחיצה על "ערוך משרה" ולראות אילו סטודנטים מתאימים למשרה שהגדרתם באמצעות לחיצה על כפתור "הצג תוצאות".
-
 	</p></div> """
 	
 	htmlButt ="""<div class="submit">
@@ -963,7 +950,7 @@ def buildCurrentAdsPage(ad_query):
 	<html>
 		<link rel="stylesheet" type="text/css" href="currentAds/style.css">
 	  <body>
-		<script type="text/javascript" src="/jquery/jquery-2.2.3.js"></script>
+		<script type="text/javascript" src="/currentAds/jquery-2.2.3.js"></script>
 		<script type="text/javascript" src="/CompanyToolbar/loadToolbar.js"></script>
 		<div id="form-main">
 		<div align="right">
@@ -971,12 +958,25 @@ def buildCurrentAdsPage(ad_query):
 		</div>
 		<div id="form-div">"""
 	
-	htmlbody=""
+	htmlstart+= """<div align="right" id="info">
+			<a id="toolTipOne" class="ui-btn one ui-btn-inline ui-corner-all ui-icon-info ui-btn-icon-right ui-button-text" data-rel="dialog" 
+			id="masterTooltip" title="">:רשימת המשרות</a> </div>"""
 	
+	htmlbody=""
+	markAd = 0
 	i = 0 
 	for ad in ad_query:
-		htmlbody+="""<div class="form-element" align="right">
-			<p class="text1">"""+str(ad.message.jobName) + """</p>
+		# if the company already sent messages from this ad 
+		# paint the ad green
+		if (len(ad.sentId)>0):
+			markAd = 1
+		if (markAd==1):
+			htmlbody+="""<div class="form-element2" align="right">"""
+			markAd = 0
+		else:
+			htmlbody+="""<div class="form-element" align="right">"""
+		
+		htmlbody+="""<p class="text1">"""+str(ad.message.jobName) + """</p>
 			<br><br><p class="text2" >"""+str(ad.message.cont)+"""</p></div>
 			<br><br><div><button type="button2" id="button2" onclick="location.href='deleteAd?ad_id="""+str(i)+ """'" id="showRes" class="showRes">מחק</button>
 			<button type="button" id="button" onclick="location.href='editAd?ad_id="""+str(i)+ """'" " id="editAd" class="editAd">ערוך משרה</button></div>
@@ -989,6 +989,7 @@ def buildCurrentAdsPage(ad_query):
 		
 	  </body>
 	  <script type="text/javascript" src="/currentAds/script.js"></script>
+	  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	  </html>"""
 	  
 	html=htmlstart+htmlbody + htmlend
@@ -999,35 +1000,25 @@ def buildCompanySignUp():
 	<html lang="he">
 		<link rel="stylesheet" type="text/css" href="companySignUp/style.css">
 		
-
 	  <body>
 		<script type="text/javascript" src="companySignUp/jquery-2.2.3.js"></script>
 	  	<script type="text/javascript" src="/signUpToolbar/loadToolbar.js"></script>
 		
-
 		<div id="form-main">
 	
 		<div id="form-div">
-
 		<div align="right"> <p class="pink">מטרת האתר היא לסייע לקשר בין מעסיקים לסטודנטים למדעי המחשב מאוניברסיטת תל אביב. האתר מאפשר לסטודנטים להעלות לאתר את הקורסים שלמדו וקורות חיים ומאפשר למעסיקים לחפש את הסטודנטים שמתאימים למשרות שברצונם להציע   </p><br></div>
-
 		<div align="right"> <p class="cyan">על מנת להשתמש באתר כמעסיק יש צורך בתהליך הרשמה קצר. נא מלא את השדות שלמטה ולאחר מכן לחץ על "הרשם". בסיום תהליך ההרשמה הבקשה תשלח לתהליך אישור קצר שבסיומו יהיה ניתן להתחבר לאתר ולהתחיל לחפש סטודנטים </p></div>
 	
 		<form class="form" id="form1" onsubmit="return validateForm()" action="/signUpHandler" method="post" enctype="multipart/form-data">
-
 <div align="right">
 				<p class="text1" id="element1">תפקיד</p><br><br>
-
 				<input name="role" type="text" class="role" id="role" placeholder="" /> </div>
-
 <div align="right">
 				<p class="text1" id="element1">שם חברה/מעסיק</p><br><br>
-
 				<input name="compName" type="text" class="compName" id="compName" placeholder="" /></div>
-
 <div align="right">
 				<p class="text1" id="element1">מייל של גוגל לשם כניסה לאתר </p>
-
 				<input name="mailAdd" type="text" class="mailAdd" id="mailAdd" placeholder="" /></div>"""
 
 
@@ -1184,4 +1175,3 @@ def buildGradeSheetPage(student):
 	html=htmlstart + htmlbody+"<br>"+"<br>"  + htmlEnd
 	
 	return html
-

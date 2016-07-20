@@ -428,7 +428,7 @@ class minGradeQuery(webapp2.RequestHandler):
 			self.response.write(f.read())
 			f.close()
 		else: #build result page
-			page = buildQueryResultsPage(q,None,comp_query)
+			page = buildQueryResultsPage(q,None,None,comp_query)
 			self.response.write(page)
 			
 
@@ -456,7 +456,19 @@ class dbBuild(webapp2.RequestHandler):
 				blob_reader = blobstore.BlobReader(st.cv_blob_key)
 				#get the file text
 				text = blob_reader.read()
-
+				dbHndlr = dbHandler()
+				cvPdf= StringIO(text)
+				cvContent = dbHandler.convert_pdf_to_txt(dbHndlr, cvPdf)
+				cvContentRev = dbHandler.reverseString(dbHndlr,cvContent)
+				self.response.write(cvContentRev)
+			
+				srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
+			
+				doc = search.Document(doc_id = st.google_id,fields=srcFields)
+				try:
+					add_result = search.Index(name=INDEX_NAME).put(doc)
+				except search.Error:
+					logging.info("indexing result for search has failed")
 		#import csv
 		
 		#upload courses to db
@@ -477,7 +489,7 @@ class dbBuild(webapp2.RequestHandler):
 				#a=allowedCompany(email=s)
 				#a.put()
 		
-		self.response.write(errorPage('Database built'))
+		#self.response.write(errorPage('Database built'))
 
 #deletes all courses from DB	
 class dbDelete(webapp2.RequestHandler):
@@ -498,9 +510,10 @@ class deleteStudent(webapp2.RequestHandler):
 		st=Student.query(id==Student.user_id).get()
 		if (st!=None):
 			#remove student
-			st.key.delete()
 			index = search.Index(name=INDEX_NAME)
-			index.delete(st.google_id)	
+			index.delete(st.google_id)
+			st.key.delete()
+				
 		self.response.write(\
 		errorPage("שם המשתמש שלך נמחק, בהצלחה בהמשך הדרך"))
 
@@ -574,6 +587,8 @@ class dbHandler(webapp2.RequestHandler):
 		rev = ''
 		temp = ''
 		for i in range(0,len(str)):
+			# if the word is in english there no need to reverse it
+			# otherwise there is a need to encode the word and revers it
 			if (ord(str[i])>=128):
 				temp+=str[i]
 			else:
@@ -757,6 +772,8 @@ class deleteMyCV(blobstore_handlers.BlobstoreDownloadHandler):
 			self.response.write(errorPage("גישה לא חוקית לדף"))
 		else:
 			st = Student.query(Student.user_id==user_id).get()
+			index = search.Index(name=INDEX_NAME)
+			index.delete(st.google_id)
 			if (st.cv_blob_key!=None):
 				blobstore.delete(st.cv_blob_key)
 				st.cv_blob_key=None
