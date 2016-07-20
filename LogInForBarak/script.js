@@ -1,3 +1,12 @@
+    // Internet Explorer 6-11
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+if (isIE){
+	document.write("<font size='7'>Unfortunately TauHire doesn't support Internet Explorer, please use another browser</font>")
+}
+
+
+
 var isStudent=undefined;
 
 function getCookie(cname) {
@@ -19,7 +28,10 @@ function getCookie(cname) {
 function ForceLogin() {
 	while (getCookie("id")==""){
 	}
-	if (isStudent==true){
+	if (isIE==true){
+		return;
+	}
+	if (isStudent==true ){
 		window.location="/studenthandler";
 	}
 	else{
