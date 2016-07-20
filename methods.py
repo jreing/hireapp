@@ -1081,7 +1081,7 @@ def buildHelpPage(isStudent, isCompany):
 		1. בנה משרה
 		<img src="/HelpPictures/HelpPic4.png" height="350" width="500" vspace="10">
 		<br>
-		2. באפשרותך לצפות בסטודנטים מתאימים למשרה או לערוך אותה
+		2. באפשרותך לצפות בסטודנטים המתאימים למשרה או לערוך אותה
 		<img src="/HelpPictures/HelpPic5.png" height="150" width="500" vspace="10">
 		<br>
 		3. בחר מועמדים מרשימת המועמדים המתאימים,שלח להם את המשרה, והם יוכלו לפנות אליך באמצעות המייל שהזנת
