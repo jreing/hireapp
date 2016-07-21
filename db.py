@@ -457,10 +457,11 @@ class dbBuild(webapp2.RequestHandler):
 				#get the file text
 				text = blob_reader.read()
 				dbHndlr = dbHandler()
+				cvPdf=""
 				cvPdf= StringIO(text)
 				cvContent = dbHandler.convert_pdf_to_txt(dbHndlr, cvPdf)
 				cvContentRev = dbHandler.reverseString(dbHndlr,cvContent)
-				self.response.write(cvContentRev)
+				# self.response.write(cvContentRev)
 			
 				srcFields = [search.TextField(name='cvContent', value=cvContentRev)]
 			
