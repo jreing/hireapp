@@ -455,9 +455,10 @@ class dbBuild(webapp2.RequestHandler):
 			if (st.cv_blob_key!=None):
 				blob_reader = blobstore.BlobReader(st.cv_blob_key)
 				#get the file text
+				text=""
 				text = blob_reader.read()
 				dbHndlr = dbHandler()
-				cvPdf=" "
+				cvPdf=""
 				cvPdf= StringIO(text)
 				cvContent = dbHandler.convert_pdf_to_txt(dbHndlr, cvPdf)
 				cvContentRev = dbHandler.reverseString(dbHndlr,cvContent)
