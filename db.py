@@ -457,7 +457,7 @@ class dbBuild(webapp2.RequestHandler):
 				#get the file text
 				text = blob_reader.read()
 				dbHndlr = dbHandler()
-				cvPdf=""
+				cvPdf=" "
 				cvPdf= StringIO(text)
 				cvContent = dbHandler.convert_pdf_to_txt(dbHndlr, cvPdf)
 				cvContentRev = dbHandler.reverseString(dbHndlr,cvContent)

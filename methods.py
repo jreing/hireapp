@@ -604,7 +604,7 @@ def buildSearchParameters(ad_query):
 	htmlEmail = ""
 	if (dynFlag>0):
 		htmlEmail+= """<div class="getEmailNotification" align="right">
-			  <label for="getEmailNotification" class="textsmallpad">שלח לי עדכון במייל כאשר יש מועמדים חדשים המתאימים למשרהlabel>
+			  <label for="getEmailNotification" class="textsmallpad">שלח לי עדכון במייל כאשר יש מועמדים חדשים המתאימים למשרה</label>
 			  <input type="checkbox" value="True" name="getEmailNotification" id="getEmailNotification" class="checkbox" """
 		
 		if(dynFlag==1):
