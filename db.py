@@ -385,7 +385,7 @@ class minGradeQuery(webapp2.RequestHandler):
 		#logging.info(searchTermTry)
 		
 		# input validation and seperate words by ' '
-		srcWordList = re.sub("[^\w]", " ",  searchTermTry).split()
+		srcWordList = re.sub("~/[\p{L}]/", " ",  searchTermTry).split()
 		
 		#logging.info(srcWordList)
 		
