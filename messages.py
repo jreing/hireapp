@@ -196,11 +196,20 @@ class MessageSend(webapp2.RequestHandler):
 					mail.send_mail(sender_address, user_address, subject, body)
 					#self.response.write("mail was good")
 
-		#self.response.write("""<html><body> <b> message send successfully! </b> </body></html>""")
-		cours_query = Course.query()
-		page = buildCompanyQuery(cours_query)
-		self.response.write(page)
-		#self.response.write('</pre></body></html>')
+		# cours_query = Course.query()
+		# page = buildCompanyQuery(cours_query)
+		# self.response.write(page)
+		user_id = self.request.cookies.get('id')
+		if (Company.query(user_id==Company.user_id).get()==None):
+			self.response.write(errorPage("You are no longer connected! Please try to connect again"))
+		else:
+			comp = Company.query(Company.user_id == user_id).get()
+			email = comp.email
+			
+			#ad_query = Ad.query(Ad.user_id ==user_id )
+			ad_query = Ad.query(Ad.message.compMail == email).order(Ad.message.date).fetch()
+			page = buildCurrentAdsPage(ad_query)
+			self.response.write(page)
 
 		self.response.write("""<html>
 									<link rel="stylesheet" type="text/css" href="companyQueryFormPage/style.css">
