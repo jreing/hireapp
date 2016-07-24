@@ -685,10 +685,6 @@ def buildStudentEditPage(student, course_query):
 	</div>
 	<div id="form-div">
 		<div align="right" dir="rtl">
-			<p class="text1">מספר צפיות בקורות החיים שלי: """+ str(student.cv_view_cnt)\
-			+ """</p>
-			<p class="text1">מספר צפיות בגיליון הציונים שלי: """+ str(student.gradesheet_view_cnt)\
-			+ """</p>
 			<p class="text1">אזור מגורים:</p>
 		</div>
 	<form class="form" id="form1" action="/dbHandler" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">
@@ -801,7 +797,13 @@ def buildStudentEditPage(student, course_query):
 		htmlRecOffers+="""checked"""
 	
 	htmlRecOffers+="""> </div>"""
-	
+	htmlcounters=""" 		<div align="right" dir="rtl">
+			<p class="text3">מספר צפיות בקורות החיים שלי: """+ str(student.cv_view_cnt)\
+			+ """</p>
+			<p class="text3">מספר צפיות בגיליון הציונים שלי: """+ str(student.gradesheet_view_cnt)\
+			+ """</p>
+		
+		</div> """
 	
 	htmlButt = """<div class="submit">
           <input type="submit" form="form1" value="שמור" id="button-blue" />
@@ -826,7 +828,7 @@ def buildStudentEditPage(student, course_query):
   
 	htmlDel = """<div><button type="button" onclick="delClick()" id="delButton" class="delButton">הסר פרופיל</button> </div>"""
 
-	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlButt +"<br>"+"<br>"+htmlDlist +htmlEndForm + htmlDel + htmlEnd
+	html=htmlstart + htmlbody + htmlAvg +htmlYear + htmlAvail + htmlcv +htmlGit +htmlMail + htmlRecOffers + htmlcounters+ htmlButt +"<br>"+"<br>"+htmlDlist +htmlEndForm + htmlDel + htmlEnd
 	return html
 
 #Method to build the createAd page (page to create job advertisement)
